@@ -1,20 +1,8 @@
-import "dotenv/config";
+import dotenv from "dotenv";
 
-const requiredEnv = (key: string): string => {
-    const value = process.env[key];
-
-    if (!value) {
-        throw new Error(`Missing environment variable: ${key}`);
-    }
-
-    return value;
-};
+dotenv.config();
 
 export const env = {
-    PORT: Number(process.env.PORT) || 5000,
-    NODE_ENV: process.env.NODE_ENV || "development",
-
-    DATABASE_URL: requiredEnv("DATABASE_URL"),
-
-    JWT_SECRET: requiredEnv("JWT_SECRET"),
+    PORT: process.env.PORT ? parseInt(process.env.PORT, 10) : 5000,
+    DATABASE_URL: process.env.DATABASE_URL || "",
 };

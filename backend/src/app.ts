@@ -3,16 +3,12 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 
-import { notFoundMiddleware } from "./middlewares/notFound.middleware.js";
-import { errorMiddleware } from "./middlewares/error.middleware.js";
-
-import productRoutes from "./routes/product.routes.js";
-
-import inventoryRoutes from "./routes/inventory.routes.js";
-
-import imageRoutes from "./routes/image.routes.js";
-
-import videoRoutes from "./routes/video.routes.js";
+import { notFoundMiddleware } from "./middlewares/notFound.middleware";
+import { errorMiddleware } from "./middlewares/error.middleware";
+import productRoutes from "./routes/product.routes";
+import inventoryRoutes from "./routes/inventory.routes";
+import imageRoutes from "./routes/image.routes";
+import videoRoutes from "./routes/video.routes";
 
 const app = express();
 
