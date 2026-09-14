@@ -1,8 +1,22 @@
 const express = require("express");
 const cors = require("cors");
 
-const notFoundMiddleware = require("./middleware/notFound.middleware");
-const errorMiddleware = require("./middleware/error.middleware");
+const productRoutes = require("./routes/product.routes");
+const inventoryRoutes = require("./routes/inventory.routes");
+const inventoryImageRoutes = require(
+    "./routes/inventoryImage.routes"
+);
+const inventoryVideoRoutes = require(
+    "./routes/inventoryVideo.routes"
+);
+
+const notFoundMiddleware = require(
+    "./middleware/notFound.middleware"
+);
+
+const errorMiddleware = require(
+    "./middleware/error.middleware"
+);
 
 const app = express();
 
@@ -15,6 +29,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Health check
 app.get("/api/health", (req, res) => {
     res.status(200).json({
         success: true,
@@ -22,16 +37,25 @@ app.get("/api/health", (req, res) => {
     });
 });
 
-/*
-  Routes will be added here.
+// Routes
+app.use("/api/products", productRoutes);
 
-  Example:
+app.use("/api/inventory", inventoryRoutes);
 
-  const productRoutes = require("./routes/product.routes");
-  app.use("/api/products", productRoutes);
-*/
+app.use(
+    "/api/inventory-images",
+    inventoryImageRoutes
+);
 
+app.use(
+    "/api/inventory-videos",
+    inventoryVideoRoutes
+);
+
+// 404
 app.use(notFoundMiddleware);
+
+// Error handler
 app.use(errorMiddleware);
 
 module.exports = app;
