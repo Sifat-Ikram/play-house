@@ -6,9 +6,7 @@ const inventoryRoutes = require("./routes/inventory.routes");
 const inventoryImageRoutes = require(
     "./routes/inventoryImage.routes"
 );
-const inventoryVideoRoutes = require(
-    "./routes/inventoryVideo.routes"
-);
+
 
 const brandRoutes = require("./routes/brand.routes");
 const categoryRoutes = require("./routes/category.routes");
@@ -52,14 +50,12 @@ app.use(
     inventoryImageRoutes
 );
 
-app.use(
-    "/api/inventory-videos",
-    inventoryVideoRoutes
-);
-
 app.use("/api/brands", brandRoutes);
+
 app.use("/api/categories", categoryRoutes);
+
 app.use("/api/colors", colorRoutes);
+
 app.use("/api/combo", comboRoutes);
 
 // 404

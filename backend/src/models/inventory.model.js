@@ -4,26 +4,32 @@ const createInventory = async (data) => {
   const query = `
     INSERT INTO inventory (
       product_id,
-      quantity,
-      mark_unavailable,
-      base_price,
-      selling_price,
-      applicable_tax_percent,
       color_id,
+      sku,
+      stock_quantity,
+      buying_price,
+      selling_price,
+      min_wholesale_qty,
+      wholesale_price,
+      mark_unavailable,
+      applicable_tax_percent,
       is_featured
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
     RETURNING *;
   `;
 
   const values = [
     data.product_id,
-    data.quantity,
-    data.mark_unavailable ?? false,
-    data.base_price,
-    data.selling_price,
-    data.applicable_tax_percent ?? null,
     data.color_id ?? null,
+    data.sku ?? null,
+    data.stock_quantity ?? data.quantity ?? 0,
+    data.buying_price ?? data.base_price ?? 0,
+    data.selling_price,
+    data.min_wholesale_qty ?? 0,
+    data.wholesale_price ?? 0,
+    data.mark_unavailable ?? false,
+    data.applicable_tax_percent ?? null,
     data.is_featured ?? false,
   ];
 
