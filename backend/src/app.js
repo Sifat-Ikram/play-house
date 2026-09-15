@@ -13,6 +13,7 @@ const inventoryVideoRoutes = require(
 const brandRoutes = require("./routes/brand.routes");
 const categoryRoutes = require("./routes/category.routes");
 const colorRoutes = require("./routes/color.routes");
+const comboRoutes = require("./routes/combo.routes");
 
 const notFoundMiddleware = require(
     "./middleware/notFound.middleware"
@@ -59,6 +60,7 @@ app.use(
 app.use("/api/brands", brandRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/colors", colorRoutes);
+app.use("/api/combo", comboRoutes);
 
 // 404
 app.use(notFoundMiddleware);
