@@ -17,4 +17,6 @@ router.patch("/:id", inventoryController.updateInventory);
 
 router.delete("/:id", inventoryController.deleteInventory);
 
+router.get("/featured", inventoryController.getFeaturedInventories);
+
 module.exports = router;

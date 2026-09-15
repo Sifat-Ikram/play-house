@@ -1,75 +1,46 @@
 const productModel = require("../models/product.model");
 
-const createProduct = async (data) => {
-    if (!data.category_id) {
-        throw new Error("Category is required");
-    }
-
-    if (!data.brand_id) {
-        throw new Error("Brand is required");
-    }
-
-    if (!data.name) {
-        throw new Error("Product name is required");
-    }
-
-    if (
-        data.minimum_age_range !== undefined &&
-        data.maximum_age_range !== undefined &&
-        data.minimum_age_range > data.maximum_age_range
-    ) {
-        throw new Error("Minimum age cannot be greater than maximum age");
-    }
-
-    return await productModel.createProduct(data);
-};
-
-const getProducts = async () => {
-    return await productModel.getProducts();
+const createProduct = async (productData) => {
+    return await productModel.createProduct(productData);
 };
 
 const getProductById = async (id) => {
     const product = await productModel.getProductById(id);
-
     if (!product) {
         throw new Error("Product not found");
     }
-
     return product;
 };
 
-const updateProduct = async (id, data) => {
-    const product = await productModel.getProductById(id);
+const getAllProducts = async () => {
+    return await productModel.getProducts();
+};
 
-    if (!product) {
+const updateProduct = async (id, updateData) => {
+    const existingProduct = await productModel.getProductById(id);
+    if (!existingProduct) {
         throw new Error("Product not found");
     }
-
-    if (
-        data.minimum_age_range !== undefined &&
-        data.maximum_age_range !== undefined &&
-        data.minimum_age_range > data.maximum_age_range
-    ) {
-        throw new Error("Minimum age cannot be greater than maximum age");
-    }
-
-    return await productModel.updateProduct(id, data);
+    return await productModel.updateProduct(id, updateData);
 };
 
 const deleteProduct = async (id) => {
-    const product = await productModel.getProductById(id);
-
-    if (!product) {
+    const existingProduct = await productModel.getProductById(id);
+    if (!existingProduct) {
         throw new Error("Product not found");
     }
-
     return await productModel.deleteProduct(id);
+};
+
+const getNewArrivalProducts = async () => {
+    return await productModel.getNewArrivalProducts();
 };
 
 module.exports = {
     createProduct,
-    getProducts,
     getProductById,
+    getAllProducts,
     updateProduct,
     deleteProduct,
+    getNewArrivalProducts
 };

@@ -1,7 +1,7 @@
 const { pool } = require("../config/db");
 
 const createInventory = async (data) => {
-    const query = `
+  const query = `
     INSERT INTO inventory (
       product_id,
       quantity,
@@ -16,61 +16,61 @@ const createInventory = async (data) => {
     RETURNING *;
   `;
 
-    const values = [
-        data.product_id,
-        data.quantity,
-        data.mark_unavailable ?? false,
-        data.base_price,
-        data.selling_price,
-        data.applicable_tax_percent ?? null,
-        data.color_id ?? null,
-        data.is_featured ?? false,
-    ];
+  const values = [
+    data.product_id,
+    data.quantity,
+    data.mark_unavailable ?? false,
+    data.base_price,
+    data.selling_price,
+    data.applicable_tax_percent ?? null,
+    data.color_id ?? null,
+    data.is_featured ?? false,
+  ];
 
-    const result = await pool.query(query, values);
+  const result = await pool.query(query, values);
 
-    return result.rows[0];
+  return result.rows[0];
 };
 
 const getInventoryById = async (id) => {
-    const query = `
+  const query = `
     SELECT *
     FROM inventory
     WHERE id = $1;
   `;
 
-    const result = await pool.query(query, [id]);
+  const result = await pool.query(query, [id]);
 
-    return result.rows[0];
+  return result.rows[0];
 };
 
 const getInventoryByProductId = async (productId) => {
-    const query = `
+  const query = `
     SELECT *
     FROM inventory
     WHERE product_id = $1;
   `;
 
-    const result = await pool.query(query, [productId]);
+  const result = await pool.query(query, [productId]);
 
-    return result.rows;
+  return result.rows;
 };
 
 const updateInventory = async (id, data) => {
-    const fields = [];
-    const values = [];
+  const fields = [];
+  const values = [];
 
-    let index = 1;
+  let index = 1;
 
-    for (const [key, value] of Object.entries(data)) {
-        fields.push(`${key} = $${index}`);
-        values.push(value);
-        index++;
-    }
+  for (const [key, value] of Object.entries(data)) {
+    fields.push(`${key} = $${index}`);
+    values.push(value);
+    index++;
+  }
 
-    values.push(id);
+  values.push(id);
 
-    const query = `
+  const query = `
     UPDATE inventory
     SET ${fields.join(", ")},
         updated_at = CURRENT_TIMESTAMP
@@ -78,27 +78,39 @@ const updateInventory = async (id, data) => {
     RETURNING *;
   `;
 
-    const result = await pool.query(query, values);
+  const result = await pool.query(query, values);
 
-    return result.rows[0];
+  return result.rows[0];
 };
 
 const deleteInventory = async (id) => {
-    const query = `
+  const query = `
     DELETE FROM inventory
     WHERE id = $1
     RETURNING *;
   `;
 
-    const result = await pool.query(query, [id]);
+  const result = await pool.query(query, [id]);
 
-    return result.rows[0];
+  return result.rows[0];
+};
+
+const getFeaturedInventories = async () => {
+  const query = `
+    SELECT *
+    FROM inventory
+    WHERE is_featured = true
+    ORDER BY created_at DESC;
+  `;
+  const result = await pool.query(query);
+  return result.rows;
 };
 
 module.exports = {
-    createInventory,
-    getInventoryById,
-    getInventoryByProductId,
-    updateInventory,
-    deleteInventory,
+  createInventory,
+  getInventoryById,
+  getInventoryByProductId,
+  updateInventory,
+  deleteInventory,
+  getFeaturedInventories,
 };

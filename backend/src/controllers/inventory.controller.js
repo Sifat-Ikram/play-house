@@ -84,10 +84,26 @@ const deleteInventory = async (req, res, next) => {
     }
 };
 
+const getFeaturedInventories = async (req, res) => {
+    try {
+        const inventories = await inventoryService.getFeaturedInventories();
+        return res.status(200).json({
+            success: true,
+            data: inventories,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
 module.exports = {
     createInventory,
     getInventoryById,
     getInventoryByProductId,
     updateInventory,
     deleteInventory,
+    getFeaturedInventories,
 };

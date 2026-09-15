@@ -1,8 +1,6 @@
 const express = require("express");
-
-const productController = require("../controllers/product.controller");
-
 const router = express.Router();
+const productController = require("../controllers/product.controller");
 
 router.post("/", productController.createProduct);
 
@@ -10,8 +8,10 @@ router.get("/", productController.getProducts);
 
 router.get("/:id", productController.getProductById);
 
-router.patch("/:id", productController.updateProduct);
+router.put("/:id", productController.updateProduct);
 
 router.delete("/:id", productController.deleteProduct);
+
+router.get("/new-arrivals", productController.getNewArrivalProducts);
 
 module.exports = router;

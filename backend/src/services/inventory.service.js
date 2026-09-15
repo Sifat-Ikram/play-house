@@ -86,10 +86,15 @@ const deleteInventory = async (id) => {
     return await inventoryModel.deleteInventory(id);
 };
 
+const getFeaturedInventories = async () => {
+    return await inventoryModel.getFeaturedInventories();
+};
+
 module.exports = {
     createInventory,
     getInventoryById,
     getInventoryByProductId,
     updateInventory,
     deleteInventory,
+    getFeaturedInventories,
 };

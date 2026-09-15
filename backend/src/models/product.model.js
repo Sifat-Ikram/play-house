@@ -1,7 +1,7 @@
 const { pool } = require("../config/db");
 
 const createProduct = async (data) => {
-    const query = `
+  const query = `
     INSERT INTO products (
       category_id,
       brand_id,
@@ -13,73 +13,72 @@ const createProduct = async (data) => {
       description,
       in_the_box,
       summary,
-      return_and_refund_policy
+      return_and_refund_policy,
+      materials
     )
     VALUES (
       $1, $2, $3, $4, $5,
-      $6, $7, $8, $9, $10, $11
+      $6, $7, $8, $9, $10, $11, $12
     )
     RETURNING *;
   `;
 
-    const values = [
-        data.category_id,
-        data.brand_id,
-        data.name,
-        data.number_of_pieces ?? null,
-        data.warranty_info ?? null,
-        data.minimum_age_range ?? null,
-        data.maximum_age_range ?? null,
-        data.description ?? null,
-        data.in_the_box ?? null,
-        data.summary ?? null,
-        data.return_and_refund_policy ?? null,
-    ];
+  const values = [
+    data.category_id,
+    data.brand_id,
+    data.name,
+    data.number_of_pieces ?? null,
+    data.warranty_info ?? null,
+    data.minimum_age_range ?? null,
+    data.maximum_age_range ?? null,
+    data.description ?? null,
+    data.in_the_box ?? null,
+    data.summary ?? null,
+    data.return_and_refund_policy ?? null,
+    data.materials ?? [], // Expecting an array e.g. ["Plastic", "Wood"]
+  ];
 
-    const result = await pool.query(query, values);
-
-    return result.rows[0];
+  const result = await pool.query(query, values);
+  return result.rows[0];
 };
 
 const getProductById = async (id) => {
-    const query = `
+  const query = `
     SELECT *
     FROM products
     WHERE id = $1;
   `;
 
-    const result = await pool.query(query, [id]);
-
-    return result.rows[0];
+  const result = await pool.query(query, [id]);
+  return result.rows[0];
 };
 
 const getProducts = async () => {
-    const query = `
+  const query = `
     SELECT *
     FROM products
     ORDER BY created_at DESC;
   `;
 
-    const result = await pool.query(query);
-
-    return result.rows;
+  const result = await pool.query(query);
+  return result.rows;
 };
 
 const updateProduct = async (id, data) => {
-    const fields = [];
-    const values = [];
+  const fields = [];
+  const values = [];
 
-    let index = 1;
+  let index = 1;
 
-    for (const [key, value] of Object.entries(data)) {
-        fields.push(`${key} = $${index}`);
-        values.push(value);
-        index++;
-    }
+  for (const [key, value] of Object.entries(data)) {
+    fields.push(`${key} = $${index}`);
+    values.push(value);
+    index++;
+  }
 
-    values.push(id);
+  values.push(id);
 
-    const query = `
+  const query = `
     UPDATE products
     SET ${fields.join(", ")},
         updated_at = CURRENT_TIMESTAMP
@@ -87,27 +86,37 @@ const updateProduct = async (id, data) => {
     RETURNING *;
   `;
 
-    const result = await pool.query(query, values);
-
-    return result.rows[0];
+  const result = await pool.query(query, values);
+  return result.rows[0];
 };
 
 const deleteProduct = async (id) => {
-    const query = `
+  const query = `
     DELETE FROM products
     WHERE id = $1
     RETURNING *;
   `;
 
-    const result = await pool.query(query, [id]);
+  const result = await pool.query(query, [id]);
+  return result.rows[0];
+};
 
-    return result.rows[0];
+const getNewArrivalProducts = async () => {
+  const query = `
+    SELECT *
+    FROM products
+    WHERE created_at >= NOW() - INTERVAL '4 months'
+    ORDER BY created_at DESC;
+  `;
+  const result = await pool.query(query);
+  return result.rows;
 };
 
 module.exports = {
-    createProduct,
-    getProductById,
-    getProducts,
-    updateProduct,
-    deleteProduct,
+  createProduct,
+  getProductById,
+  getProducts,
+  updateProduct,
+  deleteProduct,
+  getNewArrivalProducts,
 };
