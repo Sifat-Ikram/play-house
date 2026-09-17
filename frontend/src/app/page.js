@@ -1,5 +1,11 @@
+import Banner from "@/components/pages/homePage/Banner";
+import ShopByAge from "@/components/pages/homePage/ShopByAge";
+
 export default function Home() {
   return (
-    <div></div>
+    <div className="min-h-screen">
+      <Banner />
+      <ShopByAge />
+    </div>
   )
 }
