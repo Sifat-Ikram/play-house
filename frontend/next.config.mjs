@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -9,6 +10,10 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "i.ibb.co.com",
+      },
+      {
+        protocol: "https",
+        hostname: "ik.imagekit.io",
       },
     ],
   },
