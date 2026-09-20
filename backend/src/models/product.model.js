@@ -103,10 +103,35 @@ const deleteProduct = async (id) => {
 
 const getNewArrivalProducts = async () => {
   const query = `
-    SELECT *
-    FROM products
-    WHERE created_at >= NOW() - INTERVAL '4 months'
-    ORDER BY created_at DESC;
+    SELECT
+      p.*,
+      b.brand_name AS brand_name,
+      c.category_name AS category_name,
+      inv.id AS inventory_id,
+      inv.selling_price,
+      inv.stock_quantity,
+      inv.sku,
+      img.image_url AS display_image_url
+    FROM products p
+    LEFT JOIN brands b ON b.brand_id = p.brand_id
+    LEFT JOIN categories c ON c.category_id = p.category_id
+    LEFT JOIN LATERAL (
+      SELECT id, selling_price, stock_quantity, sku
+      FROM inventory
+      WHERE inventory.product_id = p.id
+      ORDER BY created_at ASC
+      LIMIT 1
+    ) inv ON true
+    LEFT JOIN LATERAL (
+      SELECT image_url
+      FROM inventory_images
+      WHERE inventory_images.inventory_id = inv.id
+        AND inventory_images.is_display_image = true
+      ORDER BY created_at ASC
+      LIMIT 1
+    ) img ON true
+    WHERE p.created_at >= NOW() - INTERVAL '4 months'
+    ORDER BY p.created_at DESC;
   `;
   const result = await pool.query(query);
   return result.rows;

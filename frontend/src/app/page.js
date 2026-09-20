@@ -10,7 +10,7 @@ export default function Home() {
       <Banner />
 
       {/* Wrapper for middle sections with a smooth color transition */}
-      <div className="bg-gradient-to-b from-white via-[#e8f0fe] to-[#5b95ff]">
+      <div className="">
         <ShopByAge />
         <BrandSection />
         <NewArrival />
@@ -25,3 +25,7 @@ export default function Home() {
     </div>
   );
 }
+
+
+
+// bg-gradient-to-b from-white via-[#e8f0fe] to-[#5b95ff]

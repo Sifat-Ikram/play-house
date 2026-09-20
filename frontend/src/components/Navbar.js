@@ -550,7 +550,7 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
 
 
     return (
-        <header className="sticky top-0 z-40 w-full bg-[#FEF987] shadow-sm">
+        <header className="sticky top-0 z-40 w-full bg-[#F5EF5F] shadow-sm">
             <div className="mx-auto flex min-h-[64px] w-full max-w-[1440px] items-center justify-between gap-3 px-3 sm:px-5 md:min-h-[76px] md:px-8 lg:px-10">
                 {/* Left: Mobile menu + Logo */}
                 <div className="flex items-center gap-3 md:gap-5">

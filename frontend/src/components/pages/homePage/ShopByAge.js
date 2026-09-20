@@ -92,29 +92,54 @@ const ShopByAgeContent = () => {
                 animate="visible"
                 className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 lg:gap-5 mt-10"
             >
-                {filteredShopItems.map((item) => (
+                {filteredShopItems.map((item, index) => (
                     <motion.div
                         key={item._id}
                         variants={itemVariants}
-                        whileHover={{ scale: 1.05, y: -5 }}
-                        whileTap={{ scale: 0.97 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
                         className="h-full"
+                        style={{ perspective: 800 }}
                     >
-                        <Link
-                            href={`/ageCategory/${item._id}?minAge=${item.minAge}&maxAge=${item.maxAge}`}
-                            title={`View details for ${item.title}`}
-                            aria-label={`View details for ${item.title}`}
-                            className="rounded-3xl border-solid border-4 border-[#3E3E3E] hover:cursor-pointer p-4 lg:p-5 flex flex-col justify-center items-center text-center space-y-3 h-full shadow-sm hover:shadow-md transition-shadow"
-                            style={{ backgroundColor: item.color }}
+                        {/* Idle floating wrapper - stops on hover */}
+                        <motion.div
+                            animate={{
+                                y: [0, -8, 0],
+                            }}
+                            transition={{
+                                duration: 3,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                                delay: index * 0.3,
+                            }}
+                            whileHover={{
+                                y: -10,
+                                scale: 1.05,
+                                transition: {
+                                    type: "tween",
+                                    duration: 0.25,
+                                    ease: "easeOut",
+                                },
+                            }}
+                            whileTap={{ scale: 0.97 }}
+                            className="h-full"
                         >
-                            <h1 className="text-sm sm:text-lg lg:text-2xl font-normal font-poppins text-[#3E3E3E]">
-                                {item.title}
-                            </h1>
-                            <p className="text-sm sm:text-base md:text-lg lg:text-xl">
-                                Age {item.age}
-                            </p>
-                        </Link>
+                            <Link
+                                href={`/ageCategory/${item._id}?minAge=${item.minAge}&maxAge=${item.maxAge}`}
+                                title={`View details for ${item.title}`}
+                                aria-label={`View details for ${item.title}`}
+                                className="group relative overflow-hidden rounded-3xl border-solid border-4 border-[#3E3E3E] hover:cursor-pointer p-4 lg:p-5 flex flex-col justify-center items-center text-center space-y-3 h-full shadow-sm hover:shadow-lg transition-shadow duration-300"
+                                style={{ backgroundColor: item.color }}
+                            >
+                                <h1 className="text-sm sm:text-lg lg:text-2xl font-normal font-poppins text-[#3E3E3E]">
+                                    {item.title}
+                                </h1>
+                                <p className="text-sm sm:text-base md:text-lg lg:text-xl">
+                                    Age {item.age}
+                                </p>
+
+                                {/* Subtle shine sweep on hover */}
+                                <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                            </Link>
+                        </motion.div>
                     </motion.div>
                 ))}
             </motion.div>
