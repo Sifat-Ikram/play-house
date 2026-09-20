@@ -3,19 +3,27 @@ import ShopByAge from "@/components/pages/homePage/ShopByAge";
 import BrandSection from "@/components/pages/homePage/BrandSection";
 import CategorySection from "@/components/pages/homePage/CategorySection";
 import NewArrival from "@/components/pages/homePage/NewArrival";
+import ShopByOccasion from "@/components/pages/homePage/ShopByOccasion";
+import PlayHouseCTA from "@/components/pages/homePage/PlayHouseCTA";
+import ShopByInterest from "@/components/pages/homePage/ShopByInterest";
+import Testimonial from "@/components/pages/homePage/Testimonial";
+import FeaturedCollection from "@/components/pages/homePage/FeaturedCollection";
 
 export default function Home() {
   return (
     <div className="min-h-screen">
       <Banner />
 
-      {/* Wrapper for middle sections with a smooth color transition */}
-      <div className="">
+      <div className="bg-[linear-gradient(to_bottom,#ffffff_0%,#f0f9ff_35%,#fffbeb_70%,#FFDE59_100%)]">
         <ShopByAge />
-        <BrandSection />
-        <NewArrival />
         <CategorySection />
-        {/* Place remaining middle sections here */}
+        <ShopByInterest />
+        <NewArrival />
+        <ShopByOccasion />
+        <FeaturedCollection />
+        <BrandSection />
+        <PlayHouseCTA />
+        <Testimonial />
       </div>
 
       {/* Review Section with the testimonial background */}
@@ -25,7 +33,3 @@ export default function Home() {
     </div>
   );
 }
-
-
-
-// bg-gradient-to-b from-white via-[#e8f0fe] to-[#5b95ff]

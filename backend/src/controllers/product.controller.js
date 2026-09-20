@@ -107,6 +107,39 @@ const getNewArrivalProducts = async (req, res) => {
     }
 };
 
+const getFeaturedProducts = async (req, res) => {
+    try {
+        const products = await productService.getFeaturedProducts();
+        return res.status(200).json({
+            success: true,
+            data: products,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
+const getProductByName = async (req, res) => {
+    try {
+        const { name } = req.params;
+        const product = await productService.fetchProductByName(name);
+
+        return res.status(200).json({
+            success: true,
+            data: product,
+        });
+    } catch (error) {
+        const statusCode = error.statusCode || 500;
+        return res.status(statusCode).json({
+            success: false,
+            message: error.message || "Internal server error",
+        });
+    }
+};
+
 module.exports = {
     createProduct,
     getProducts,
@@ -114,4 +147,6 @@ module.exports = {
     updateProduct,
     deleteProduct,
     getNewArrivalProducts,
+    getFeaturedProducts,
+    getProductByName
 };

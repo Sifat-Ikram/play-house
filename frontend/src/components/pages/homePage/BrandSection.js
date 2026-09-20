@@ -73,12 +73,16 @@ const BrandSection = () => {
             <div className="w-5/6 lg:w-11/12 mx-auto">
                 {/* Section Header */}
                 <div className="flex items-center justify-between mb-4 sm:mb-6">
+                    <SectionHeader
+                        subtitle="Explore"
+                        title="Our Top Brands"
+                    />
                     <div className="flex items-center gap-2">
                         <motion.button
                             whileHover={{ scale: 1.08 }}
                             whileTap={{ scale: 0.92 }}
                             onClick={() => swiperRef.current?.slidePrev()}
-                            className="p-2 sm:p-2.5 rounded-full shadow-sm hover:shadow-md border border-gray-200 transition-shadow duration-200 disabled:opacity-40 disabled:cursor-not-allowed text-white bg-[#D6D049] cursor-pointer"
+                            className="nav-btn"
                             aria-label="Previous brand"
                         >
                             <IoIosArrowBack className="text-lg sm:text-xl md:text-2xl" />
@@ -88,17 +92,12 @@ const BrandSection = () => {
                             whileHover={{ scale: 1.08 }}
                             whileTap={{ scale: 0.92 }}
                             onClick={() => swiperRef.current?.slideNext()}
-                            className="p-2 sm:p-2.5 rounded-full shadow-sm hover:shadow-md border border-gray-200 transition-shadow duration-200 disabled:opacity-40 disabled:cursor-not-allowed text-white bg-[#D6D049] cursor-pointer"
+                            className="nav-btn"
                             aria-label="Next brand"
                         >
                             <IoIosArrowForward className="text-lg sm:text-xl md:text-2xl" />
                         </motion.button>
                     </div>
-
-                    <SectionHeader
-                        subtitle="Explore"
-                        title="Our Top Brands"
-                    />
                 </div>
 
                 {/* Carousel */}

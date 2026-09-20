@@ -11,12 +11,36 @@ const SectionHeader = ({ subtitle, title }) => {
             transition={{ duration: 0.4 }}
         >
             {subtitle && (
-                <p className="text-[10px] sm:text-xs md:text-sm text-[#D6D049] font-medium font-poppins tracking-[0.15em] uppercase mb-0.5 sm:mb-1">
+                <p
+                    className="
+                        text-[10px]
+                        sm:text-xs
+                        md:text-sm
+                        text-[#38BDF8]
+                        font-medium
+                        font-poppins
+                        tracking-[0.16em]
+                        uppercase
+                        mb-1
+                        sm:mb-1.5
+                    "
+                >
                     {subtitle}
                 </p>
             )}
 
-            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold font-poppins text-gray-900">
+            <h2
+                className="
+                    text-xl
+                    sm:text-2xl
+                    md:text-3xl
+                    lg:text-4xl
+                    font-semibold
+                    font-poppins
+                    text-[#1E293B]
+                    tracking-tight
+                "
+            >
                 {title}
             </h2>
         </motion.div>

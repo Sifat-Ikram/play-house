@@ -36,11 +36,33 @@ const getNewArrivalProducts = async () => {
     return await productModel.getNewArrivalProducts();
 };
 
+const getFeaturedProducts = async () => {
+    return await productModel.getFeaturedProducts();
+};
+
+const fetchProductByName = async (name) => {
+    if (!name) {
+        throw new Error("Product name is required");
+    }
+
+    const product = await productModel.getProductByName(name);
+
+    if (!product) {
+        const error = new Error("Product not found");
+        error.statusCode = 404;
+        throw error;
+    }
+
+    return product;
+};
+
 module.exports = {
     createProduct,
     getProductById,
     getAllProducts,
     updateProduct,
     deleteProduct,
-    getNewArrivalProducts
+    getNewArrivalProducts,
+    getFeaturedProducts,
+    fetchProductByName
 };

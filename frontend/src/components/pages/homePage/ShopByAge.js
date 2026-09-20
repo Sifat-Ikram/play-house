@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Suspense } from "react";
+import SectionHeader from "@/components/cards/SectionHeader";
 
 const shopItems = [
     {
@@ -77,14 +78,9 @@ const ShopByAgeContent = () => {
 
     return (
         <div className="w-11/12 mx-auto py-8">
-            <motion.h1
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="text-2xl sm:text-3xl md:text-4xl font-bold text-center font-poppins"
-            >
-                Shop by Age
-            </motion.h1>
+            <SectionHeader
+                title="Shop By Age"
+            />
 
             <motion.div
                 variants={containerVariants}

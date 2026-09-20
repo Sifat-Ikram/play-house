@@ -95,7 +95,7 @@ const NewArrival = () => {
                             whileTap={{ scale: 0.9 }}
                             onClick={() => swiperRef.current?.slidePrev()}
                             disabled={currentIndex === 0}
-                            className="p-2 sm:p-2.5 rounded-full shadow-sm hover:shadow-md border border-gray-200 transition-shadow duration-200 disabled:opacity-40 disabled:cursor-not-allowed text-white bg-[#D6D049] cursor-pointer"
+                            className="nav-btn"
                             aria-label="Previous products"
                         >
                             <IoIosArrowBack className="text-lg sm:text-xl md:text-2xl" />
@@ -106,7 +106,7 @@ const NewArrival = () => {
                             whileTap={{ scale: 0.9 }}
                             onClick={() => swiperRef.current?.slideNext()}
                             disabled={currentIndex >= newArrivals.length - slidesPerView}
-                            className="p-2 sm:p-2.5 rounded-full shadow-sm hover:shadow-md border border-gray-200 transition-shadow duration-200 disabled:opacity-40 disabled:cursor-not-allowed text-white bg-[#D6D049] cursor-pointer"
+                            className="nav-btn"
                             aria-label="Next products"
                         >
                             <IoIosArrowForward className="text-lg sm:text-xl md:text-2xl" />

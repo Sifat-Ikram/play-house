@@ -84,7 +84,7 @@ const CategorySection = () => {
                             whileHover={{ scale: 1.08 }}
                             whileTap={{ scale: 0.92 }}
                             onClick={() => swiperRef.current?.slidePrev()}
-                            className="p-2 sm:p-2.5 rounded-full shadow-sm hover:shadow-md border border-gray-200 transition-shadow duration-200 disabled:opacity-40 disabled:cursor-not-allowed text-white bg-[#D6D049] cursor-pointer"
+                            className="nav-btn"
                             aria-label="Previous category"
                         >
                             <IoIosArrowBack className="text-lg sm:text-xl md:text-2xl" />
@@ -94,7 +94,7 @@ const CategorySection = () => {
                             whileHover={{ scale: 1.08 }}
                             whileTap={{ scale: 0.92 }}
                             onClick={() => swiperRef.current?.slideNext()}
-                            className="p-2 sm:p-2.5 rounded-full shadow-sm hover:shadow-md border border-gray-200 transition-shadow duration-200 disabled:opacity-40 disabled:cursor-not-allowed text-white bg-[#D6D049] cursor-pointer"
+                            className="nav-btn"
                             aria-label="Next category"
                         >
                             <IoIosArrowForward className="text-lg sm:text-xl md:text-2xl" />

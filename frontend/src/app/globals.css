@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+.nav-btn {
+    @apply p-2 sm:p-2.5 rounded-full border border-[#E2E8F0] bg-white text-[#1E293B] shadow-sm transition-all duration-200 hover:bg-[#38BDF8] hover:text-white hover:border-[#38BDF8] hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center;
+}
