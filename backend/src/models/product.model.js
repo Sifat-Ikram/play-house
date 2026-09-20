@@ -14,11 +14,13 @@ const createProduct = async (data) => {
       in_the_box,
       summary,
       return_and_refund_policy,
-      materials
+      materials,
+      occasion,
+      interest
     )
     VALUES (
       $1, $2, $3, $4, $5,
-      $6, $7, $8, $9, $10, $11, $12
+      $6, $7, $8, $9, $10, $11, $12, $13, $14
     )
     RETURNING *;
   `;
@@ -35,7 +37,9 @@ const createProduct = async (data) => {
     data.in_the_box ?? null,
     data.summary ?? null,
     data.return_and_refund_policy ?? null,
-    data.materials ?? [], // Expecting an array e.g. ["Plastic", "Wood"]
+    data.materials ?? [],
+    data.occasion ?? null,
+    data.interest ?? null,
   ];
 
   const result = await pool.query(query, values);
