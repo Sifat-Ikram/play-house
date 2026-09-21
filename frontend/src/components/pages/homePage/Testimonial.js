@@ -20,25 +20,31 @@ const Testimonial = () => {
 
     if (isLoading) {
         return (
-            <section className="w-full py-8 text-center sm:py-12 md:py-14">
-                <p className="body-sm">Loading testimonials...</p>
+            <section className="w-full py-8 sm:py-12 md:py-14 text-center">
+                <p className="text-slate-500 font-poppins">Loading testimonials...</p>
             </section>
         );
     }
 
-    if (isError || !reviews || reviews.length === 0) return null;
+    if (isError || !reviews || reviews.length === 0) {
+        return null;
+    }
 
     return (
-        <section className="ph-section !py-8 sm:!py-12 md:!py-14">
-            <div className="ph-container">
-                <div className="mb-6 flex items-center justify-between sm:mb-8">
-                    <SectionHeader subtitle="Happy Parents & Kids" title="What Our Customers Say" />
+        <section className="w-full py-8 sm:py-12 md:py-14">
+            <div className="w-5/6 lg:w-11/12 mx-auto">
+                {/* Section Header */}
+                <div className="flex items-center justify-between mb-6 sm:mb-8">
+                    <SectionHeader
+                        subtitle="Happy Parents & Kids"
+                        title="What Our Customers Say"
+                    />
 
                     <div className="flex items-center gap-2">
                         <button
                             onClick={() => swiperRef.current?.slidePrev()}
                             disabled={currentIndex === 0}
-                            className="nav-btn"
+                            className="nav-btn disabled:opacity-50 disabled:cursor-not-allowed"
                             aria-label="Previous"
                         >
                             <IoIosArrowBack className="text-lg sm:text-xl" />
@@ -47,7 +53,7 @@ const Testimonial = () => {
                         <button
                             onClick={() => swiperRef.current?.slideNext()}
                             disabled={currentIndex >= reviews.length - slidesPerView}
-                            className="nav-btn"
+                            className="nav-btn disabled:opacity-50 disabled:cursor-not-allowed"
                             aria-label="Next"
                         >
                             <IoIosArrowForward className="text-lg sm:text-xl" />
@@ -55,71 +61,61 @@ const Testimonial = () => {
                     </div>
                 </div>
 
-                {/* Swiper — equal-height slides via CSS on the slide wrapper, equal-width via fixed breakpoints */}
+                {/* Swiper Slider */}
                 <Swiper
                     onSwiper={(swiper) => {
                         swiperRef.current = swiper;
                         setSlidesPerView(
-                            typeof swiper.params.slidesPerView === "number" ? swiper.params.slidesPerView : 1
+                            typeof swiper.params.slidesPerView === "number"
+                                ? swiper.params.slidesPerView
+                                : 1
                         );
                     }}
                     onSlideChange={(swiper) => setCurrentIndex(swiper.activeIndex)}
                     slidesPerView={1}
                     spaceBetween={16}
-                    className="!items-stretch"
                     breakpoints={{
                         640: { slidesPerView: 2, spaceBetween: 16 },
                         1024: { slidesPerView: 3, spaceBetween: 20 },
                     }}
                 >
                     {reviews.map((review, index) => (
-                        <SwiperSlide key={review.review_id} className="!h-auto py-2">
+                        <SwiperSlide key={review.review_id} className="py-2">
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ duration: 0.4, delay: index * 0.08 }}
-                                className="ph-card relative flex h-[260px] flex-col justify-between p-5 sm:h-[280px] sm:p-6"
+                                transition={{ duration: 0.4, delay: index * 0.1 }}
+                                className="h-full bg-white/90 backdrop-blur-sm p-5 sm:p-6 rounded-3xl border-2 border-amber-100 shadow-md hover:shadow-xl transition-all duration-300 relative flex flex-col justify-between"
                             >
-                                <FaQuoteLeft
-                                    className="absolute right-5 top-4 text-3xl"
-                                    style={{ color: "var(--ph-accent)", opacity: 0.35 }}
-                                />
+                                <FaQuoteLeft className="text-3xl text-[#FFDE59]/50 absolute top-4 right-5" />
 
-                                <div className="relative z-10 space-y-3 overflow-hidden">
-                                    <p
-                                        className="truncate pr-8 text-xs font-semibold sm:text-sm"
-                                        style={{ color: "var(--ph-text)" }}
-                                    >
-                                        Product: {review.product_name}
+                                <div className="space-y-3 relative z-10">
+                                    {/* Product Name */}
+                                    <p className="text-xs sm:text-sm font-semibold font-poppins text-slate-800 truncate pr-8">
+                                        Product Name: {review.product_name}
                                     </p>
 
-                                    <div className="flex items-center">
-                                        {[...Array(review.review_rating)].map((_, i) => (
-                                            <FiStar
-                                                key={i}
-                                                className="text-sm sm:text-base"
-                                                style={{ color: "var(--ph-accent-dark)", fill: "var(--ph-accent-dark)" }}
-                                            />
-                                        ))}
+                                    <div className="space-y-1 relative z-10">
+                                        <div className="flex item-center">
+                                            {[...Array(review.review_rating)].map((_, i) => (
+                                                <FiStar
+                                                    key={i}
+                                                    className="text-amber-400 fill-amber-400 text-sm sm:text-base"
+                                                />
+                                            ))}
+                                        </div>
+
+                                        {/* Review Text */}
+                                        <p className="text-xs sm:text-sm font-poppins text-slate-700 leading-relaxed italic">
+                                            "{review.review_comment}"
+                                        </p>
                                     </div>
-
-                                    <p
-                                        className="line-clamp-4 text-xs italic leading-relaxed sm:text-sm"
-                                        style={{ color: "var(--ph-text-soft)" }}
-                                    >
-                                        "{review.review_comment}"
-                                    </p>
                                 </div>
 
-                                <div
-                                    className="mt-4 flex items-center gap-3 pt-4"
-                                    style={{ borderTop: "1px solid var(--ph-border)" }}
-                                >
-                                    <div
-                                        className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full"
-                                        style={{ border: "2px solid var(--ph-primary)" }}
-                                    >
+                                {/* User Info (Image and Name Side by Side) */}
+                                <div className="flex items-center gap-3 pt-4 mt-4 border-t border-amber-100/80">
+                                    <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-[#38BDF8] flex-shrink-0">
                                         <Image
                                             src={review.user_image_url}
                                             alt={review.user_name}
@@ -127,10 +123,7 @@ const Testimonial = () => {
                                             className="object-cover"
                                         />
                                     </div>
-                                    <h4
-                                        className="truncate text-xs font-bold sm:text-sm"
-                                        style={{ color: "var(--ph-text)" }}
-                                    >
+                                    <h4 className="text-xs sm:text-sm font-bold font-poppins text-slate-800 truncate">
                                         {review.user_name}
                                     </h4>
                                 </div>

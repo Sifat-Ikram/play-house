@@ -11,70 +11,24 @@ import FeaturedCollection from "@/components/pages/homePage/FeaturedCollection";
 
 export default function Home() {
   return (
-    <div
-      className="relative min-h-screen overflow-hidden transition-colors duration-300"
-      style={{ backgroundColor: "var(--ph-bg)" }}
-    >
-      {/* =========================
-          HERO
-      ========================== */}
-      <section className="relative" style={{ backgroundColor: "var(--ph-bg)" }}>
-        <Banner />
-      </section>
+    <div className="min-h-screen">
+      <Banner />
 
-      {/* =========================
-          HOME CONTENT — one flat background, no borders, no gradient.
-          Section separation comes from spacing + each SectionHeader only.
-      ========================== */}
-      <div className="relative overflow-hidden" style={{ backgroundColor: "var(--ph-bg)" }}>
+      <div className="bg-[linear-gradient(to_bottom,#ffffff_0%,#f0f9ff_35%,#fffbeb_70%,#FFDE59_100%)]">
+        <ShopByAge />
+        <CategorySection />
+        <ShopByInterest />
+        <NewArrival />
+        <ShopByOccasion />
+        <FeaturedCollection />
+        <BrandSection />
+        <PlayHouseCTA />
+        <Testimonial />
+      </div>
 
-        {/* Ambient decorative glow — kept minimal, doesn't compete with flat bg */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -left-40 top-[10%] h-[380px] w-[380px] rounded-full blur-3xl"
-          style={{ backgroundColor: "var(--ph-primary-soft)", opacity: 0.4 }}
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-40 top-[55%] h-[420px] w-[420px] rounded-full blur-3xl"
-          style={{ backgroundColor: "var(--ph-primary-soft)", opacity: 0.25 }}
-        />
-
-        <section className="ph-section relative">
-          <ShopByAge />
-        </section>
-
-        <section className="ph-section relative">
-          <CategorySection />
-        </section>
-
-        <section className="ph-section relative">
-          <ShopByInterest />
-        </section>
-
-        <section className="ph-section relative">
-          <NewArrival />
-        </section>
-
-        <section className="ph-section relative">
-          <ShopByOccasion />
-        </section>
-
-        <section className="ph-section relative">
-          <FeaturedCollection />
-        </section>
-
-        <section className="ph-section relative">
-          <BrandSection />
-        </section>
-
-        <section className="ph-section relative">
-          <PlayHouseCTA />
-        </section>
-
-        <section className="ph-section relative">
-          <Testimonial />
-        </section>
+      {/* Review Section with the testimonial background */}
+      <div className="bg-[#5b95ff]">
+        {/* <ReviewSection /> */}
       </div>
     </div>
   );
