@@ -11,56 +11,11 @@ import "swiper/css";
 import SectionHeader from "@/components/cards/SectionHeader";
 
 const dummyFeatured = [
-    {
-        id: "1",
-        name: "Remote Control Stunt Car 360",
-        brand_name: "Hot Wheels",
-        selling_price: 2450,
-        original_price: 2950,
-        rating: 4.9,
-        discount: "17% OFF",
-        display_image_url: "/placeholder.png",
-    },
-    {
-        id: "2",
-        name: "Soft Plush Giant Teddy Bear",
-        brand_name: "Barbie",
-        selling_price: 1800,
-        original_price: 2200,
-        rating: 5.0,
-        discount: "18% OFF",
-        display_image_url: "/placeholder.png",
-    },
-    {
-        id: "3",
-        name: "Educational Building Blocks Set",
-        brand_name: "LEGO",
-        selling_price: 3200,
-        original_price: 3800,
-        rating: 4.8,
-        discount: "15% OFF",
-        display_image_url: "/placeholder.png",
-    },
-    {
-        id: "4",
-        name: "Wooden Train Track Express",
-        brand_name: "Mattel",
-        selling_price: 1550,
-        original_price: 1900,
-        rating: 4.7,
-        discount: "18% OFF",
-        display_image_url: "/placeholder.png",
-    },
-    {
-        id: "5",
-        name: "Electric Ride-on Supercar",
-        brand_name: "BMW Kids",
-        selling_price: 14500,
-        original_price: 16500,
-        rating: 5.0,
-        discount: "12% OFF",
-        display_image_url: "/placeholder.png",
-    },
+    { id: "1", name: "Remote Control Stunt Car 360", brand_name: "Hot Wheels", selling_price: 2450, original_price: 2950, rating: 4.9, discount: "17% OFF", display_image_url: "/placeholder.png" },
+    { id: "2", name: "Soft Plush Giant Teddy Bear", brand_name: "Barbie", selling_price: 1800, original_price: 2200, rating: 5.0, discount: "18% OFF", display_image_url: "/placeholder.png" },
+    { id: "3", name: "Educational Building Blocks Set", brand_name: "LEGO", selling_price: 3200, original_price: 3800, rating: 4.8, discount: "15% OFF", display_image_url: "/placeholder.png" },
+    { id: "4", name: "Wooden Train Track Express", brand_name: "Mattel", selling_price: 1550, original_price: 1900, rating: 4.7, discount: "18% OFF", display_image_url: "/placeholder.png" },
+    { id: "5", name: "Electric Ride-on Supercar", brand_name: "BMW Kids", selling_price: 14500, original_price: 16500, rating: 5.0, discount: "12% OFF", display_image_url: "/placeholder.png" },
 ];
 
 const FeaturedCollection = () => {
@@ -69,14 +24,10 @@ const FeaturedCollection = () => {
     const [slidesPerView, setSlidesPerView] = useState(2);
 
     return (
-        <section className="w-full py-6 sm:py-8 md:py-10">
-            <div className="w-5/6 lg:w-11/12 mx-auto">
-                {/* Section Header with Arrows */}
-                <div className="flex items-center justify-between mb-4 sm:mb-6">
-                    <SectionHeader
-                        subtitle="Handpicked Choice"
-                        title="Featured Collection"
-                    />
+        <section className="ph-section !py-6 sm:!py-8">
+            <div className="ph-container">
+                <div className="mb-4 flex items-center justify-between sm:mb-6">
+                    <SectionHeader subtitle="Handpicked Choice" title="Featured Collection" />
 
                     <div className="flex items-center gap-2">
                         <button
@@ -99,14 +50,11 @@ const FeaturedCollection = () => {
                     </div>
                 </div>
 
-                {/* Swiper Slider */}
                 <Swiper
                     onSwiper={(swiper) => {
                         swiperRef.current = swiper;
                         setSlidesPerView(
-                            typeof swiper.params.slidesPerView === "number"
-                                ? swiper.params.slidesPerView
-                                : 2
+                            typeof swiper.params.slidesPerView === "number" ? swiper.params.slidesPerView : 2
                         );
                     }}
                     onSlideChange={(swiper) => setCurrentIndex(swiper.activeIndex)}
@@ -131,12 +79,14 @@ const FeaturedCollection = () => {
                             >
                                 <Link href={`/productDetail/${product.id}`} className="block">
                                     <motion.div
-                                        whileHover={{ y: -6, scale: 1.02 }}
+                                        whileHover={{ y: -6 }}
                                         transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                                        className="group relative overflow-hidden bg-white text-slate-800 border-2 border-amber-100 hover:border-[#38BDF8] shadow-sm hover:shadow-xl transition-all duration-300 rounded-tl-3xl rounded-tr-xl rounded-bl-xl rounded-br-3xl"
+                                        className="ph-card group relative overflow-hidden"
                                     >
-                                        {/* Image Box */}
-                                        <div className="relative w-full h-[130px] sm:h-[160px] md:h-[180px] lg:h-[200px] bg-gradient-to-b from-amber-50/60 via-sky-50/40 to-white overflow-hidden">
+                                        <div
+                                            className="relative h-[130px] w-full overflow-hidden sm:h-[160px] md:h-[180px] lg:h-[200px]"
+                                            style={{ backgroundColor: "var(--ph-bg-soft)" }}
+                                        >
                                             <Image
                                                 src={product.display_image_url}
                                                 alt={product.name}
@@ -145,55 +95,66 @@ const FeaturedCollection = () => {
                                                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                                             />
 
-                                            {/* Top Badges */}
-                                            <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
-                                                <span className="bg-[#FF6B6B] text-white text-[9px] sm:text-[10px] font-bold font-poppins px-2 py-0.5 rounded-full shadow-sm">
-                                                    🔥 HOT
+                                            <div className="absolute left-2 top-2 z-10 flex flex-col gap-1">
+                                                <span
+                                                    className="rounded-full px-2 py-0.5 text-[9px] font-bold shadow-sm sm:text-[10px]"
+                                                    style={{ backgroundColor: "var(--ph-coral)", color: "#fff" }}
+                                                >
+                                                    🔥 Hot
                                                 </span>
-                                                <span className="bg-[#FFDE59] text-slate-900 text-[9px] sm:text-[10px] font-bold font-poppins px-2 py-0.5 rounded-full shadow-sm border border-yellow-300">
+                                                <span
+                                                    className="rounded-full px-2 py-0.5 text-[9px] font-bold shadow-sm sm:text-[10px]"
+                                                    style={{ backgroundColor: "var(--ph-accent)", color: "#1E2430" }}
+                                                >
                                                     {product.discount}
                                                 </span>
                                             </div>
 
-                                            {/* Rating Badge */}
-                                            <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full shadow-sm flex items-center gap-1 z-10">
-                                                <FiStar className="text-amber-400 fill-amber-400 text-xs" />
-                                                <span className="text-[10px] font-bold text-slate-700">
+                                            <div
+                                                className="absolute right-2 top-2 z-10 flex items-center gap-1 rounded-full px-2 py-0.5 shadow-sm backdrop-blur-sm"
+                                                style={{ backgroundColor: "color-mix(in srgb, var(--ph-surface) 88%, transparent)" }}
+                                            >
+                                                <FiStar className="text-xs" style={{ color: "var(--ph-accent-dark)", fill: "var(--ph-accent-dark)" }} />
+                                                <span className="text-[10px] font-bold" style={{ color: "var(--ph-text)" }}>
                                                     {product.rating}
                                                 </span>
                                             </div>
 
-                                            {/* Floating Cart Button */}
                                             <motion.button
-                                                whileHover={{ scale: 1.15, rotate: -3 }}
-                                                whileTap={{ scale: 0.9 }}
+                                                whileHover={{ scale: 1.1 }}
+                                                whileTap={{ scale: 0.92 }}
                                                 onClick={(e) => {
                                                     e.preventDefault();
                                                     e.stopPropagation();
                                                 }}
-                                                className="absolute bottom-2.5 right-2.5 z-10 w-9 h-9 sm:w-10 sm:h-10 bg-[#38BDF8] hover:bg-sky-500 text-white rounded-full shadow-md transition-colors duration-200 flex items-center justify-center"
+                                                className="absolute bottom-2.5 right-2.5 z-10 flex h-9 w-9 items-center justify-center rounded-full shadow-md transition-colors duration-200 sm:h-10 sm:w-10"
+                                                style={{ backgroundColor: "var(--ph-primary)", color: "#fff" }}
                                                 aria-label="Add to cart"
                                             >
                                                 <FiShoppingCart className="text-sm sm:text-base md:text-lg" />
                                             </motion.button>
                                         </div>
 
-                                        {/* Product Details */}
-                                        <div className="p-3 sm:p-4 space-y-1">
-                                            <p className="text-[10px] sm:text-[11px] font-roboto font-semibold text-[#D97706] uppercase tracking-wider truncate">
+                                        <div className="space-y-1 p-3 sm:p-4">
+                                            <p
+                                                className="truncate text-[10px] font-bold uppercase tracking-wider sm:text-[11px]"
+                                                style={{ color: "var(--ph-text-faint)" }}
+                                            >
                                                 {product.brand_name}
                                             </p>
 
-                                            <h3 className="text-sm sm:text-[15px] md:text-base font-semibold font-poppins text-slate-800 group-hover:text-[#38BDF8] truncate transition-colors duration-200">
+                                            <h3
+                                                className="truncate text-sm font-semibold sm:text-[15px] md:text-base"
+                                                style={{ color: "var(--ph-text)" }}
+                                            >
                                                 {product.name}
                                             </h3>
 
-                                            {/* Price Tag */}
-                                            <div className="pt-1 flex items-baseline gap-2">
-                                                <p className="text-sm sm:text-base font-extrabold font-poppins text-slate-900">
+                                            <div className="flex items-baseline gap-2 pt-1">
+                                                <p className="text-sm font-bold sm:text-base" style={{ color: "var(--ph-text)" }}>
                                                     BDT {product.selling_price.toLocaleString()}
                                                 </p>
-                                                <p className="text-[11px] sm:text-xs font-poppins text-slate-400 line-through">
+                                                <p className="text-[11px] line-through sm:text-xs" style={{ color: "var(--ph-text-faint)" }}>
                                                     BDT {product.original_price.toLocaleString()}
                                                 </p>
                                             </div>

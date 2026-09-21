@@ -6,10 +6,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import {
-    IoIosArrowBack,
-    IoIosArrowForward,
-} from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 import "swiper/css";
 
@@ -18,29 +15,30 @@ import SectionHeader from "@/components/cards/SectionHeader";
 
 const CategorySection = () => {
     const swiperRef = useRef(null);
-
-    const {
-        categories,
-        isLoading,
-        isError,
-    } = useCategory();
+    const { categories, isLoading, isError } = useCategory();
 
     /* ---------------- Loading ---------------- */
-
     if (isLoading) {
         return (
-            <section className="bg-[#FFFCEA] py-6 sm:py-8 md:py-10">
-                <div className="w-5/6 lg:w-11/12 mx-auto">
-                    <div className="flex items-center justify-between mb-4 sm:mb-6">
-                        <div className="w-28 sm:w-36 h-5 sm:h-7 bg-gray-200 rounded animate-pulse" />
-                        <div className="w-20 h-8 bg-gray-200 rounded-full animate-pulse" />
+            <section className="ph-section !py-6 sm:!py-8">
+                <div className="ph-container">
+                    <div className="mb-4 flex items-center justify-between sm:mb-6">
+                        <div
+                            className="h-5 w-28 animate-pulse rounded sm:h-7 sm:w-36"
+                            style={{ backgroundColor: "var(--ph-border)" }}
+                        />
+                        <div
+                            className="h-8 w-20 animate-pulse rounded-full"
+                            style={{ backgroundColor: "var(--ph-border)" }}
+                        />
                     </div>
 
-                    <div className="flex gap-3 sm:gap-4 overflow-hidden">
+                    <div className="flex gap-3 overflow-hidden sm:gap-4">
                         {[1, 2, 3, 4, 5, 6].map((item) => (
                             <div
                                 key={item}
-                                className="w-[100px] h-[130px] sm:w-[125px] sm:h-[155px] md:w-[140px] md:h-[170px] rounded-xl bg-gray-200 animate-pulse shrink-0"
+                                className="h-[145px] w-[108px] shrink-0 animate-pulse rounded-xl sm:h-[170px] sm:w-[135px] md:h-[185px] md:w-[150px]"
+                                style={{ backgroundColor: "var(--ph-border)" }}
                             />
                         ))}
                     </div>
@@ -50,34 +48,23 @@ const CategorySection = () => {
     }
 
     /* ---------------- Error ---------------- */
-
     if (isError) {
         return (
-            <section className="bg-[#FFFCEA] py-6 text-center">
-                <p className="text-gray-500 font-roboto">
-                    Unable to load categories.
-                </p>
+            <section className="py-6 text-center">
+                <p className="body-sm">Unable to load categories.</p>
             </section>
         );
     }
 
     /* ---------------- Empty ---------------- */
-
-    if (!categories?.length) {
-        return null;
-    }
+    if (!categories?.length) return null;
 
     /* ---------------- Main Section ---------------- */
-
     return (
-        <section className="py-6 sm:py-8 md:py-10">
-            <div className="w-5/6 lg:w-11/12 mx-auto">
-                {/* Section Header */}
-                <div className="flex items-center justify-between mb-4 sm:mb-6">
-                    <SectionHeader
-                        subtitle="Shop By"
-                        title="Categories"
-                    />
+        <section className="ph-section !py-6 sm:!py-8">
+            <div className="ph-container">
+                <div className="mb-4 flex items-center justify-between sm:mb-6">
+                    <SectionHeader subtitle="Shop By" title="Categories" />
 
                     <div className="flex items-center gap-2">
                         <motion.button
@@ -102,83 +89,64 @@ const CategorySection = () => {
                     </div>
                 </div>
 
-                {/* Carousel */}
                 <Swiper
                     modules={[Autoplay]}
                     onSwiper={(swiper) => {
                         swiperRef.current = swiper;
                     }}
                     loop={true}
-                    autoplay={{
-                        delay: 2200,
-                        disableOnInteraction: false,
-                        pauseOnMouseEnter: true,
-                    }}
-                    slidesPerView={3.2}
+                    autoplay={{ delay: 2200, disableOnInteraction: false, pauseOnMouseEnter: true }}
+                    slidesPerView={3}
                     spaceBetween={10}
                     watchOverflow={true}
                     breakpoints={{
-                        0: { slidesPerView: 3.2, spaceBetween: 8 },
-                        420: { slidesPerView: 3.8, spaceBetween: 10 },
-                        640: { slidesPerView: 4.5, spaceBetween: 12 },
-                        768: { slidesPerView: 5.5, spaceBetween: 14 },
-                        1024: { slidesPerView: 6, spaceBetween: 16 },
-                        1280: { slidesPerView: 7, spaceBetween: 16 },
-                        1536: { slidesPerView: 8, spaceBetween: 18 },
+                        0: { slidesPerView: 2.6, spaceBetween: 10 },
+                        420: { slidesPerView: 3.2, spaceBetween: 12 },
+                        640: { slidesPerView: 4, spaceBetween: 14 },
+                        768: { slidesPerView: 5.8, spaceBetween: 14 },
+                        1024: { slidesPerView: 5.5, spaceBetween: 15 },
+                        1280: { slidesPerView: 6.5, spaceBetween: 15 },
+                        1536: { slidesPerView: 9.5, spaceBetween: 60 },
                     }}
                 >
                     {categories.map((category, index) => (
                         <SwiperSlide key={category.category_id}>
-                            <Link
-                                href={`/categoryDetail/${category.category_id}`}
-                                className="block group"
-                            >
+                            <Link href={`/categoryDetail/${category.category_id}`} className="group block">
                                 <motion.div
                                     initial={{ opacity: 0, y: 15 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
-                                    transition={{
-                                        duration: 0.4,
-                                        delay: index * 0.04,
-                                    }}
+                                    transition={{ duration: 0.4, delay: index * 0.04 }}
                                     whileHover={{ y: -4 }}
-                                    className="flex flex-col items-center justify-center
-        w-[100px] h-[130px]
-        sm:w-[125px] sm:h-[155px]
-        md:w-[140px] md:h-[170px]
-        mx-auto"
+                                    className="mx-auto flex h-[145px] w-[108px] flex-col items-center justify-start sm:h-[170px] sm:w-[135px] md:h-[185px] md:w-[150px]"
                                 >
-                                    {/* Category Image */}
                                     <motion.div
-                                        whileHover={{
-                                            scale: 1.08,
-                                            rotate: [0, -5, 5, -2, 0],
+                                        whileHover={{ scale: 1.06 }}
+                                        transition={{ duration: 0.4 }}
+                                        className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full transition-shadow duration-300 sm:h-20 sm:w-20 md:h-24 md:w-24"
+                                        style={{
+                                            backgroundColor: "var(--ph-surface)",
+                                            border: "1px solid var(--ph-border)",
+                                            boxShadow: "0 4px 14px -6px rgba(15,23,42,0.12)",
                                         }}
-                                        transition={{ duration: 0.5 }}
-                                        className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden bg-white border border-gray-100 shadow-[0_4px_14px_rgba(0,0,0,0.1)] group-hover:shadow-[0_8px_22px_rgba(0,0,0,0.15)] transition-shadow duration-300 shrink-0"
                                     >
                                         <Image
-                                            src={
-                                                category?.category_image ||
-                                                "/placeholder.png"
-                                            }
-                                            alt={
-                                                category?.category_name ||
-                                                "Category"
-                                            }
+                                            src={category?.category_image || "/placeholder.png"}
+                                            alt={category?.category_name || "Category"}
                                             fill
                                             sizes="(max-width: 640px) 64px, 96px"
                                             className="rounded-full object-cover transition-transform duration-500 group-hover:scale-105"
                                         />
                                     </motion.div>
 
-                                    {/* Category Name */}
-                                    <motion.h3
-                                        whileHover={{ y: -1 }}
-                                        className="text-center font-roboto font-semibold text-[10px] sm:text-xs md:text-sm text-gray-800 mt-2 sm:mt-2.5 line-clamp-2 leading-tight w-[85px] sm:w-[105px] md:w-[115px] overflow-hidden"
+                                    {/* Title: full-width of the tile, 2-line clamp, no side padding starving it */}
+                                    <h3
+                                        className="mt-2 line-clamp-2 w-full break-words px-0.5 text-center text-[10.5px] font-semibold leading-tight sm:mt-2.5 sm:text-[12px] md:text-[13px]"
+                                        style={{ color: "var(--ph-text-soft)" }}
+                                        title={category?.category_name}
                                     >
                                         {category?.category_name}
-                                    </motion.h3>
+                                    </h3>
                                 </motion.div>
                             </Link>
                         </SwiperSlide>

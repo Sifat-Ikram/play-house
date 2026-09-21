@@ -14,80 +14,71 @@ import SectionHeader from "@/components/cards/SectionHeader";
 
 const NewArrival = () => {
     const swiperRef = useRef(null);
-
     const [currentIndex, setCurrentIndex] = useState(0);
     const [slidesPerView, setSlidesPerView] = useState(2);
 
-    const {
-        newArrivals,
-        isLoading,
-        isError,
-    } = useNewArrival();
+    const { newArrivals, isLoading, isError } = useNewArrival();
 
     /* ---------------- Loading ---------------- */
-
     if (isLoading) {
         return (
-            <section className="w-full py-6 sm:py-8 md:py-10">
-                <div className="w-5/6 lg:w-11/12 mx-auto flex items-center justify-between mb-4 sm:mb-6">
-                    <div className="w-28 sm:w-36 h-5 sm:h-7 bg-gray-200 rounded-full animate-pulse" />
-                    <div className="w-20 h-8 bg-gray-200 rounded-full animate-pulse" />
-                </div>
-
-                <div className="w-5/6 lg:w-11/12 mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-5">
-                    {[1, 2, 3, 4, 5].map((item) => (
+            <section className="ph-section !py-6 sm:!py-8">
+                <div className="ph-container">
+                    <div className="mb-4 flex items-center justify-between sm:mb-6">
                         <div
-                            key={item}
-                            className="overflow-hidden rounded-tl-2xl rounded-tr-3xl rounded-bl-3xl rounded-br-2xl border border-gray-100 bg-white shadow-sm"
-                        >
-                            <div className="w-full h-[120px] sm:h-[160px] md:h-[180px] lg:h-[210px] bg-gray-200 animate-pulse" />
-                            <div className="p-3 space-y-2">
-                                <div className="w-1/3 h-3 bg-gray-200 rounded animate-pulse" />
-                                <div className="w-4/5 h-4 bg-gray-200 rounded animate-pulse" />
-                                <div className="w-1/3 h-4 bg-gray-200 rounded animate-pulse" />
+                            className="h-5 w-28 animate-pulse rounded-full sm:h-7 sm:w-36"
+                            style={{ backgroundColor: "var(--ph-border)" }}
+                        />
+                        <div
+                            className="h-8 w-20 animate-pulse rounded-full"
+                            style={{ backgroundColor: "var(--ph-border)" }}
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-5">
+                        {[1, 2, 3, 4, 5].map((item) => (
+                            <div key={item} className="ph-card overflow-hidden">
+                                <div
+                                    className="h-[120px] w-full animate-pulse sm:h-[160px] md:h-[180px] lg:h-[210px]"
+                                    style={{ backgroundColor: "var(--ph-border)" }}
+                                />
+                                <div className="space-y-2 p-3">
+                                    <div className="h-3 w-1/3 animate-pulse rounded" style={{ backgroundColor: "var(--ph-border)" }} />
+                                    <div className="h-4 w-4/5 animate-pulse rounded" style={{ backgroundColor: "var(--ph-border)" }} />
+                                    <div className="h-4 w-1/3 animate-pulse rounded" style={{ backgroundColor: "var(--ph-border)" }} />
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </section>
         );
     }
 
     /* ---------------- Error ---------------- */
-
     if (isError) {
         return (
             <section className="w-full py-10 text-center">
-                <p className="text-gray-500 font-roboto">
-                    Unable to load new arrivals.
-                </p>
+                <p className="body-sm">Unable to load new arrivals.</p>
             </section>
         );
     }
 
     /* ---------------- Empty ---------------- */
-
     if (!newArrivals?.length) {
         return (
             <section className="w-full py-10">
-                <p className="text-center font-roboto text-lg font-normal text-gray-500">
-                    No new arrivals at the moment.
-                </p>
+                <p className="body-sm text-center">No new arrivals at the moment.</p>
             </section>
         );
     }
 
     /* ---------------- Main Section ---------------- */
-
     return (
-        <section className="w-full py-6 sm:py-8 md:py-10">
-            <div className="w-5/6 lg:w-11/12 mx-auto">
-                {/* Section Header */}
-                <div className="flex items-center justify-between mb-4 sm:mb-6">
-                    <SectionHeader
-                        subtitle="Just Arrived"
-                        title="New Arrivals"
-                    />
+        <section className="ph-section !py-6 sm:!py-8">
+            <div className="ph-container">
+                <div className="mb-4 flex items-center justify-between sm:mb-6">
+                    <SectionHeader subtitle="Just Arrived" title="New Arrivals" />
 
                     <div className="flex items-center gap-2">
                         <motion.button
@@ -114,19 +105,14 @@ const NewArrival = () => {
                     </div>
                 </div>
 
-                {/* Carousel */}
                 <Swiper
                     onSwiper={(swiper) => {
                         swiperRef.current = swiper;
                         setSlidesPerView(
-                            typeof swiper.params.slidesPerView === "number"
-                                ? swiper.params.slidesPerView
-                                : 2
+                            typeof swiper.params.slidesPerView === "number" ? swiper.params.slidesPerView : 2
                         );
                     }}
-                    onSlideChange={(swiper) => {
-                        setCurrentIndex(swiper.activeIndex);
-                    }}
+                    onSlideChange={(swiper) => setCurrentIndex(swiper.activeIndex)}
                     slidesPerView={2}
                     spaceBetween={12}
                     watchOverflow={true}
@@ -139,24 +125,15 @@ const NewArrival = () => {
                     }}
                 >
                     {newArrivals.map((featured, index) => (
-                        <SwiperSlide
-                            key={featured.id}
-                            className="py-2"
-                        >
+                        <SwiperSlide key={featured.id} className="py-2">
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{
-                                    duration: 0.4,
-                                    delay: index * 0.05,
-                                }}
+                                transition={{ duration: 0.4, delay: index * 0.05 }}
                             >
-                                <Link
-                                    href={`/productDetail/${featured.id}`}
-                                    className="block"
-                                >
-                                    <CardHome product={featured} />
+                                <Link href={`/productDetail/${featured.id}`} className="block">
+                                    <CardHome product={featured} badge="New" />
                                 </Link>
                             </motion.div>
                         </SwiperSlide>
