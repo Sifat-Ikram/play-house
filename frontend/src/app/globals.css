@@ -3,38 +3,56 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-    --ph-primary: #2F6FED;
-    --ph-primary-dark: #1E4FC4;
-    --ph-primary-soft: #EAF1FF;
-    --ph-accent: #FFC93C;
-    --ph-accent-dark: #E8AE1C;
-    --ph-coral: #FF6B7A;
+    /* Primary — Warm Gold */
+    --ph-primary: #F5A623;
+    --ph-primary-dark: #D68C0F;
+    --ph-primary-soft: #FEF3E0;
+
+    /* Accent — Deep Teal (secondary brand color) */
+    --ph-accent: #0F5257;
+    --ph-accent-dark: #0B3D41;
+    --ph-accent-soft: #E3F0EF;
+
+    /* Supporting accents */
+    --ph-coral: #FF6F5E;
     --ph-mint: #2FBF9F;
-    --ph-bg: #FFFFFF;
+
+    /* Surfaces */
+    --ph-bg: #FFFDF8;
     --ph-surface: #FFFFFF;
-    --ph-border: #E5E9F0;
-    --ph-text: #1E293B;
-    --ph-text-soft: #5B6472;
-    --ph-text-faint: #94A0AC;
+    --ph-border: #EDE6D8;
+
+    /* Text — teal-tinted near-black */
+    --ph-text: #1E2B2B;
+    --ph-text-soft: #58686A;
+    --ph-text-faint: #94A0A0;
 
     --font-display: var(--font-fredoka);
     --font-body: var(--font-jakarta);
 }
 
 .dark {
-    --ph-primary: #5B8DFF;
-    --ph-primary-dark: #3E6FE0;
-    --ph-primary-soft: #16233F;
-    --ph-accent: #FFD75E;
-    --ph-accent-dark: #E8AE1C;
-    --ph-coral: #FF8A96;
+    /* Primary — brighter gold for contrast on dark */
+    --ph-primary: #FFC157;
+    --ph-primary-dark: #F5A623;
+    --ph-primary-soft: #3A2C0F;
+
+    /* Accent — lighter teal for dark mode */
+    --ph-accent: #3FA9A0;
+    --ph-accent-dark: #2C8C84;
+    --ph-accent-soft: #12302E;
+
+    --ph-coral: #FF8B7D;
     --ph-mint: #45D9B8;
-    --ph-bg: #101315;
-    --ph-surface: #1A1F22;
-    --ph-border: #2A3134;
-    --ph-text: #F4F6F7;
-    --ph-text-soft: #9AA3AC;
-    --ph-text-faint: #6B747C;
+
+    /* Surfaces — teal-tinted dark, not pure black */
+    --ph-bg: #101615;
+    --ph-surface: #182120;
+    --ph-border: #2A3534;
+
+    --ph-text: #F4F6F5;
+    --ph-text-soft: #9CACAA;
+    --ph-text-faint: #6B7A78;
 }
 
 html {
@@ -59,8 +77,8 @@ a {
 }
 
 ::selection {
-    background: var(--ph-accent);
-    color: #1E2430;
+    background: var(--ph-primary);
+    color: #1E2B2B;
 }
 
 /* Premium scrollbar */
@@ -81,7 +99,7 @@ a {
 
 /* Navigation Button */
 .nav-btn {
-    @apply p-2 sm:p-2.5 rounded-full border border-[#E2E8F0] bg-white text-[#1E293B] shadow-sm transition-all duration-200 hover:bg-[#38BDF8] hover:text-white hover:border-[#38BDF8] hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center;
+    @apply p-2 sm:p-2.5 rounded-full border border-[var(--ph-border)] bg-[var(--ph-surface)] text-[var(--ph-text)] shadow-sm transition-all duration-200 hover:bg-[var(--ph-accent)] hover:text-white hover:border-[var(--ph-accent)] hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center;
 }
 
 /* Styles scoped strictly to the Banner container */
@@ -91,7 +109,7 @@ a {
     letter-spacing: 0.14em;
     text-transform: uppercase;
     font-size: clamp(0.68rem, 0.62rem + 0.2vw, 0.78rem);
-    color: var(--ph-primary);
+    color: var(--ph-accent);
 }
 
 .banner .body-lg {
@@ -108,13 +126,13 @@ a {
 .banner .ph-btn-primary {
     @apply inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 cursor-pointer;
     font-family: var(--font-body);
-    background-color: var(--ph-primary);
+    background-color: var(--ph-accent);
     color: #FFFFFF;
     padding: 0.75rem 1.6rem;
     font-size: clamp(0.85rem, 0.8rem + 0.2vw, 0.95rem);
 }
 
 .banner .ph-btn-primary:hover {
-    background-color: var(--ph-primary-dark);
-    box-shadow: 0 8px 20px -6px rgba(47, 111, 237, 0.45);
+    background-color: var(--ph-accent-dark);
+    box-shadow: 0 10px 24px -6px rgba(15, 82, 87, 0.45);
 }

@@ -11,7 +11,7 @@ const shopItems = [
         _id: 1,
         title: "Baby Stars",
         age: "0-2 years",
-        color: "#FFEFBF",
+        color: "#FCE7C4", // warm gold-tint (primary family)
         minAge: 0,
         maxAge: 2,
     },
@@ -19,7 +19,7 @@ const shopItems = [
         _id: 2,
         title: "Little Stars",
         age: "3-5 years",
-        color: "#EBFF94",
+        color: "#DCEFCB", // soft mint-tint (ph-mint family)
         minAge: 3,
         maxAge: 5,
     },
@@ -27,7 +27,7 @@ const shopItems = [
         _id: 3,
         title: "Shining Stars",
         age: "6-11 years",
-        color: "#7DEAFF",
+        color: "#CFE9E8", // soft teal-tint (ph-accent family)
         minAge: 6,
         maxAge: 11,
     },
@@ -35,7 +35,7 @@ const shopItems = [
         _id: 4,
         title: "Super Stars",
         age: "12 and above",
-        color: "#E7D4FF",
+        color: "#F1DCEA", // soft coral-plum tint (ph-coral family)
         minAge: 12,
         maxAge: Infinity,
     },
@@ -122,13 +122,19 @@ const ShopByAgeContent = () => {
                                 href={`/ageCategory/${item._id}?minAge=${item.minAge}&maxAge=${item.maxAge}`}
                                 title={`View details for ${item.title}`}
                                 aria-label={`View details for ${item.title}`}
-                                className="group relative overflow-hidden rounded-3xl border-solid border-4 border-[#3E3E3E] hover:cursor-pointer p-4 lg:p-5 flex flex-col justify-center items-center text-center space-y-3 h-full shadow-sm hover:shadow-lg transition-shadow duration-300"
+                                className="group relative overflow-hidden rounded-3xl border-solid border-4 border-[#1E2B2B]/80 hover:cursor-pointer p-4 lg:p-5 flex flex-col justify-center items-center text-center space-y-3 h-full shadow-sm hover:shadow-lg transition-shadow duration-300"
                                 style={{ backgroundColor: item.color }}
                             >
-                                <h1 className="text-sm sm:text-lg lg:text-2xl font-normal font-poppins text-[#3E3E3E]">
+                                <h1
+                                    className="text-sm sm:text-lg lg:text-2xl font-medium text-[#1E2B2B]"
+                                    style={{ fontFamily: "var(--font-display)" }}
+                                >
                                     {item.title}
                                 </h1>
-                                <p className="text-sm sm:text-base md:text-lg lg:text-xl">
+                                <p
+                                    className="text-sm sm:text-base md:text-lg lg:text-xl text-[#1E2B2B]/75"
+                                    style={{ fontFamily: "var(--font-body)" }}
+                                >
                                     Age {item.age}
                                 </p>
 

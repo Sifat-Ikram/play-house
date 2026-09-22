@@ -16,14 +16,14 @@ const SectionHeader = ({ subtitle, title }) => {
                         text-[10px]
                         sm:text-xs
                         md:text-sm
-                        text-[#38BDF8]
-                        font-medium
-                        font-poppins
+                        text-[var(--ph-accent)]
+                        font-semibold
                         tracking-[0.16em]
                         uppercase
                         mb-1
                         sm:mb-1.5
                     "
+                    style={{ fontFamily: "var(--font-body)" }}
                 >
                     {subtitle}
                 </p>
@@ -36,10 +36,10 @@ const SectionHeader = ({ subtitle, title }) => {
                     md:text-3xl
                     lg:text-4xl
                     font-semibold
-                    font-poppins
-                    text-[#1E293B]
+                    text-[var(--ph-text)]
                     tracking-tight
                 "
+                style={{ fontFamily: "var(--font-display)" }}
             >
                 {title}
             </h2>

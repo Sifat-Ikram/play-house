@@ -17,43 +17,43 @@ const interests = [
         title: "Cars & Vehicles",
         description: "Race, ride & explore",
         icon: FaCarSide,
-        bg: "#E0F7FF",
-        accent: "#38BDF8",
+        bg: "var(--ph-accent-soft)",
+        accent: "var(--ph-accent)",
     },
     {
         title: "Puzzles & Games",
         description: "Think, play & solve",
         icon: FaPuzzlePiece,
-        bg: "#FFF7D6",
-        accent: "#FACC15",
+        bg: "var(--ph-primary-soft)",
+        accent: "var(--ph-primary)",
     },
     {
         title: "Arts & Creativity",
         description: "Create something fun",
         icon: FaPalette,
-        bg: "#FFE7F0",
-        accent: "#FB7185",
+        bg: "#FFE7E3",
+        accent: "var(--ph-coral)",
     },
     {
         title: "Robots & Tech",
         description: "Build, discover & play",
         icon: FaRobot,
-        bg: "#E9F9E8",
-        accent: "#4ADE80",
+        bg: "#E1F7F1",
+        accent: "var(--ph-mint)",
     },
     {
         title: "Building & Blocks",
         description: "Build big ideas",
         icon: FaBuilding,
-        bg: "#F0E9FF",
-        accent: "#A78BFA",
+        bg: "#D8EBEA",
+        accent: "var(--ph-accent-dark)",
     },
     {
         title: "Books & Stories",
         description: "Imagine & discover",
         icon: FaBookOpen,
-        bg: "#FFF0E5",
-        accent: "#FB923C",
+        bg: "#FBE7C9",
+        accent: "var(--ph-primary-dark)",
     },
 ];
 
@@ -68,7 +68,10 @@ const ShopByInterest = () => {
                         title="Shop By Interest"
                     />
 
-                    <button className="hidden sm:flex items-center gap-1.5 text-sm font-semibold font-poppins text-[#0284C7] hover:text-[#0369A1] transition-colors">
+                    <button
+                        className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-[var(--ph-accent)] hover:text-[var(--ph-accent-dark)] transition-colors"
+                        style={{ fontFamily: "var(--font-body)" }}
+                    >
                         Explore All
                         <FiArrowUpRight />
                     </button>
@@ -118,11 +121,17 @@ const ShopByInterest = () => {
 
                                 {/* Content */}
                                 <div className="relative z-10">
-                                    <h3 className="font-poppins font-extrabold text-sm sm:text-lg text-[#172033] leading-tight">
+                                    <h3
+                                        className="font-extrabold text-sm sm:text-lg text-[#1E2B2B] leading-tight"
+                                        style={{ fontFamily: "var(--font-display)" }}
+                                    >
                                         {item.title}
                                     </h3>
 
-                                    <p className="mt-1 text-[10px] sm:text-xs font-roboto text-gray-600">
+                                    <p
+                                        className="mt-1 text-[10px] sm:text-xs text-[#1E2B2B]/65"
+                                        style={{ fontFamily: "var(--font-body)" }}
+                                    >
                                         {item.description}
                                     </p>
                                 </div>
@@ -142,7 +151,10 @@ const ShopByInterest = () => {
                 </div>
 
                 {/* Mobile explore */}
-                <button className="sm:hidden mt-5 flex items-center gap-1.5 mx-auto text-sm font-semibold font-poppins text-[#0284C7]">
+                <button
+                    className="sm:hidden mt-5 flex items-center gap-1.5 mx-auto text-sm font-semibold text-[var(--ph-accent)]"
+                    style={{ fontFamily: "var(--font-body)" }}
+                >
                     Explore All
                     <FiArrowUpRight />
                 </button>

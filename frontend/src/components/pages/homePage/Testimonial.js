@@ -21,7 +21,9 @@ const Testimonial = () => {
     if (isLoading) {
         return (
             <section className="w-full py-8 sm:py-12 md:py-14 text-center">
-                <p className="text-slate-500 font-poppins">Loading testimonials...</p>
+                <p className="text-[var(--ph-text-faint)]" style={{ fontFamily: "var(--font-body)" }}>
+                    Loading testimonials...
+                </p>
             </section>
         );
     }
@@ -86,13 +88,24 @@ const Testimonial = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                                className="h-full bg-white/90 backdrop-blur-sm p-5 sm:p-6 rounded-3xl border-2 border-amber-100 shadow-md hover:shadow-xl transition-all duration-300 relative flex flex-col justify-between"
+                                className="h-full p-5 sm:p-6 rounded-3xl border shadow-md hover:shadow-xl transition-all duration-300 relative flex flex-col justify-between"
+                                style={{
+                                    backgroundColor: "var(--ph-surface)",
+                                    borderColor: "var(--ph-primary)",
+                                    borderWidth: "2px",
+                                }}
                             >
-                                <FaQuoteLeft className="text-3xl text-[#FFDE59]/50 absolute top-4 right-5" />
+                                <FaQuoteLeft
+                                    className="text-3xl absolute top-4 right-5"
+                                    style={{ color: "var(--ph-primary)", opacity: 0.35 }}
+                                />
 
                                 <div className="space-y-3 relative z-10">
                                     {/* Product Name */}
-                                    <p className="text-xs sm:text-sm font-semibold font-poppins text-slate-800 truncate pr-8">
+                                    <p
+                                        className="text-xs sm:text-sm font-semibold text-[var(--ph-text)] truncate pr-8"
+                                        style={{ fontFamily: "var(--font-body)" }}
+                                    >
                                         Product Name: {review.product_name}
                                     </p>
 
@@ -101,21 +114,34 @@ const Testimonial = () => {
                                             {[...Array(review.review_rating)].map((_, i) => (
                                                 <FiStar
                                                     key={i}
-                                                    className="text-amber-400 fill-amber-400 text-sm sm:text-base"
+                                                    className="text-sm sm:text-base"
+                                                    style={{
+                                                        color: "var(--ph-primary)",
+                                                        fill: "var(--ph-primary)",
+                                                    }}
                                                 />
                                             ))}
                                         </div>
 
                                         {/* Review Text */}
-                                        <p className="text-xs sm:text-sm font-poppins text-slate-700 leading-relaxed italic">
+                                        <p
+                                            className="text-xs sm:text-sm text-[var(--ph-text-soft)] leading-relaxed italic"
+                                            style={{ fontFamily: "var(--font-body)" }}
+                                        >
                                             "{review.review_comment}"
                                         </p>
                                     </div>
                                 </div>
 
-                                {/* User Info (Image and Name Side by Side) */}
-                                <div className="flex items-center gap-3 pt-4 mt-4 border-t border-amber-100/80">
-                                    <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-[#38BDF8] flex-shrink-0">
+                                {/* User Info */}
+                                <div
+                                    className="flex items-center gap-3 pt-4 mt-4 border-t"
+                                    style={{ borderColor: "var(--ph-border)" }}
+                                >
+                                    <div
+                                        className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border-2"
+                                        style={{ borderColor: "var(--ph-accent)" }}
+                                    >
                                         <Image
                                             src={review.user_image_url}
                                             alt={review.user_name}
@@ -123,7 +149,10 @@ const Testimonial = () => {
                                             className="object-cover"
                                         />
                                     </div>
-                                    <h4 className="text-xs sm:text-sm font-bold font-poppins text-slate-800 truncate">
+                                    <h4
+                                        className="text-xs sm:text-sm font-bold text-[var(--ph-text)] truncate"
+                                        style={{ fontFamily: "var(--font-body)" }}
+                                    >
                                         {review.user_name}
                                     </h4>
                                 </div>

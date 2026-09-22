@@ -19,117 +19,161 @@ const socialLinks = [
     { href: "https://youtube.com", label: "YouTube", Icon: TbBrandYoutube },
 ];
 
+const quickLinks = [
+    { href: "/", label: "Home" },
+    { href: "/categoryDetail/36", label: "Categories" },
+    { href: "/brands", label: "Brands" },
+    { href: "/comboOffers", label: "Combo Offers" },
+    { href: "/aboutUs", label: "About Us" },
+];
+
+const careLinks = [
+    { href: "/contactUs", label: "Contact Us" },
+    { href: "/privacyPolicy", label: "Privacy Policy" },
+    { href: "/terms", label: "Terms of Service" },
+    { href: "/faq", label: "FAQs" },
+    { href: "/shippingReturns", label: "Shipping & Returns" },
+];
+
 const Footer = () => {
     return (
-        <footer
-            className="relative pt-14 sm:pt-20 bg-[#FFDE59]"
-        >
-            <div className=" w-11/12 mx-auto">
-                <div className="ph-container flex flex-col gap-12 pb-12 sm:gap-14 lg:flex-row lg:justify-between lg:gap-10">
+        <footer className="relative bg-[var(--ph-accent-dark)] pt-14 text-[var(--ph-bg)] sm:pt-20">
+
+            {/* Soft top divider glow */}
+            <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,transparent,var(--ph-primary),transparent)]"
+            />
+
+            <div className="mx-auto w-11/12 max-w-[1400px]">
+                <div className="grid grid-cols-1 gap-10 pb-12 sm:grid-cols-2 sm:gap-12 lg:grid-cols-4 lg:gap-8">
 
                     {/* Logo and Description */}
-                    <div className="flex flex-col items-center gap-4 text-center lg:max-w-sm lg:items-start lg:text-left">
-                        <Link href="/" className="inline-block">
+                    <div className="flex flex-col items-center gap-4 text-center sm:items-start sm:text-left">
+                        <Link href="/" className="inline-block rounded-xl bg-[var(--ph-bg)] p-2.5 transition-transform duration-200 hover:scale-[1.03]">
                             <Image
                                 src={logo}
                                 alt="Play House Logo"
                                 width={160}
                                 height={90}
-                                className="h-[64px] w-auto object-contain sm:h-[76px]"
+                                className="h-[52px] w-auto object-contain sm:h-[60px]"
                             />
                         </Link>
-                        <p className="body-sm leading-relaxed">
+                        <p className="text-sm leading-relaxed text-[var(--ph-bg)]/75">
+                            Bringing joy to every little heart with toys made for
+                            imagination, learning, and play.
+                        </p>
+
+                        {/* Social icons */}
+                        <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-start">
+                            {socialLinks.map(({ href, label, Icon }) => (
+                                <Link
+                                    key={label}
+                                    href={href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={label}
+                                    className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--ph-bg)]/20 bg-[var(--ph-bg)]/10 text-[var(--ph-bg)] transition-all duration-200 hover:-translate-y-1 hover:border-[var(--ph-primary)] hover:bg-[var(--ph-primary)] hover:text-[#1E2B2B]"
+                                >
+                                    <Icon className="text-lg" />
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Quick Links */}
+                    <div className="flex flex-col items-center gap-3 text-center sm:items-start sm:text-left">
+                        <h2 className="font-[var(--font-display)] text-sm font-bold tracking-wide text-[var(--ph-primary)] sm:text-base">
+                            Quick Links
+                        </h2>
+                        <ul className="flex flex-col items-center gap-2.5 sm:items-start">
+                            {quickLinks.map(({ href, label }) => (
+                                <li key={label}>
+                                    <Link
+                                        href={href}
+                                        className="text-sm text-[var(--ph-bg)]/75 transition-colors hover:text-[var(--ph-primary)]"
+                                    >
+                                        {label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Customer Care */}
+                    <div className="flex flex-col items-center gap-3 text-center sm:items-start sm:text-left">
+                        <h2 className="font-[var(--font-display)] text-sm font-bold tracking-wide text-[var(--ph-primary)] sm:text-base">
+                            Customer Care
+                        </h2>
+                        <ul className="flex flex-col items-center gap-2.5 sm:items-start">
+                            {careLinks.map(({ href, label }) => (
+                                <li key={label}>
+                                    <Link
+                                        href={href}
+                                        className="text-sm text-[var(--ph-bg)]/75 transition-colors hover:text-[var(--ph-primary)]"
+                                    >
+                                        {label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Newsletter */}
+                    <div className="flex w-full flex-col items-center gap-3 text-center sm:items-start sm:text-left">
+                        <h2 className="font-[var(--font-display)] text-sm font-bold tracking-wide text-[var(--ph-primary)] sm:text-base">
+                            Stay Updated
+                        </h2>
+                        <p className="text-sm text-[var(--ph-bg)]/75">
+                            Join our newsletter for new arrivals, offers, and playful
+                            surprises.
+                        </p>
+                        <form
+                            onSubmit={(e) => e.preventDefault()}
+                            className="flex w-full flex-col gap-3 sm:flex-row"
+                        >
+                            <input
+                                type="email"
+                                required
+                                placeholder="Enter your email"
+                                className="w-full rounded-full border border-[var(--ph-bg)]/20 bg-[var(--ph-bg)]/10 px-4 py-3 text-sm font-medium text-[var(--ph-bg)] outline-none placeholder:text-[var(--ph-bg)]/50 transition-all focus:border-[var(--ph-primary)] focus:ring-4 focus:ring-[var(--ph-primary)]/20 sm:max-w-[240px]"
+                            />
+                            <button
+                                type="submit"
+                                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[var(--ph-primary)] px-5 py-3 text-sm font-bold text-[#1E2B2B] transition-transform duration-200 hover:scale-[1.03] hover:bg-[var(--ph-primary-dark)] sm:w-auto"
+                            >
+                                Subscribe
+                            </button>
+                        </form>
+
+                        <p className="text-xs text-[var(--ph-bg)]/55">
                             By subscribing you agree to our Privacy Policy and consent to
                             receive updates from our company.
                         </p>
                     </div>
-
-                    {/* Social Links & Newsletter */}
-                    <div className="flex w-full flex-col items-center gap-7 lg:max-w-md lg:items-start">
-                        <div className="flex flex-col items-center gap-3 lg:items-start">
-                            <h2
-                                className="text-sm font-bold tracking-wide sm:text-base"
-                                style={{ fontFamily: "var(--font-display)", color: "var(--ph-text)" }}
-                            >
-                                Follow Us
-                            </h2>
-                            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-                                {socialLinks.map(({ href, label, Icon }) => (
-                                    <Link
-                                        key={label}
-                                        href={href}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label={label}
-                                        className="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 hover:-translate-y-0.5"
-                                        style={{
-                                            backgroundColor: "var(--ph-surface)",
-                                            border: "1px solid var(--ph-border)",
-                                            color: "var(--ph-text-soft)",
-                                        }}
-                                        onMouseEnter={(e) => {
-                                            e.currentTarget.style.backgroundColor = "var(--ph-primary)";
-                                            e.currentTarget.style.borderColor = "var(--ph-primary)";
-                                            e.currentTarget.style.color = "#fff";
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            e.currentTarget.style.backgroundColor = "var(--ph-surface)";
-                                            e.currentTarget.style.borderColor = "var(--ph-border)";
-                                            e.currentTarget.style.color = "var(--ph-text-soft)";
-                                        }}
-                                    >
-                                        <Icon className="text-lg" />
-                                    </Link>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="w-full space-y-3">
-                            <p className="body-sm text-center lg:text-left">
-                                Join our newsletter to stay up to date on features and releases.
-                            </p>
-                            <form
-                                onSubmit={(e) => e.preventDefault()}
-                                className="flex flex-col gap-3 sm:flex-row"
-                            >
-                                <input
-                                    type="email"
-                                    required
-                                    placeholder="Enter your email"
-                                    className="w-full rounded-full px-4 py-3 text-sm font-medium outline-none transition-all focus:ring-4 sm:max-w-[280px]"
-                                    style={{
-                                        border: "1px solid var(--ph-border)",
-                                        backgroundColor: "var(--ph-surface)",
-                                        color: "var(--ph-text)",
-                                    }}
-                                />
-                                <button type="submit" className="ph-btn-primary w-full sm:w-auto">
-                                    Subscribe
-                                </button>
-                            </form>
-                        </div>
-                    </div>
                 </div>
 
                 {/* Bottom Bar */}
-                <div
-                    className="ph-container flex flex-col items-center justify-between gap-4 py-6 sm:flex-row"
-                    style={{ borderTop: "1px solid var(--ph-border)" }}
-                >
-                    <p className="body-sm text-center sm:text-left">
+                <div className="flex flex-col items-center justify-between gap-4 border-t border-[var(--ph-bg)]/15 py-6 sm:flex-row">
+                    <p className="text-center text-sm text-[var(--ph-bg)]/70 sm:text-left">
                         © {new Date().getFullYear()} Play House. All rights reserved.
                     </p>
                     <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-                        <Link href="/privacyPolicy" className="body-sm transition-colors hover:underline" style={{ color: "var(--ph-text-soft)" }}>
+                        <Link
+                            href="/privacyPolicy"
+                            className="text-sm text-[var(--ph-bg)]/70 transition-colors hover:text-[var(--ph-primary)] hover:underline"
+                        >
                             Privacy Policy
                         </Link>
-                        <Link href="/terms" className="body-sm transition-colors hover:underline" style={{ color: "var(--ph-text-soft)" }}>
+                        <Link
+                            href="/terms"
+                            className="text-sm text-[var(--ph-bg)]/70 transition-colors hover:text-[var(--ph-primary)] hover:underline"
+                        >
                             Terms of Service
                         </Link>
                         <button
                             type="button"
-                            className="body-sm cursor-pointer transition-colors hover:underline"
-                            style={{ color: "var(--ph-text-soft)" }}
+                            className="cursor-pointer text-sm text-[var(--ph-bg)]/70 transition-colors hover:text-[var(--ph-primary)] hover:underline"
                         >
                             Cookies Settings
                         </button>

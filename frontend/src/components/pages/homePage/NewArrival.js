@@ -30,21 +30,21 @@ const NewArrival = () => {
         return (
             <section className="w-full py-6 sm:py-8 md:py-10">
                 <div className="w-5/6 lg:w-11/12 mx-auto flex items-center justify-between mb-4 sm:mb-6">
-                    <div className="w-28 sm:w-36 h-5 sm:h-7 bg-gray-200 rounded-full animate-pulse" />
-                    <div className="w-20 h-8 bg-gray-200 rounded-full animate-pulse" />
+                    <div className="w-28 sm:w-36 h-5 sm:h-7 bg-[var(--ph-border)] rounded-full animate-pulse" />
+                    <div className="w-20 h-8 bg-[var(--ph-border)] rounded-full animate-pulse" />
                 </div>
 
                 <div className="w-5/6 lg:w-11/12 mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-5">
                     {[1, 2, 3, 4, 5].map((item) => (
                         <div
                             key={item}
-                            className="overflow-hidden rounded-tl-2xl rounded-tr-3xl rounded-bl-3xl rounded-br-2xl border border-gray-100 bg-white shadow-sm"
+                            className="overflow-hidden rounded-tl-2xl rounded-tr-3xl rounded-bl-3xl rounded-br-2xl border border-[var(--ph-border)] bg-[var(--ph-surface)] shadow-sm"
                         >
-                            <div className="w-full h-[120px] sm:h-[160px] md:h-[180px] lg:h-[210px] bg-gray-200 animate-pulse" />
+                            <div className="w-full h-[120px] sm:h-[160px] md:h-[180px] lg:h-[210px] bg-[var(--ph-border)] animate-pulse" />
                             <div className="p-3 space-y-2">
-                                <div className="w-1/3 h-3 bg-gray-200 rounded animate-pulse" />
-                                <div className="w-4/5 h-4 bg-gray-200 rounded animate-pulse" />
-                                <div className="w-1/3 h-4 bg-gray-200 rounded animate-pulse" />
+                                <div className="w-1/3 h-3 bg-[var(--ph-border)] rounded animate-pulse" />
+                                <div className="w-4/5 h-4 bg-[var(--ph-border)] rounded animate-pulse" />
+                                <div className="w-1/3 h-4 bg-[var(--ph-border)] rounded animate-pulse" />
                             </div>
                         </div>
                     ))}
@@ -58,7 +58,7 @@ const NewArrival = () => {
     if (isError) {
         return (
             <section className="w-full py-10 text-center">
-                <p className="text-gray-500 font-roboto">
+                <p className="text-[var(--ph-text-faint)]" style={{ fontFamily: "var(--font-body)" }}>
                     Unable to load new arrivals.
                 </p>
             </section>
@@ -70,7 +70,10 @@ const NewArrival = () => {
     if (!newArrivals?.length) {
         return (
             <section className="w-full py-10">
-                <p className="text-center font-roboto text-lg font-normal text-gray-500">
+                <p
+                    className="text-center text-lg font-normal text-[var(--ph-text-faint)]"
+                    style={{ fontFamily: "var(--font-body)" }}
+                >
                     No new arrivals at the moment.
                 </p>
             </section>
@@ -156,7 +159,7 @@ const NewArrival = () => {
                                     href={`/productDetail/${featured.id}`}
                                     className="block"
                                 >
-                                    <CardHome product={featured} />
+                                    <CardHome product={featured} badge="NEW" />
                                 </Link>
                             </motion.div>
                         </SwiperSlide>

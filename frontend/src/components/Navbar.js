@@ -98,14 +98,14 @@ const DRILL_TITLES = {
 function LoadingSpinner() {
     return (
         <div className="col-span-full flex items-center justify-center py-8">
-            <div className="h-6 w-6 animate-spin rounded-full border-2 border-slate-200 border-t-[#F4C900] dark:border-slate-700 dark:border-t-[#FFDE59]" />
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-[var(--ph-border)] border-t-[var(--ph-primary)]" />
         </div>
     );
 }
 
 function EmptyState({ label }) {
     return (
-        <li className="col-span-full py-8 text-center text-sm text-slate-400 dark:text-slate-500">
+        <li className="col-span-full py-8 text-center text-sm text-[var(--ph-text-faint)]">
             {label}
         </li>
     );
@@ -238,12 +238,12 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
       group relative flex items-center gap-1.5
       whitespace-nowrap
       text-[13px] lg:text-sm xl:text-[15px]
-      font-semibold
+      font-bold
       tracking-[-0.01em]
       transition-colors duration-200
       ${isActive(href)
-            ? "text-slate-950 dark:text-white"
-            : "text-slate-800 dark:text-slate-200 hover:text-slate-950 dark:hover:text-white"
+            ? "text-[#1E2B2B]"
+            : "text-[#1E2B2B]/80 hover:text-[#1E2B2B]"
         }
     `;
 
@@ -255,8 +255,8 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
       font-semibold
       transition-all duration-200
       ${isActive(href)
-            ? "bg-[#FFF4B8] text-slate-950 dark:bg-[#3A351C] dark:text-white"
-            : "text-slate-800 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-white/[0.05]"
+            ? "bg-[var(--ph-primary-soft)] text-[var(--ph-text)]"
+            : "text-[var(--ph-text-soft)] hover:bg-[var(--ph-primary-soft)]"
         }
     `;
 
@@ -285,22 +285,18 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
               text-center
               transition-all duration-200
               hover:-translate-y-1
-              hover:bg-[#FFF9DB]
+              hover:bg-[var(--ph-primary-soft)]
               hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)]
-              dark:hover:bg-white/[0.05]
-              dark:hover:shadow-none
             "
                     >
                         <div
                             className="
                 relative overflow-hidden rounded-full
-                bg-slate-100 p-0.5
-                ring-1 ring-slate-200/70
+                bg-[var(--ph-primary-soft)] p-0.5
+                ring-1 ring-[var(--ph-border)]
                 transition-all duration-300
                 group-hover:scale-105
-                group-hover:ring-[#F4C900]/50
-                dark:bg-slate-800
-                dark:ring-slate-700
+                group-hover:ring-[var(--ph-primary)]/50
               "
                         >
                             <Image
@@ -312,7 +308,7 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                             />
                         </div>
 
-                        <span className="line-clamp-2 max-w-[90px] text-[11px] font-semibold leading-tight text-slate-700 dark:text-slate-300 sm:text-xs">
+                        <span className="line-clamp-2 max-w-[90px] text-[11px] font-semibold leading-tight text-[var(--ph-text-soft)] sm:text-xs">
                             {category.category_name}
                         </span>
                     </Link>
@@ -344,22 +340,18 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
               text-center
               transition-all duration-200
               hover:-translate-y-1
-              hover:bg-[#FFF9DB]
+              hover:bg-[var(--ph-primary-soft)]
               hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)]
-              dark:hover:bg-white/[0.05]
-              dark:hover:shadow-none
             "
                     >
                         <div
                             className="
                 relative overflow-hidden rounded-full
-                bg-white p-1
-                ring-1 ring-slate-200
+                bg-[var(--ph-surface)] p-1
+                ring-1 ring-[var(--ph-border)]
                 transition-all duration-300
                 group-hover:scale-105
-                group-hover:ring-[#F4C900]/50
-                dark:bg-slate-800
-                dark:ring-slate-700
+                group-hover:ring-[var(--ph-primary)]/50
               "
                         >
                             <Image
@@ -371,7 +363,7 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                             />
                         </div>
 
-                        <span className="line-clamp-2 max-w-[90px] text-[11px] font-semibold leading-tight text-slate-700 dark:text-slate-300 sm:text-xs">
+                        <span className="line-clamp-2 max-w-[90px] text-[11px] font-semibold leading-tight text-[var(--ph-text-soft)] sm:text-xs">
                             {brand.brand_name}
                         </span>
                     </Link>
@@ -403,22 +395,18 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
               text-center
               transition-all duration-200
               hover:-translate-y-1
-              hover:bg-[#FFF9DB]
+              hover:bg-[var(--ph-primary-soft)]
               hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)]
-              dark:hover:bg-white/[0.05]
-              dark:hover:shadow-none
             "
                     >
                         <div
                             className="
                 relative overflow-hidden rounded-2xl
-                bg-slate-100
-                ring-1 ring-slate-200/70
+                bg-[var(--ph-primary-soft)]
+                ring-1 ring-[var(--ph-border)]
                 transition-all duration-300
                 group-hover:scale-105
-                group-hover:ring-[#F4C900]/50
-                dark:bg-slate-800
-                dark:ring-slate-700
+                group-hover:ring-[var(--ph-primary)]/50
               "
                         >
                             <Image
@@ -430,7 +418,7 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                             />
                         </div>
 
-                        <span className="line-clamp-2 max-w-[95px] text-[11px] font-semibold leading-tight text-slate-700 dark:text-slate-300 sm:text-xs">
+                        <span className="line-clamp-2 max-w-[95px] text-[11px] font-semibold leading-tight text-[var(--ph-text-soft)] sm:text-xs">
                             {combo.title}
                         </span>
                     </Link>
@@ -458,32 +446,27 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
               absolute top-[calc(100%+12px)] z-[70]
               w-[min(560px,calc(100vw-32px))]
               overflow-hidden rounded-[26px]
-              border border-slate-200/80
-              bg-white/95
+              border border-[var(--ph-border)]
+              bg-[var(--ph-surface)]
               p-3
               shadow-[0_25px_70px_rgba(15,23,42,0.14)]
-              backdrop-blur-xl
-              dark:border-white/10
-              dark:bg-[#171B1D]/95
               dark:shadow-[0_25px_70px_rgba(0,0,0,0.45)]
-              ${align === "right"
-                                ? "right-0"
-                                : "left-1/2 -translate-x-1/2 lg:left-0 lg:translate-x-0"
-                            }
+              right-0
+              ${align === "right" ? "lg:right-0" : "lg:left-0 lg:translate-x-0"}
             `}
                     >
                         <div className="mb-2 flex items-center justify-between px-3 pt-2">
                             <div>
-                                <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#D4A900] dark:text-[#FFDE59]">
+                                <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[var(--ph-accent)]">
                                     Explore
                                 </p>
 
-                                <h3 className="text-sm font-extrabold text-slate-900 dark:text-white">
+                                <h3 className="text-sm font-extrabold text-[var(--ph-text)]">
                                     {DRILL_TITLES[type]}
                                 </h3>
                             </div>
 
-                            <IoSparklesOutline className="text-xl text-[#E6C529] dark:text-[#FFDE59]" />
+                            <IoSparklesOutline className="text-xl text-[var(--ph-primary)]" />
                         </div>
 
                         <ul
@@ -514,7 +497,7 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                 type="button"
                 className={`${desktopLinkClass(
                     ""
-                )} group rounded-full px-2.5 py-2 hover:bg-black/[0.04] dark:hover:bg-white/[0.06]`}
+                )} rounded-full px-2.5 py-2 transition-transform duration-200 hover:scale-[1.03] hover:bg-black/[0.06]`}
             >
                 <span>{label}</span>
 
@@ -522,6 +505,8 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                     className={`text-[14px] transition-transform duration-200 ${openDropdown === type ? "rotate-180" : ""
                         }`}
                 />
+
+                <span className="pointer-events-none absolute left-1/2 -bottom-0.5 h-[2px] w-0 -translate-x-1/2 rounded-full bg-[#1E2B2B] transition-all duration-300 group-hover:w-3/5" />
             </button>
 
             <DesktopDropdown
@@ -540,11 +525,11 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
             className="p-3"
         >
             <div className="mb-2 px-3 pb-2">
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#C99E00] dark:text-[#FFDE59]">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[var(--ph-accent)]">
                     Play House
                 </p>
 
-                <p className="mt-0.5 text-lg font-extrabold text-slate-900 dark:text-white">
+                <p className="mt-0.5 text-lg font-extrabold text-[var(--ph-text)]">
                     Explore the fun ✨
                 </p>
             </div>
@@ -563,15 +548,13 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                 flex w-full items-center justify-between
                 rounded-2xl px-4 py-3.5
                 text-left text-sm font-bold
-                text-slate-800
+                text-[var(--ph-text-soft)]
                 transition-all duration-200
-                hover:bg-[#FFF9DB]
-                dark:text-slate-200
-                dark:hover:bg-white/[0.05]
+                hover:bg-[var(--ph-primary-soft)]
               "
                         >
                             <span>{label}</span>
-                            <IoChevronForward className="text-slate-400" />
+                            <IoChevronForward className="text-[var(--ph-text-faint)]" />
                         </button>
                     </li>
                 ))}
@@ -597,8 +580,8 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                 </li>
             </ul>
 
-            <div className="mt-3 rounded-2xl bg-[#FFF8D7] p-3 dark:bg-[#292617]">
-                <p className="text-xs font-semibold text-slate-600 dark:text-slate-300">
+            <div className="mt-3 rounded-2xl bg-[var(--ph-primary-soft)] p-3">
+                <p className="text-xs font-semibold text-[var(--ph-text-soft)]">
                     Little toys. Big adventures. ✨
                 </p>
             </div>
@@ -614,18 +597,16 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
             exit="exit"
             className="w-full"
         >
-            <div className="flex items-center gap-2 border-b border-slate-100 px-3 py-3 dark:border-white/10">
+            <div className="flex items-center gap-2 border-b border-[var(--ph-border)] px-3 py-3">
                 <button
                     type="button"
                     onClick={() => setMobileDrill(null)}
                     className="
             flex h-9 w-9 items-center justify-center
             rounded-full
-            text-slate-700
+            text-[var(--ph-text-soft)]
             transition-all
-            hover:bg-slate-100
-            dark:text-slate-200
-            dark:hover:bg-white/[0.06]
+            hover:bg-[var(--ph-primary-soft)]
           "
                     aria-label="Back to main menu"
                 >
@@ -633,11 +614,11 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                 </button>
 
                 <div>
-                    <p className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-[#C99E00] dark:text-[#FFDE59]">
+                    <p className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-[var(--ph-accent)]">
                         Explore
                     </p>
 
-                    <span className="text-sm font-extrabold text-slate-900 dark:text-white">
+                    <span className="text-sm font-extrabold text-[var(--ph-text)]">
                         {DRILL_TITLES[mobileDrill]}
                     </span>
                 </div>
@@ -653,16 +634,15 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
         <header
             className="
         sticky top-0 z-50 w-full
-        border-b border-black/[0.04]
-        bg-[#FFDE59]/95
-        shadow-[0_4px_24px_rgba(15,23,42,0.06)]
-        backdrop-blur-xl
-        dark:border-white/[0.06]
-        dark:bg-[#171A1C]/95
-        dark:shadow-[0_4px_24px_rgba(0,0,0,0.25)]
+        border-b border-black/[0.06]
+        bg-[var(--ph-primary)]
+        shadow-[0_4px_24px_rgba(15,23,42,0.08)]
+        dark:border-white/[0.08]
+        dark:bg-[var(--ph-surface)]
+        dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)]
       "
         >
-            <div className="mx-auto flex min-h-[64px] w-full max-w-[1500px] items-center gap-2 px-3 sm:px-5 md:min-h-[72px] md:px-7 lg:px-10 xl:px-12">
+            <div className="relative mx-auto flex min-h-[64px] w-full max-w-[1500px] items-center gap-2 px-3 sm:px-5 md:min-h-[72px] md:px-7 lg:px-10 xl:px-12">
 
                 {/* Mobile menu */}
                 <div className="relative md:hidden">
@@ -674,10 +654,10 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                         className="
               flex h-10 w-10 items-center justify-center
               rounded-full
-              text-slate-900
+              text-[#1E2B2B]
               transition-colors
-              hover:bg-black/[0.06]
-              dark:text-white
+              hover:bg-black/[0.08]
+              dark:text-[var(--ph-text)]
               dark:hover:bg-white/[0.07]
             "
                         aria-label="Toggle navigation menu"
@@ -700,16 +680,13 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                                 exit="exit"
                                 className="
                   absolute left-0 top-[calc(100%+12px)] z-[80]
-                  w-[calc(100vw-24px)]
+                  w-[calc(100vw-40px)]
                   max-w-[390px]
                   overflow-hidden
                   rounded-[26px]
-                  border border-slate-200/80
-                  bg-white/95
+                  border border-[var(--ph-border)]
+                  bg-[var(--ph-surface)]
                   shadow-[0_25px_70px_rgba(15,23,42,0.16)]
-                  backdrop-blur-xl
-                  dark:border-white/10
-                  dark:bg-[#171B1D]/95
                   dark:shadow-[0_25px_70px_rgba(0,0,0,0.5)]
                   sm:w-[370px]
                 "
@@ -722,15 +699,17 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                     </AnimatePresence>
                 </div>
 
-                {/* Logo */}
+                {/* Logo — centered on mobile/tablet, inline on desktop */}
                 <Link
                     href="/"
                     onClick={handleLinkClick}
                     className="
-            group flex shrink-0 items-center
+            group absolute left-1/2 top-1/2 flex shrink-0 items-center
+            -translate-x-1/2 -translate-y-1/2
             rounded-xl
             transition-transform duration-200
             hover:scale-[1.03]
+            md:static md:left-auto md:top-auto md:translate-x-0 md:translate-y-0
           "
                 >
                     <Image
@@ -740,8 +719,8 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                         height={80}
                         priority
                         className="
-              h-[52px] w-auto object-contain
-              sm:h-[58px]
+              h-[46px] w-auto object-contain
+              sm:h-[52px]
               md:h-[64px]
               lg:h-[68px]
               xl:h-[72px]
@@ -761,8 +740,9 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                                 href="/categoryDetail/36"
                                 className={desktopLinkClass("/categoryDetail/36")}
                             >
-                                <span className="rounded-full px-2.5 py-2 transition-colors hover:bg-black/[0.04] dark:hover:bg-white/[0.06]">
+                                <span className="relative rounded-full px-2.5 py-2 transition-colors hover:bg-black/[0.06]">
                                     Wholesale
+                                    <span className="pointer-events-none absolute left-1/2 -bottom-0.5 h-[2px] w-0 -translate-x-1/2 rounded-full bg-[#1E2B2B] transition-all duration-300 group-hover:w-3/5" />
                                 </span>
                             </Link>
                         </li>
@@ -772,8 +752,9 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                                 href="/aboutUs"
                                 className={desktopLinkClass("/aboutUs")}
                             >
-                                <span className="rounded-full px-2.5 py-2 transition-colors hover:bg-black/[0.04] dark:hover:bg-white/[0.06]">
+                                <span className="relative rounded-full px-2.5 py-2 transition-colors hover:bg-black/[0.06]">
                                     About Us
+                                    <span className="pointer-events-none absolute left-1/2 -bottom-0.5 h-[2px] w-0 -translate-x-1/2 rounded-full bg-[#1E2B2B] transition-all duration-300 group-hover:w-3/5" />
                                 </span>
                             </Link>
                         </li>
@@ -813,23 +794,16 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                                             className="
                         w-full rounded-full
                         border border-black/10
-                        bg-white/90
+                        bg-[var(--ph-surface)]
                         px-4 py-2.5 pr-10
                         text-sm font-semibold
-                        text-slate-800
+                        text-[var(--ph-text)]
                         outline-none
-                        placeholder:text-slate-400
+                        placeholder:text-[var(--ph-text-faint)]
                         transition-all
-                        focus:border-black/20
-                        focus:bg-white
+                        focus:border-[#1E2B2B]/20
                         focus:ring-4
                         focus:ring-white/40
-                        dark:border-white/10
-                        dark:bg-[#252A2C]
-                        dark:text-white
-                        dark:placeholder:text-slate-500
-                        dark:focus:bg-[#292E30]
-                        dark:focus:ring-white/10
                       "
                                         />
 
@@ -842,12 +816,10 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                         -translate-y-1/2
                         items-center justify-center
                         rounded-full
-                        text-slate-500
+                        text-[var(--ph-text-soft)]
                         transition-colors
-                        hover:bg-slate-100
-                        hover:text-slate-900
-                        dark:hover:bg-white/10
-                        dark:hover:text-white
+                        hover:bg-[var(--ph-primary-soft)]
+                        hover:text-[var(--ph-text)]
                       "
                                         >
                                             <IoSearchOutline className="text-lg" />
@@ -867,10 +839,10 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                         className="
               flex h-10 w-10 items-center justify-center
               rounded-full
-              text-slate-900
+              text-[#1E2B2B]
               transition-colors
-              hover:bg-black/[0.06]
-              dark:text-white
+              hover:bg-black/[0.08]
+              dark:text-[var(--ph-text)]
               dark:hover:bg-white/[0.07]
             "
                         aria-label={isSearchOpen ? "Close search" : "Search"}
@@ -892,10 +864,10 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
               relative flex h-10 w-10
               items-center justify-center
               rounded-full
-              text-slate-900
+              text-[#1E2B2B]
               transition-colors
-              hover:bg-black/[0.06]
-              dark:text-white
+              hover:bg-black/[0.08]
+              dark:text-[var(--ph-text)]
               dark:hover:bg-white/[0.07]
             "
                         aria-label="Open cart"
@@ -913,13 +885,13 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                     flex h-[17px] min-w-[17px]
                     items-center justify-center
                     rounded-full
-                    bg-[#F04F5F]
+                    bg-[var(--ph-coral)]
                     px-1
                     text-[9px]
                     font-extrabold
                     text-white
-                    ring-2 ring-[#FFDE59]
-                    dark:ring-[#171A1C]
+                    ring-2 ring-[var(--ph-primary)]
+                    dark:ring-[var(--ph-surface)]
                   "
                                 >
                                     {cartCount > 99 ? "99+" : cartCount}
@@ -938,11 +910,11 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                 rounded-full
                 px-2.5 py-2
                 text-sm font-bold
-                text-slate-900
+                text-[#1E2B2B]
                 transition-colors
-                hover:bg-black/[0.05]
+                hover:bg-black/[0.08]
                 sm:flex
-                dark:text-white
+                dark:text-[var(--ph-text)]
                 dark:hover:bg-white/[0.06]
               "
                         >
@@ -956,15 +928,15 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                             href="/logIn"
                             onClick={handleLinkClick}
                             className="
-                hidden rounded-full
-                px-3 py-2
+                block rounded-full
+                bg-[#1E2B2B]
+                px-3.5 py-2
                 text-sm font-bold
-                text-slate-900
-                transition-colors
-                hover:bg-black/[0.05]
-                sm:block
-                dark:text-white
-                dark:hover:bg-white/[0.06]
+                text-[var(--ph-primary)]
+                transition-transform
+                hover:scale-[1.03]
+                dark:bg-[var(--ph-primary)]
+                dark:text-[#1E2B2B]
               "
                         >
                             Login
@@ -984,9 +956,8 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                         transition={{ duration: 0.22 }}
                         className="
               overflow-hidden
-              border-t border-black/[0.05]
+              border-t border-black/[0.08]
               md:hidden
-              dark:border-white/[0.06]
             "
                     >
                         <form
@@ -1003,20 +974,15 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                                     className="
                     w-full rounded-full
                     border border-black/10
-                    bg-white
+                    bg-[var(--ph-surface)]
                     px-5 py-3
                     pr-12
                     text-sm font-semibold
-                    text-slate-800
+                    text-[var(--ph-text)]
                     outline-none
-                    placeholder:text-slate-400
-                    focus:border-black/20
+                    placeholder:text-[var(--ph-text-faint)]
+                    focus:border-[#1E2B2B]/20
                     focus:ring-4 focus:ring-white/40
-                    dark:border-white/10
-                    dark:bg-[#252A2C]
-                    dark:text-white
-                    dark:placeholder:text-slate-500
-                    dark:focus:ring-white/10
                   "
                                 />
 
@@ -1029,11 +995,10 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                     -translate-y-1/2
                     items-center justify-center
                     rounded-full
-                    bg-[#FFDE59]
-                    text-slate-900
+                    bg-[#1E2B2B]
+                    text-[var(--ph-primary)]
                     transition-transform
                     hover:scale-105
-                    dark:bg-[#FFDE59]
                   "
                                 >
                                     <IoSearchOutline className="text-xl" />

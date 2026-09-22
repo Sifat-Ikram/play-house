@@ -8,13 +8,14 @@ import PlayHouseCTA from "@/components/pages/homePage/PlayHouseCTA";
 import ShopByInterest from "@/components/pages/homePage/ShopByInterest";
 import Testimonial from "@/components/pages/homePage/Testimonial";
 import FeaturedCollection from "@/components/pages/homePage/FeaturedCollection";
+import FloatingTrustBadges from "@/components/cards/FloatingTrustBadges";
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[var(--ph-bg)]">
       <Banner />
 
-      <div className="bg-[linear-gradient(to_bottom,#ffffff_0%,#f0f9ff_35%,#fffbeb_70%,#FFDE59_100%)]">
+      <div className="bg-[linear-gradient(to_bottom,var(--ph-bg)_0%,var(--ph-accent-soft)_35%,var(--ph-primary-soft)_70%,var(--ph-primary-soft)_100%)]">
         <ShopByAge />
         <CategorySection />
         <ShopByInterest />
@@ -25,11 +26,7 @@ export default function Home() {
         <PlayHouseCTA />
         <Testimonial />
       </div>
-
-      {/* Review Section with the testimonial background */}
-      <div className="bg-[#5b95ff]">
-        {/* <ReviewSection /> */}
-      </div>
+      <FloatingTrustBadges />
     </div>
   );
 }

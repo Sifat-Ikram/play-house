@@ -14,7 +14,6 @@ import {
     HiOutlineAcademicCap,
 } from "react-icons/hi2";
 
-
 const occasions = [
     {
         id: 1,
@@ -22,10 +21,9 @@ const occasions = [
         description: "Make their special day extra exciting",
         icon: HiOutlineCake,
         emoji: "🎂",
-        bg: "bg-[#FFF7D6]",
-        accent: "bg-[#FACC15]",
-        iconColor: "text-[#CA8A04]",
-        border: "border-[#FDE68A]",
+        bg: "var(--ph-primary-soft)",
+        accent: "var(--ph-primary)",
+        border: "var(--ph-primary)",
     },
     {
         id: 2,
@@ -33,10 +31,9 @@ const occasions = [
         description: "Find something they'll love",
         icon: FiGift,
         emoji: "🎁",
-        bg: "bg-[#E0F7FF]",
-        accent: "bg-[#38BDF8]",
-        iconColor: "text-[#0284C7]",
-        border: "border-[#BAE6FD]",
+        bg: "var(--ph-accent-soft)",
+        accent: "var(--ph-accent)",
+        border: "var(--ph-accent)",
     },
     {
         id: 3,
@@ -44,10 +41,9 @@ const occasions = [
         description: "Toys made for sharing and playing",
         icon: HiOutlineSparkles,
         emoji: "🎉",
-        bg: "bg-[#FFE7F0]",
-        accent: "bg-[#FB7185]",
-        iconColor: "text-[#E11D48]",
-        border: "border-[#FECDD3]",
+        bg: "#FFE7E3",
+        accent: "var(--ph-coral)",
+        border: "var(--ph-coral)",
     },
     {
         id: 4,
@@ -55,10 +51,9 @@ const occasions = [
         description: "Make every celebration memorable",
         icon: FiStar,
         emoji: "✨",
-        bg: "bg-[#E9F9E8]",
-        accent: "bg-[#4ADE80]",
-        iconColor: "text-[#16A34A]",
-        border: "border-[#BBF7D0]",
+        bg: "#E1F7F1",
+        accent: "var(--ph-mint)",
+        border: "var(--ph-mint)",
     },
     {
         id: 5,
@@ -66,10 +61,9 @@ const occasions = [
         description: "Fun learning starts here",
         icon: HiOutlineAcademicCap,
         emoji: "🎒",
-        bg: "bg-[#F0E9FF]",
-        accent: "bg-[#A78BFA]",
-        iconColor: "text-[#7C3AED]",
-        border: "border-[#DDD6FE]",
+        bg: "#D8EBEA",
+        accent: "var(--ph-accent-dark)",
+        border: "var(--ph-accent-dark)",
     },
     {
         id: 6,
@@ -77,10 +71,9 @@ const occasions = [
         description: "Sometimes you don't need a reason",
         icon: FiHeart,
         emoji: "❤️",
-        bg: "bg-[#FFF0E5]",
-        accent: "bg-[#FB923C]",
-        iconColor: "text-[#EA580C]",
-        border: "border-[#FED7AA]",
+        bg: "#FBE7C9",
+        accent: "var(--ph-primary-dark)",
+        border: "var(--ph-primary-dark)",
     },
 ];
 
@@ -125,10 +118,8 @@ const ShopByOccasion = () => {
                                 whileTap={{
                                     scale: 0.98,
                                 }}
-                                className={`
+                                className="
                                     group relative overflow-hidden
-                                    ${occasion.bg}
-                                    ${occasion.border}
                                     border
                                     rounded-[28px]
                                     p-4 sm:p-5 lg:p-6
@@ -140,38 +131,42 @@ const ShopByOccasion = () => {
                                     hover:shadow-lg
                                     transition-shadow duration-300
                                     cursor-pointer
-                                `}
+                                "
+                                style={{
+                                    backgroundColor: occasion.bg,
+                                    borderColor: `${occasion.border}40`,
+                                }}
                             >
                                 {/* Decorative Circle */}
                                 <div
-                                    className={`
+                                    className="
                                         absolute
                                         -right-8
                                         -top-8
                                         w-28 h-28
                                         sm:w-36 sm:h-36
                                         rounded-full
-                                        ${occasion.accent}
-                                        opacity-20
+                                        opacity-25
                                         transition-transform
                                         duration-500
                                         group-hover:scale-125
-                                    `}
+                                    "
+                                    style={{ backgroundColor: occasion.accent }}
                                 />
 
                                 {/* Small Decorative Circle */}
                                 <div
-                                    className={`
+                                    className="
                                         absolute
                                         right-8 bottom-8
                                         w-3 h-3
                                         rounded-full
-                                        ${occasion.accent}
                                         opacity-40
                                         group-hover:scale-150
                                         transition-transform
                                         duration-300
-                                    `}
+                                    "
+                                    style={{ backgroundColor: occasion.accent }}
                                 />
 
                                 {/* Icon */}
@@ -181,22 +176,16 @@ const ShopByOccasion = () => {
                                             rotate: [-5, 5, -5, 0],
                                         }}
                                         transition={{ duration: 0.4 }}
-                                        className={`
+                                        className="
                                             w-11 h-11
                                             sm:w-13 sm:h-13
                                             rounded-2xl
-                                            ${occasion.accent}
                                             flex items-center justify-center
                                             shadow-sm
-                                        `}
+                                        "
+                                        style={{ backgroundColor: occasion.accent }}
                                     >
-                                        <Icon
-                                            className="
-                                                text-white
-                                                text-xl
-                                                sm:text-2xl
-                                            "
-                                        />
+                                        <Icon className="text-white text-xl sm:text-2xl" />
                                     </motion.div>
 
                                     {/* Emoji */}
@@ -216,28 +205,18 @@ const ShopByOccasion = () => {
                                 {/* Content */}
                                 <div className="relative z-10 mt-5 sm:mt-6">
                                     <h3
-                                        className={`
-                                            font-poppins
-                                            font-bold
-                                            text-base
-                                            sm:text-lg
-                                            lg:text-xl
-                                            ${occasion.iconColor}
-                                        `}
+                                        className="font-bold text-base sm:text-lg lg:text-xl"
+                                        style={{
+                                            fontFamily: "var(--font-display)",
+                                            color: occasion.accent,
+                                        }}
                                     >
                                         {occasion.title}
                                     </h3>
 
                                     <p
-                                        className="
-                                            mt-1
-                                            max-w-[220px]
-                                            font-roboto
-                                            text-xs
-                                            sm:text-sm
-                                            text-gray-600
-                                            leading-relaxed
-                                        "
+                                        className="mt-1 max-w-[220px] text-xs sm:text-sm text-[#1E2B2B]/65 leading-relaxed"
+                                        style={{ fontFamily: "var(--font-body)" }}
                                     >
                                         {occasion.description}
                                     </p>
@@ -245,7 +224,7 @@ const ShopByOccasion = () => {
 
                                 {/* Arrow */}
                                 <div
-                                    className={`
+                                    className="
                                         absolute
                                         bottom-4
                                         right-4
@@ -253,8 +232,7 @@ const ShopByOccasion = () => {
                                         sm:right-5
                                         w-8 h-8
                                         rounded-full
-                                        bg-white/80
-                                        ${occasion.iconColor}
+                                        bg-white/85
                                         flex items-center justify-center
                                         shadow-sm
                                         opacity-0
@@ -262,7 +240,8 @@ const ShopByOccasion = () => {
                                         group-hover:opacity-100
                                         group-hover:translate-x-0
                                         transition-all duration-300
-                                    `}
+                                    "
+                                    style={{ color: occasion.accent }}
                                 >
                                     <FiArrowUpRight className="text-sm" />
                                 </div>
