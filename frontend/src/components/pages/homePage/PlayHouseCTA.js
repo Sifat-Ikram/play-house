@@ -11,7 +11,7 @@ import {
 
 const PlayHouseCTA = ({
     signupHref = "/register",
-    shopHref = "/products",
+    shopHref = "/product",
 }) => {
     return (
         <section className="px-4 sm:px-6 lg:px-8 py-10 sm:py-14">

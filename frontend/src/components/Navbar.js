@@ -105,7 +105,7 @@ function LoadingSpinner() {
 
 function EmptyState({ label }) {
     return (
-        <li className="col-span-full py-8 text-center text-sm text-[var(--ph-text-faint)]">
+        <li className="col-span-full py-8 text-center text-sm text-white">
             {label}
         </li>
     );
@@ -114,14 +114,16 @@ function EmptyState({ label }) {
 const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
     const router = useRouter();
     const pathname = usePathname();
+    const mobileMenuRef = useRef(null);
 
     const searchWrapRef = useRef(null);
     const searchInputRef = useRef(null);
     const mobileSearchRef = useRef(null);
 
-    const { categories, isLoading: categoriesLoading } = useCategory();
     const { brands, isLoading: brandsLoading } = useBrand();
     const { combos, isLoading: combosLoading } = useCombo();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const { categories, isLoading: categoriesLoading } = useCategory();
 
     const activeCombos = useMemo(
         () => combos?.filter((combo) => combo.is_active) || [],
@@ -131,7 +133,6 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [openDropdown, setOpenDropdown] = useState(null);
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [mobileDrill, setMobileDrill] = useState(null);
 
     const isActive = (href) => pathname === href;
@@ -149,7 +150,7 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
 
         if (!query) return;
 
-        router.push(`/searchResult/${encodeURIComponent(query.toLowerCase())}`);
+        router.push(`/product?search=${encodeURIComponent(query.toLowerCase())}`);
 
         setSearchQuery("");
         setIsSearchOpen(false);
@@ -189,10 +190,11 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
             }
 
             if (
-                mobileSearchRef.current &&
-                !mobileSearchRef.current.contains(event.target)
+                mobileMenuRef.current &&
+                !mobileMenuRef.current.contains(event.target)
             ) {
-                // Search closing is intentionally handled separately.
+                setIsMobileMenuOpen(false);
+                setMobileDrill(null);
             }
         };
 
@@ -277,7 +279,7 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                     animate="visible"
                 >
                     <Link
-                        href={`/categoryDetail/${category.category_id}`}
+                        href={`/product?category=${encodeURIComponent(category.category_name)}`}
                         onClick={handleLinkClick}
                         className="
               group flex h-full flex-col items-center
@@ -332,7 +334,7 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                     animate="visible"
                 >
                     <Link
-                        href={`/brandDetail/${brand.brand_id}`}
+                        href={`/product?brand=${encodeURIComponent(brand.brand_name)}`}
                         onClick={handleLinkClick}
                         className="
               group flex h-full flex-col items-center
@@ -387,7 +389,7 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                     animate="visible"
                 >
                     <Link
-                        href={`/comboDetail/${combo.combo_id}`}
+                        href={`/product/${combo?.combo.title}`}
                         onClick={handleLinkClick}
                         className="
               group flex h-full flex-col items-center
@@ -435,53 +437,31 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
         return (
             <AnimatePresence>
                 {isOpen && (
-                    <motion.div
-                        variants={dropdownVariants}
-                        initial="hidden"
-                        animate="visible"
-                        exit="exit"
-                        onMouseEnter={() => setOpenDropdown(type)}
-                        onMouseLeave={() => setOpenDropdown(null)}
-                        className={`
-              absolute top-[calc(100%+12px)] z-[70]
-              w-[min(560px,calc(100vw-32px))]
-              overflow-hidden rounded-[26px]
-              border border-[var(--ph-border)]
-              bg-[var(--ph-surface)]
-              p-3
-              shadow-[0_25px_70px_rgba(15,23,42,0.14)]
-              dark:shadow-[0_25px_70px_rgba(0,0,0,0.45)]
-              right-0
-              ${align === "right" ? "lg:right-0" : "lg:left-0 lg:translate-x-0"}
-            `}
-                    >
-                        <div className="mb-2 flex items-center justify-between px-3 pt-2">
-                            <div>
-                                <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[var(--ph-accent)]">
-                                    Explore
-                                </p>
+                    <>
+                        {/* Backdrop — blocks/dims page content behind dropdown */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            onMouseEnter={() => setOpenDropdown(null)}
+                            className="fixed inset-0 top-[64px] md:top-[72px] z-[60] bg-black/30 backdrop-blur-[2px]"
+                        />
 
-                                <h3 className="text-sm font-extrabold text-[var(--ph-text)]">
-                                    {DRILL_TITLES[type]}
-                                </h3>
-                            </div>
-
-                            <IoSparklesOutline className="text-xl text-[var(--ph-primary)]" />
-                        </div>
-
-                        <ul
-                            className="
-                grid max-h-[420px]
-                grid-cols-3 gap-1
-                overflow-y-auto
-                p-1
-                sm:grid-cols-4
-                lg:grid-cols-5
-              "
+                        <motion.div
+                            variants={dropdownVariants}
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                            onMouseEnter={() => setOpenDropdown(type)}
+                            onMouseLeave={() => setOpenDropdown(null)}
+                            className={`absolute top-full pt-3 z-[70] w-[min(560px,calc(100vw-32px))] right-0 ${align === "right" ? "lg:right-0" : "lg:left-0 lg:translate-x-0"}`}
                         >
-                            {renderDropdownItems(type)}
-                        </ul>
-                    </motion.div>
+                            <ul className="grid max-h-[420px] grid-cols-3 gap-1 overflow-y-auto p-5 sm:grid-cols-4 lg:grid-cols-5">
+                                {renderDropdownItems(type)}
+                            </ul>
+                        </motion.div>
+                    </>
                 )}
             </AnimatePresence>
         );
@@ -524,16 +504,6 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
             exit="exit"
             className="p-3"
         >
-            <div className="mb-2 px-3 pb-2">
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[var(--ph-accent)]">
-                    Play House
-                </p>
-
-                <p className="mt-0.5 text-lg font-extrabold text-[var(--ph-text)]">
-                    Explore the fun ✨
-                </p>
-            </div>
-
             <ul className="space-y-1">
                 {[
                     ["category", "Categories"],
@@ -561,9 +531,9 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
 
                 <li>
                     <Link
-                        href="/categoryDetail/36"
+                        href="/wholeSale/36"
                         onClick={handleLinkClick}
-                        className={mobileLinkClass("/categoryDetail/36")}
+                        className={mobileLinkClass("/wholeSale/36")}
                     >
                         Wholesale
                     </Link>
@@ -579,12 +549,6 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                     </Link>
                 </li>
             </ul>
-
-            <div className="mt-3 rounded-2xl bg-[var(--ph-primary-soft)] p-3">
-                <p className="text-xs font-semibold text-[var(--ph-text-soft)]">
-                    Little toys. Big adventures. ✨
-                </p>
-            </div>
         </motion.div>
     );
 
@@ -614,10 +578,6 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                 </button>
 
                 <div>
-                    <p className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-[var(--ph-accent)]">
-                        Explore
-                    </p>
-
                     <span className="text-sm font-extrabold text-[var(--ph-text)]">
                         {DRILL_TITLES[mobileDrill]}
                     </span>
@@ -645,7 +605,7 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
             <div className="relative mx-auto flex min-h-[64px] w-full max-w-[1500px] items-center gap-2 px-3 sm:px-5 md:min-h-[72px] md:px-7 lg:px-10 xl:px-12">
 
                 {/* Mobile menu */}
-                <div className="relative md:hidden">
+                <div ref={mobileMenuRef} className="relative lg:hidden">
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.92 }}
@@ -704,13 +664,13 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                     href="/"
                     onClick={handleLinkClick}
                     className="
-            group absolute left-1/2 top-1/2 flex shrink-0 items-center
-            -translate-x-1/2 -translate-y-1/2
-            rounded-xl
-            transition-transform duration-200
-            hover:scale-[1.03]
-            md:static md:left-auto md:top-auto md:translate-x-0 md:translate-y-0
-          "
+    group absolute left-1/2 top-1/2 flex shrink-0 items-center
+    -translate-x-1/2 -translate-y-1/2
+    rounded-xl
+    transition-transform duration-200
+    hover:scale-[1.03]
+    lg:static lg:left-auto lg:top-auto lg:translate-x-0 lg:translate-y-0
+  "
                 >
                     <Image
                         src={logo}
@@ -729,7 +689,7 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
                 </Link>
 
                 {/* Desktop navigation */}
-                <nav className="hidden flex-1 justify-center md:flex">
+                <nav className="hidden flex-1 justify-center lg:flex">
                     <ul className="flex items-center gap-1 lg:gap-2 xl:gap-3">
                         {navDropdownButton("category", "Categories")}
                         {navDropdownButton("brand", "Brands")}
@@ -737,8 +697,8 @@ const Navbar = ({ handleShowDrawer, cartCount = 0, user = null }) => {
 
                         <li>
                             <Link
-                                href="/categoryDetail/36"
-                                className={desktopLinkClass("/categoryDetail/36")}
+                                href="/wholeSale/36"
+                                className={desktopLinkClass("/wholesale/36")}
                             >
                                 <span className="relative rounded-full px-2.5 py-2 transition-colors hover:bg-black/[0.06]">
                                     Wholesale

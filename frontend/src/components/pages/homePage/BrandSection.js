@@ -128,7 +128,7 @@ const BrandSection = () => {
                     {brands.map((brand, index) => (
                         <SwiperSlide key={brand.brand_id}>
                             <Link
-                                href={`/brandDetail/${brand.brand_id}`}
+                                href={`/product?brand=${encodeURIComponent(brand.brand_name || brand.brand_id)}`}
                                 className="block group"
                             >
                                 <motion.div

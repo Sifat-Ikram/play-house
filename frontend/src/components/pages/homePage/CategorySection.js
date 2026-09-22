@@ -132,7 +132,7 @@ const CategorySection = () => {
                     {categories.map((category, index) => (
                         <SwiperSlide key={category.category_id}>
                             <Link
-                                href={`/categoryDetail/${category.category_id}`}
+                                href={`/product?category=${encodeURIComponent(category.category_name)}`}
                                 className="block group"
                             >
                                 <motion.div

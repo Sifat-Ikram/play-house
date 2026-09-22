@@ -119,7 +119,7 @@ const ShopByAgeContent = () => {
                             className="h-full"
                         >
                             <Link
-                                href={`/ageCategory/${item._id}?minAge=${item.minAge}&maxAge=${item.maxAge}`}
+                                href={`/product?minAge=${item.minAge}&maxAge=${item.maxAge === Infinity ? "" : item.maxAge}`}
                                 title={`View details for ${item.title}`}
                                 aria-label={`View details for ${item.title}`}
                                 className="group relative overflow-hidden rounded-3xl border-solid border-4 border-[#1E2B2B]/80 hover:cursor-pointer p-4 lg:p-5 flex flex-col justify-center items-center text-center space-y-3 h-full shadow-sm hover:shadow-lg transition-shadow duration-300"

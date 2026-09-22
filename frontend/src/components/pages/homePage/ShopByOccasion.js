@@ -2,6 +2,7 @@
 
 import SectionHeader from "@/components/cards/SectionHeader";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import {
     FiArrowUpRight,
     FiGift,
@@ -92,20 +93,15 @@ const ShopByOccasion = () => {
 
                 {/* Occasion Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-5 lg:gap-6">
+                    {/* Replace the map item block inside <div className="grid ..."> */}
                     {occasions.map((occasion, index) => {
                         const Icon = occasion.icon;
 
                         return (
-                            <motion.button
+                            <motion.div
                                 key={occasion.id}
-                                initial={{
-                                    opacity: 0,
-                                    y: 20,
-                                }}
-                                whileInView={{
-                                    opacity: 1,
-                                    y: 0,
-                                }}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{
                                     duration: 0.4,
@@ -118,134 +114,137 @@ const ShopByOccasion = () => {
                                 whileTap={{
                                     scale: 0.98,
                                 }}
-                                className="
-                                    group relative overflow-hidden
-                                    border
-                                    rounded-[28px]
-                                    p-4 sm:p-5 lg:p-6
-                                    text-left
-                                    min-h-[165px]
-                                    sm:min-h-[190px]
-                                    lg:min-h-[210px]
-                                    shadow-sm
-                                    hover:shadow-lg
-                                    transition-shadow duration-300
-                                    cursor-pointer
-                                "
-                                style={{
-                                    backgroundColor: occasion.bg,
-                                    borderColor: `${occasion.border}40`,
-                                }}
                             >
-                                {/* Decorative Circle */}
-                                <div
+                                <Link
+                                    href={`/product?occasion=${encodeURIComponent(occasion.title.toLowerCase().replace(/\s+/g, "-"))}`}
                                     className="
-                                        absolute
-                                        -right-8
-                                        -top-8
-                                        w-28 h-28
-                                        sm:w-36 sm:h-36
-                                        rounded-full
-                                        opacity-25
-                                        transition-transform
-                                        duration-500
-                                        group-hover:scale-125
-                                    "
-                                    style={{ backgroundColor: occasion.accent }}
-                                />
-
-                                {/* Small Decorative Circle */}
-                                <div
-                                    className="
-                                        absolute
-                                        right-8 bottom-8
-                                        w-3 h-3
-                                        rounded-full
-                                        opacity-40
-                                        group-hover:scale-150
-                                        transition-transform
-                                        duration-300
-                                    "
-                                    style={{ backgroundColor: occasion.accent }}
-                                />
-
-                                {/* Icon */}
-                                <div className="relative z-10 flex items-start justify-between">
-                                    <motion.div
-                                        whileHover={{
-                                            rotate: [-5, 5, -5, 0],
-                                        }}
-                                        transition={{ duration: 0.4 }}
-                                        className="
-                                            w-11 h-11
-                                            sm:w-13 sm:h-13
-                                            rounded-2xl
-                                            flex items-center justify-center
-                                            shadow-sm
-                                        "
-                                        style={{ backgroundColor: occasion.accent }}
-                                    >
-                                        <Icon className="text-white text-xl sm:text-2xl" />
-                                    </motion.div>
-
-                                    {/* Emoji */}
-                                    <span
-                                        className="
-                                            text-2xl
-                                            sm:text-3xl
-                                            group-hover:scale-110
-                                            group-hover:-rotate-6
-                                            transition-all duration-300
-                                        "
-                                    >
-                                        {occasion.emoji}
-                                    </span>
-                                </div>
-
-                                {/* Content */}
-                                <div className="relative z-10 mt-5 sm:mt-6">
-                                    <h3
-                                        className="font-bold text-base sm:text-lg lg:text-xl"
-                                        style={{
-                                            fontFamily: "var(--font-display)",
-                                            color: occasion.accent,
-                                        }}
-                                    >
-                                        {occasion.title}
-                                    </h3>
-
-                                    <p
-                                        className="mt-1 max-w-[220px] text-xs sm:text-sm text-[#1E2B2B]/65 leading-relaxed"
-                                        style={{ fontFamily: "var(--font-body)" }}
-                                    >
-                                        {occasion.description}
-                                    </p>
-                                </div>
-
-                                {/* Arrow */}
-                                <div
-                                    className="
-                                        absolute
-                                        bottom-4
-                                        right-4
-                                        sm:bottom-5
-                                        sm:right-5
-                                        w-8 h-8
-                                        rounded-full
-                                        bg-white/85
-                                        flex items-center justify-center
-                                        shadow-sm
-                                        opacity-0
-                                        translate-x-2
-                                        group-hover:opacity-100
-                                        group-hover:translate-x-0
-                                        transition-all duration-300
-                                    "
-                                    style={{ color: occasion.accent }}
+                    group relative block overflow-hidden
+                    border
+                    rounded-[28px]
+                    p-4 sm:p-5 lg:p-6
+                    text-left
+                    min-h-[165px]
+                    sm:min-h-[190px]
+                    lg:min-h-[210px]
+                    shadow-sm
+                    hover:shadow-lg
+                    transition-shadow duration-300
+                    cursor-pointer
+                "
+                                    style={{
+                                        backgroundColor: occasion.bg,
+                                        borderColor: `${occasion.border}40`,
+                                    }}
                                 >
-                                    <FiArrowUpRight className="text-sm" />
-                                </div>
-                            </motion.button>
+                                    {/* Decorative Circle */}
+                                    <div
+                                        className="
+                        absolute
+                        -right-8
+                        -top-8
+                        w-28 h-28
+                        sm:w-36 sm:h-36
+                        rounded-full
+                        opacity-25
+                        transition-transform
+                        duration-500
+                        group-hover:scale-125
+                    "
+                                        style={{ backgroundColor: occasion.accent }}
+                                    />
+
+                                    {/* Small Decorative Circle */}
+                                    <div
+                                        className="
+                        absolute
+                        right-8 bottom-8
+                        w-3 h-3
+                        rounded-full
+                        opacity-40
+                        group-hover:scale-150
+                        transition-transform
+                        duration-300
+                    "
+                                        style={{ backgroundColor: occasion.accent }}
+                                    />
+
+                                    {/* Icon & Emoji */}
+                                    <div className="relative z-10 flex items-start justify-between">
+                                        <motion.div
+                                            whileHover={{
+                                                rotate: [-5, 5, -5, 0],
+                                            }}
+                                            transition={{ duration: 0.4 }}
+                                            className="
+                            w-11 h-11
+                            sm:w-13 sm:h-13
+                            rounded-2xl
+                            flex items-center justify-center
+                            shadow-sm
+                        "
+                                            style={{ backgroundColor: occasion.accent }}
+                                        >
+                                            <Icon className="text-white text-xl sm:text-2xl" />
+                                        </motion.div>
+
+                                        <span
+                                            className="
+                            text-2xl
+                            sm:text-3xl
+                            group-hover:scale-110
+                            group-hover:-rotate-6
+                            transition-all duration-300
+                        "
+                                        >
+                                            {occasion.emoji}
+                                        </span>
+                                    </div>
+
+                                    {/* Content */}
+                                    <div className="relative z-10 mt-5 sm:mt-6">
+                                        <h3
+                                            className="font-bold text-base sm:text-lg lg:text-xl"
+                                            style={{
+                                                fontFamily: "var(--font-display)",
+                                                color: occasion.accent,
+                                            }}
+                                        >
+                                            {occasion.title}
+                                        </h3>
+
+                                        <p
+                                            className="mt-1 max-w-[220px] text-xs sm:text-sm text-[#1E2B2B]/65 leading-relaxed"
+                                            style={{ fontFamily: "var(--font-body)" }}
+                                        >
+                                            {occasion.description}
+                                        </p>
+                                    </div>
+
+                                    {/* Arrow */}
+                                    <div
+                                        className="
+                        absolute
+                        bottom-4
+                        right-4
+                        sm:bottom-5
+                        sm:right-5
+                        w-8 h-8
+                        rounded-full
+                        bg-white/85
+                        flex items-center justify-center
+                        shadow-sm
+                        opacity-0
+                        translate-x-2
+                        group-hover:opacity-100
+                        group-hover:translate-x-0
+                        transition-all duration-300
+                    "
+                                        style={{ color: occasion.accent }}
+                                    >
+                                        <FiArrowUpRight className="text-sm" />
+                                    </div>
+                                </Link>
+                            </motion.div>
                         );
                     })}
                 </div>
