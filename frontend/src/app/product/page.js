@@ -1,8 +1,9 @@
-// src/app/product/page.js
+import ProductPageHeader from "@/components/pages/product/ProductPageHeader";
+
+
 
 export default async function ProductPage({ searchParams }) {
     const params = await searchParams;
-    console.log(params);
 
     const brand = params?.brand;
     const combo = params?.combo;
@@ -49,8 +50,20 @@ export default async function ProductPage({ searchParams }) {
     }
 
     return (
-        <main className="container mx-auto px-4 py-8 min-h-screen">
+        <main className="min-h-screen bg-[var(--ph-bg)]">
+            <ProductPageHeader
+                brand={brand}
+                category={category}
+                combo={combo}
+                interest={interest}
+                occasion={occasion}
+                minAge={minAge}
+                maxAge={maxAge}
+                search={search}
+                productCount={products.length}
+            />
 
+            {/* Sidebar/Drawer + Product Grid পরে এখানে বসবে */}
         </main>
     );
 }

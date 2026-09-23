@@ -13,6 +13,7 @@ const categoryRoutes = require("./routes/category.routes");
 const colorRoutes = require("./routes/color.routes");
 const comboRoutes = require("./routes/combo.routes");
 const reviewRoutes = require("./routes/reviewRoutes");
+const productListingRoutes = require("./routes/productListing.route");
 
 const notFoundMiddleware = require(
     "./middleware/notFound.middleware"
@@ -60,6 +61,8 @@ app.use("/api/colors", colorRoutes);
 app.use("/api/combo", comboRoutes);
 
 app.use("/api/review", reviewRoutes);
+
+app.use("/api/product-listing", productListingRoutes);
 
 // 404
 app.use(notFoundMiddleware);
