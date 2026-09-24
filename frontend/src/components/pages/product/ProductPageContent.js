@@ -48,11 +48,6 @@ const ProductPageContent = ({
     const [paginationMode, setPaginationMode] = useState("loadMore");
     const [currentPage, setCurrentPage] = useState(1);
 
-
-    // Whenever the active homepage/navbar filter changes (new brand, category,
-    // combo, interest, occasion, age, or search term), reset all sidebar
-    // checkboxes and pagination — otherwise stale filters/pages from the
-    // previous product set would silently carry over and hide products.
     useEffect(() => {
         setSelectedFilters({});
         setVisibleCount(LOAD_STEP);
@@ -86,14 +81,12 @@ const ProductPageContent = ({
         }));
     };
 
-    // Single button toggles both — only one is ever visible per breakpoint via CSS,
-    // so toggling both independently is safe and keeps each side's own default intact.
     const handleToggleFilters = () => {
         setIsDesktopSidebarOpen((prev) => !prev);
         setIsMobileDrawerOpen((prev) => !prev);
     };
 
-    // ---- Apply client-side filtering (category / brand / interest / occasion / age) ----
+   
     const filteredProducts = useMemo(() => {
         let list = [...products];
 

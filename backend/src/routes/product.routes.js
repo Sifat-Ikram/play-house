@@ -10,7 +10,7 @@ router.get("/new-arrivals", productController.getNewArrivalProducts);
 
 router.get("/featured", productController.getFeaturedProducts);
 
-router.get("/:id", productController.getProductById);
+router.get("/details/:id", productController.getProductDetails);
 
 router.put("/:id", productController.updateProduct);
 

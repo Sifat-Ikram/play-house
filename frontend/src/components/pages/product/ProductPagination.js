@@ -22,13 +22,13 @@ const ProductPagination = ({
         if (visibleCount >= totalCount) return null;
 
         return (
-            <div className="flex justify-center mt-8 sm:mt-10">
+            <div className="flex justify-center mt-6 sm:mt-8 md:mt-10">
                 <motion.button
                     whileHover={{ scale: 1.04 }}
                     whileTap={{ scale: 0.96 }}
                     type="button"
                     onClick={onLoadMore}
-                    className="rounded-full px-6 py-3 text-sm font-bold text-[#1E2B2B] shadow-md hover:shadow-lg transition-shadow"
+                    className="rounded-full px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-[#1E2B2B] shadow-md hover:shadow-lg transition-shadow"
                     style={{ backgroundColor: "var(--ph-primary)", fontFamily: "var(--font-body)" }}
                 >
                     Load More Toys 🧸
@@ -39,7 +39,7 @@ const ProductPagination = ({
 
     // numbered pagination
     return (
-        <div className="flex items-center justify-center gap-2 mt-8 sm:mt-10">
+        <div className="flex items-center justify-center gap-1.5 sm:gap-2 mt-6 sm:mt-8 md:mt-10">
             <button
                 type="button"
                 onClick={() => onPageChange(Math.max(1, currentPage - 1))}
@@ -47,7 +47,7 @@ const ProductPagination = ({
                 className="nav-btn"
                 aria-label="Previous page"
             >
-                <FiChevronLeft />
+                <FiChevronLeft className="text-sm sm:text-base" />
             </button>
 
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
@@ -56,7 +56,7 @@ const ProductPagination = ({
                     type="button"
                     onClick={() => onPageChange(page)}
                     className={`
-                        flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold transition-colors
+                        flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full text-xs sm:text-sm font-bold transition-colors
                         ${page === currentPage
                             ? "text-[#1E2B2B]"
                             : "text-[var(--ph-text-soft)] hover:bg-[var(--ph-primary-soft)]"
@@ -78,7 +78,7 @@ const ProductPagination = ({
                 className="nav-btn"
                 aria-label="Next page"
             >
-                <FiChevronRight />
+                <FiChevronRight className="text-sm sm:text-base" />
             </button>
         </div>
     );

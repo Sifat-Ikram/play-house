@@ -15,46 +15,46 @@ const SimpleProductCard = ({ product }) => (
             border border-[var(--ph-border)]
             shadow-sm hover:shadow-xl
             transition-all duration-300
-            rounded-tl-3xl rounded-tr-lg rounded-bl-lg rounded-br-3xl
+            rounded-tl-2xl sm:rounded-tl-3xl rounded-tr-md sm:rounded-tr-lg rounded-bl-md sm:rounded-bl-lg rounded-br-2xl sm:rounded-br-3xl
         "
     >
         <div
-            className="relative w-full h-[130px] sm:h-[160px] md:h-[180px] overflow-hidden"
+            className="relative w-full h-[90px] sm:h-[150px] md:h-[170px] lg:h-[210px] xl:h-[170px] overflow-hidden"
             style={{ background: "linear-gradient(to bottom, var(--ph-accent-soft), var(--ph-surface))" }}
         >
             <Image
                 src={product?.display_image_url || "/placeholder.png"}
                 alt={product?.product_name || "Product"}
                 fill
-                sizes="(max-width: 640px) 45vw, (max-width: 1024px) 25vw, 20vw"
+                sizes="(max-width: 640px) 33vw, (max-width: 1280px) 33vw, 20vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
         </div>
 
-        <div className="p-3 sm:p-4 space-y-1">
+        <div className="p-1.5 sm:p-3 md:p-3.5 lg:p-4 space-y-0.5 sm:space-y-1">
             <p
-                className="text-[10px] sm:text-[11px] font-semibold text-[var(--ph-primary-dark)] uppercase tracking-wider truncate"
+                className="text-[7px] sm:text-[10px] md:text-[11px] font-semibold text-[var(--ph-primary-dark)] uppercase tracking-wider truncate"
                 style={{ fontFamily: "var(--font-body)" }}
             >
                 {product?.brand_name || "Toy Store"}
             </p>
 
             <h3
-                className="text-sm sm:text-[15px] font-semibold text-[var(--ph-text)] truncate"
+                className="text-[10px] sm:text-sm md:text-[15px] font-semibold text-[var(--ph-text)] truncate"
                 style={{ fontFamily: "var(--font-display)" }}
             >
                 {product?.product_name || "No Name Available"}
             </h3>
 
             <p
-                className="text-[11px] text-[var(--ph-text-faint)] truncate"
+                className="hidden sm:block text-[11px] text-[var(--ph-text-faint)] truncate"
                 style={{ fontFamily: "var(--font-body)" }}
             >
                 {product?.category_name}
             </p>
 
             <p
-                className="pt-1 text-sm sm:text-base font-bold text-[var(--ph-text)]"
+                className="pt-0.5 sm:pt-1 text-[10px] sm:text-sm md:text-base font-bold text-[var(--ph-text)]"
                 style={{ fontFamily: "var(--font-display)" }}
             >
                 BDT{" "}
@@ -69,21 +69,21 @@ const SimpleProductCard = ({ product }) => (
 const ProductGrid = ({ products = [] }) => {
     if (products.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center text-center py-20 sm:py-28">
+            <div className="flex flex-col items-center justify-center text-center py-14 sm:py-20 md:py-28">
                 <div
-                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mb-4"
+                    className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-3 sm:mb-4"
                     style={{ backgroundColor: "var(--ph-primary-soft)" }}
                 >
-                    <FiPackage className="text-2xl sm:text-3xl" style={{ color: "var(--ph-primary-dark)" }} />
+                    <FiPackage className="text-xl sm:text-2xl md:text-3xl" style={{ color: "var(--ph-primary-dark)" }} />
                 </div>
                 <h2
-                    className="text-lg sm:text-xl font-semibold text-[var(--ph-text)] mb-1.5"
+                    className="text-base sm:text-lg md:text-xl font-semibold text-[var(--ph-text)] mb-1 sm:mb-1.5"
                     style={{ fontFamily: "var(--font-display)" }}
                 >
                     No products found
                 </h2>
                 <p
-                    className="text-sm text-[var(--ph-text-soft)] max-w-sm"
+                    className="text-xs sm:text-sm text-[var(--ph-text-soft)] max-w-sm"
                     style={{ fontFamily: "var(--font-body)" }}
                 >
                     Try adjusting or clearing your filters to see more toys.
@@ -93,9 +93,9 @@ const ProductGrid = ({ products = [] }) => {
     }
 
     return (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
+        <div className="grid grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-2 sm:gap-3 md:gap-4 lg:gap-6 xl:gap-5">
             {products.map((product) => (
-                <Link key={product.inventory_id} href={`/productDetail/${product.product_id}`}>
+                <Link key={product.inventory_id} href={`/productDetails/${encodeURIComponent(product.product_name)}`}>
                     <SimpleProductCard product={product} />
                 </Link>
             ))}

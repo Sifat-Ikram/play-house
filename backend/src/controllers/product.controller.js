@@ -43,17 +43,20 @@ const getProducts = async (req, res) => {
     }
 };
 
-const getProductById = async (req, res) => {
+const getProductDetails = async (req, res) => {
     try {
-        const product = await productService.getProductById(req.params.id);
+        const { id } = req.params;
+        const product = await productService.fetchProductDetailsById(id);
+
         return res.status(200).json({
             success: true,
             data: product,
         });
     } catch (error) {
-        return res.status(404).json({
+        const statusCode = error.statusCode || 500;
+        return res.status(statusCode).json({
             success: false,
-            message: error.message,
+            message: error.message || "Internal server error",
         });
     }
 };
@@ -143,7 +146,7 @@ const getProductByName = async (req, res) => {
 module.exports = {
     createProduct,
     getProducts,
-    getProductById,
+    getProductDetails,
     updateProduct,
     deleteProduct,
     getNewArrivalProducts,

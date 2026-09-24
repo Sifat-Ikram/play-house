@@ -67,28 +67,28 @@ const FilterSidebar = ({
     return (
         <div className="flex h-full flex-col">
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-[var(--ph-border)] px-4 py-4 sm:px-5">
+            <div className="flex items-center justify-between border-b border-[var(--ph-border)] px-3.5 py-3 sm:px-4 sm:py-3.5 md:px-5 md:py-4">
                 <div>
                     <p
-                        className="text-[10px] font-bold uppercase tracking-[0.14em]"
+                        className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.12em] sm:tracking-[0.14em]"
                         style={{ color: "var(--ph-accent)", fontFamily: "var(--font-body)" }}
                     >
                         Refine
                     </p>
                     <h3
-                        className="text-lg font-semibold text-[var(--ph-text)]"
+                        className="text-base sm:text-lg font-semibold text-[var(--ph-text)]"
                         style={{ fontFamily: "var(--font-display)" }}
                     >
                         Filters
                     </h3>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2">
                     {activeCount > 0 && (
                         <button
                             type="button"
                             onClick={onClearAll}
-                            className="text-xs font-semibold text-[var(--ph-coral)] hover:underline"
+                            className="text-[11px] sm:text-xs font-semibold text-[var(--ph-coral)] hover:underline"
                             style={{ fontFamily: "var(--font-body)" }}
                         >
                             Clear All
@@ -100,23 +100,23 @@ const FilterSidebar = ({
                             type="button"
                             onClick={onClose}
                             aria-label="Close filters"
-                            className="flex h-8 w-8 items-center justify-center rounded-full text-[var(--ph-text-soft)] hover:bg-[var(--ph-primary-soft)]"
+                            className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full text-[var(--ph-text-soft)] hover:bg-[var(--ph-primary-soft)]"
                         >
-                            <FiX className="text-lg" />
+                            <FiX className="text-base sm:text-lg" />
                         </button>
                     )}
                 </div>
             </div>
 
             {/* Scrollable filter groups */}
-            <div className="flex-1 overflow-y-auto px-4 py-3 sm:px-5">
+            <div className="flex-1 overflow-y-auto px-3.5 py-2.5 sm:px-4 sm:py-3 md:px-5">
                 {groups.map((group) => {
                     const isOpen = openSections[group.key];
 
                     return (
                         <div
                             key={group.key}
-                            className="border-b border-[var(--ph-border)] py-3.5 last:border-b-0"
+                            className="border-b border-[var(--ph-border)] py-3 sm:py-3.5 last:border-b-0"
                         >
                             <button
                                 type="button"
@@ -124,23 +124,23 @@ const FilterSidebar = ({
                                 className="flex w-full items-center justify-between"
                             >
                                 <span
-                                    className="text-sm font-bold text-[var(--ph-text)]"
+                                    className="text-[13px] sm:text-sm font-bold text-[var(--ph-text)]"
                                     style={{ fontFamily: "var(--font-display)" }}
                                 >
                                     {group.label}
                                 </span>
                                 <FiChevronDown
-                                    className={`text-sm text-[var(--ph-text-faint)] transition-transform duration-200 ${isOpen ? "rotate-180" : ""
+                                    className={`text-xs sm:text-sm text-[var(--ph-text-faint)] transition-transform duration-200 ${isOpen ? "rotate-180" : ""
                                         }`}
                                 />
                             </button>
 
                             {isOpen && (
-                                <ul className="mt-3 space-y-2.5">
+                                <ul className="mt-2.5 sm:mt-3 space-y-2 sm:space-y-2.5">
                                     {group.options.map((option) => (
                                         <li key={option}>
-                                            <label className="flex cursor-pointer items-center gap-2.5">
-                                                <span className="relative flex h-[18px] w-[18px] shrink-0 items-center justify-center">
+                                            <label className="flex cursor-pointer items-center gap-2 sm:gap-2.5">
+                                                <span className="relative flex h-4 w-4 sm:h-[18px] sm:w-[18px] shrink-0 items-center justify-center">
                                                     <input
                                                         type="checkbox"
                                                         checked={isChecked(group.key, option)}
@@ -148,7 +148,7 @@ const FilterSidebar = ({
                                                         className="peer absolute inset-0 h-full w-full cursor-pointer opacity-0"
                                                     />
                                                     <span
-                                                        className="h-[18px] w-[18px] rounded-md border-2 transition-colors duration-150 peer-checked:border-transparent"
+                                                        className="h-4 w-4 sm:h-[18px] sm:w-[18px] rounded-md border-2 transition-colors duration-150 peer-checked:border-transparent"
                                                         style={{
                                                             borderColor: "var(--ph-border)",
                                                             backgroundColor: isChecked(group.key, option)
@@ -158,7 +158,7 @@ const FilterSidebar = ({
                                                     />
                                                     {isChecked(group.key, option) && (
                                                         <svg
-                                                            className="pointer-events-none absolute h-[11px] w-[11px] text-[#1E2B2B]"
+                                                            className="pointer-events-none absolute h-2.5 w-2.5 sm:h-[11px] sm:w-[11px] text-[#1E2B2B]"
                                                             viewBox="0 0 20 20"
                                                             fill="currentColor"
                                                         >
@@ -167,7 +167,7 @@ const FilterSidebar = ({
                                                     )}
                                                 </span>
                                                 <span
-                                                    className="text-sm text-[var(--ph-text-soft)]"
+                                                    className="text-[13px] sm:text-sm text-[var(--ph-text-soft)]"
                                                     style={{ fontFamily: "var(--font-body)" }}
                                                 >
                                                     {option}
