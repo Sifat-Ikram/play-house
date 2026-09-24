@@ -219,8 +219,6 @@ const ProductPageContent = ({
 
                     {/* Grid + Chips + Pagination */}
                     <div className="flex-1 min-w-0">
-
-                        {/* Active filter chips + Clear All — above the grid */}
                         {activeFilterCount > 0 && (
                             <div className="flex flex-wrap items-center gap-2 mb-4 sm:mb-5">
                                 {Object.entries(selectedFilters).map(([groupKey, values]) =>
