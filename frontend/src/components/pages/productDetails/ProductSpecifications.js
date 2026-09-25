@@ -2,7 +2,6 @@
 
 const SPEC_FIELDS = [
   { key: "number_of_pieces", label: "Number of Pieces" },
-  { key: "materials", label: "Materials" },
   { key: "interest", label: "Interest" },
   { key: "occasion", label: "Occasion" },
   { key: "warranty_info", label: "Warranty" },
@@ -24,6 +23,10 @@ const ProductSpecifications = ({ product, sku }) => {
     product.maximum_age_range,
   );
 
+  const materials = Array.isArray(product.materials)
+    ? product.materials.filter(Boolean)
+    : [];
+
   const rows = [
     ...(ageRange ? [{ label: "Age Range", value: ageRange }] : []),
     ...SPEC_FIELDS.filter(
@@ -35,7 +38,13 @@ const ProductSpecifications = ({ product, sku }) => {
     ...(sku ? [{ label: "SKU", value: sku }] : []),
   ];
 
-  if (rows.length === 0 && !product.return_and_refund_policy) return null;
+  if (
+    rows.length === 0 &&
+    materials.length === 0 &&
+    !product.return_and_refund_policy
+  ) {
+    return null;
+  }
 
   return (
     <div>
@@ -60,6 +69,33 @@ const ProductSpecifications = ({ product, sku }) => {
               </span>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Materials — shown as pill badges instead of plain comma text */}
+      {materials.length > 0 && (
+        <div className="mt-5">
+          <h4
+            className="text-sm font-bold text-[var(--ph-text)] mb-2"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Materials
+          </h4>
+          <div className="flex flex-wrap gap-2">
+            {materials.map((material) => (
+              <span
+                key={material}
+                className="rounded-full px-3 py-1 text-[11px] sm:text-xs font-semibold"
+                style={{
+                  backgroundColor: "var(--ph-primary-soft)",
+                  color: "var(--ph-primary-dark)",
+                  fontFamily: "var(--font-body)",
+                }}
+              >
+                {material}
+              </span>
+            ))}
+          </div>
         </div>
       )}
 

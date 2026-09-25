@@ -108,7 +108,7 @@ export const CartProvider = ({ children }) => {
     [fetchCart],
   );
 
-  const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  const cartCount = items.length;
   const cartTotal = items.reduce(
     (sum, item) => sum + Number(item.selling_price || 0) * item.quantity,
     0,

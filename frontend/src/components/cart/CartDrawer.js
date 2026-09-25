@@ -45,20 +45,22 @@ const CartItemRow = ({ item, onUpdateQuantity, onRemove }) => (
           {item.product_name}
         </p>
 
-        <p
+        <div
           className="w-full flex items-center gap-3 text-[11px] sm:text-xs text-[var(--ph-text-soft)] mt-0.5"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          <div>{item.brand_name}</div>
-          <div className="flex-1 flex items-center gap-1">
+          <div>
+            <p>{item.brand_name}</p>
+          </div>
+          <p className="flex-1 flex items-center gap-1">
             {item.color_name && (
               <>
                 {" "}
                 • <span>{item.color_name}</span>
               </>
             )}
-          </div>
-        </p>
+          </p>
+        </div>
 
         <p
           className="text-sm font-bold mt-1"

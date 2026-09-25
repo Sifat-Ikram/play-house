@@ -15,6 +15,8 @@ import {
   IoChevronBack,
   IoPersonCircleOutline,
   IoSparklesOutline,
+  IoPersonOutline,
+  IoLogOutOutline,
 } from "react-icons/io5";
 
 import logo from "@/assets/image-removebg-preview_6.webp";
@@ -22,6 +24,7 @@ import useCategory from "@/hooks/useCategory";
 import useBrand from "@/hooks/useBrand";
 import useCombo from "@/hooks/useCombo";
 import { useCart } from "@/provider/CartProvider";
+import { useAuth } from "@/provider/AuthProvider";
 
 const PLACEHOLDER =
   "https://i.ibb.co.com/rKyYKgDT/multimedia-communication-image-placeholder-photography-landscape-image-comics-picture-photo-gallery.webp";
@@ -112,7 +115,9 @@ function EmptyState({ label }) {
   );
 }
 
-const Navbar = ({ user = null }) => {
+const Navbar = () => {
+  const { cartCount, openCart } = useCart();
+  const { user, logout } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const mobileMenuRef = useRef(null);
@@ -120,13 +125,13 @@ const Navbar = ({ user = null }) => {
   const searchWrapRef = useRef(null);
   const searchInputRef = useRef(null);
   const mobileSearchRef = useRef(null);
+  const accountMenuRef = useRef(null);
 
   const { brands, isLoading: brandsLoading } = useBrand();
   const { combos, isLoading: combosLoading } = useCombo();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { categories, isLoading: categoriesLoading } = useCategory();
-
-  const { cartCount, openCart } = useCart();
+  const [isAccountOpen, setIsAccountOpen] = useState(false);
 
   const activeCombos = useMemo(
     () => combos?.filter((combo) => combo.is_active) || [],
@@ -144,6 +149,7 @@ const Navbar = ({ user = null }) => {
     setIsMobileMenuOpen(false);
     setMobileDrill(null);
     setOpenDropdown(null);
+    setIsAccountOpen(false);
   };
 
   const handleSearchSubmit = (e) => {
@@ -199,6 +205,13 @@ const Navbar = ({ user = null }) => {
         setIsMobileMenuOpen(false);
         setMobileDrill(null);
       }
+
+      if (
+        accountMenuRef.current &&
+        !accountMenuRef.current.contains(event.target)
+      ) {
+        setIsAccountOpen(false);
+      }
     };
 
     const handleEscape = (event) => {
@@ -208,6 +221,7 @@ const Navbar = ({ user = null }) => {
         setOpenDropdown(null);
         setIsMobileMenuOpen(false);
         setMobileDrill(null);
+        setIsAccountOpen(false);
       }
     };
 
@@ -798,7 +812,7 @@ const Navbar = ({ user = null }) => {
             whileTap={{ scale: 0.92 }}
             type="button"
             onClick={toggleSearch}
-            className="
+            className="cursor-pointer
               flex h-10 w-10 items-center justify-center
               rounded-full
               text-[#1E2B2B]
@@ -822,7 +836,7 @@ const Navbar = ({ user = null }) => {
             whileTap={{ scale: 0.92 }}
             type="button"
             onClick={openCart}
-            className="
+            className="cursor-pointer
               relative flex h-10 w-10
               items-center justify-center
               rounded-full
@@ -862,44 +876,159 @@ const Navbar = ({ user = null }) => {
             </AnimatePresence>
           </motion.button>
 
+          <motion.button
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.95 }}
+            type="button"
+            onClick={() => router.push("/ai-assistant")}
+            className="
+    flex items-center gap-1.5
+    rounded-full
+    border border-[#1E2B2B]/10
+    bg-[var(--ph-surface)]
+    px-2.5 py-2
+    text-xs font-bold
+    text-[#1E2B2B]
+    shadow-sm
+    transition-all duration-200
+    hover:border-[#1E2B2B]/20
+    hover:shadow-md
+    dark:border-white/10
+    dark:bg-white/10
+    dark:text-[var(--ph-text)]
+  "
+          >
+            <IoSparklesOutline className="text-[17px]" />
+
+            <span className="lg:hidden">AI</span>
+            <span className="hidden lg:inline">AI Assistant</span>
+          </motion.button>
+
           {/* Login / Account */}
           {user ? (
-            <Link
-              href="/account"
-              onClick={handleLinkClick}
-              className="
-                hidden items-center gap-1.5
-                rounded-full
-                px-2.5 py-2
-                text-sm font-bold
-                text-[#1E2B2B]
-                transition-colors
-                hover:bg-black/[0.08]
-                sm:flex
-                dark:text-[var(--ph-text)]
-                dark:hover:bg-white/[0.06]
-              "
-            >
-              <IoPersonCircleOutline className="text-[22px]" />
-              <span className="max-w-[90px] truncate">
-                {user.name || "Account"}
-              </span>
-            </Link>
+            <div ref={accountMenuRef} className="relative hidden sm:block">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                type="button"
+                onClick={() => setIsAccountOpen((prev) => !prev)}
+                className=" cursor-pointer
+        flex h-10 w-10 items-center justify-center
+        overflow-hidden rounded-full
+        border-2 border-[#1E2B2B]/20
+        bg-[var(--ph-surface)]
+        shadow-sm
+        transition-all duration-200
+        hover:border-[#1E2B2B]/40
+        hover:shadow-md
+        dark:border-white/15
+      "
+                aria-label="Account menu"
+                aria-expanded={isAccountOpen}
+              >
+                {user?.image || user?.profile_image ? (
+                  <Image
+                    src={user.image || user.profile_image}
+                    alt={user.name || "Profile"}
+                    width={40}
+                    height={40}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <IoPersonOutline className="text-[22px] text-[#1E2B2B] dark:text-[var(--ph-text)]" />
+                )}
+              </motion.button>
+
+              <AnimatePresence>
+                {isAccountOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -4, scale: 0.97 }}
+                    transition={{ duration: 0.16 }}
+                    className="
+            absolute right-0 top-[calc(100%+10px)] z-[80]
+            w-48 overflow-hidden
+            rounded-2xl
+            border border-[var(--ph-border)]
+            bg-[var(--ph-surface)]
+            p-1.5
+            shadow-[0_18px_45px_rgba(15,23,42,0.14)]
+            dark:shadow-[0_18px_45px_rgba(0,0,0,0.4)]
+          "
+                  >
+                    <Link
+                      href="/account"
+                      onClick={handleLinkClick}
+                      className="
+              flex items-center gap-3
+              rounded-xl px-3 py-2.5
+              text-sm font-semibold
+              text-[var(--ph-text-soft)]
+              transition-colors
+              hover:bg-[var(--ph-primary-soft)]
+              hover:text-[var(--ph-text)]
+            "
+                    >
+                      <IoPersonOutline className="text-[18px]" />
+                      Profile
+                    </Link>
+
+                    <Link
+                      href="/orders"
+                      onClick={handleLinkClick}
+                      className="
+              flex items-center gap-3
+              rounded-xl px-3 py-2.5
+              text-sm font-semibold
+              text-[var(--ph-text-soft)]
+              transition-colors
+              hover:bg-[var(--ph-primary-soft)]
+              hover:text-[var(--ph-text)]
+            "
+                    >
+                      <IoCartOutline className="text-[18px]" />
+                      My Orders
+                    </Link>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsAccountOpen(false);
+                        logout();
+                      }}
+                      className=" cursor-pointer
+              flex w-full items-center gap-3
+              rounded-xl px-3 py-2.5
+              text-left text-sm font-semibold
+              text-[var(--ph-text-soft)]
+              transition-colors
+              hover:bg-[var(--ph-coral)]/10
+              hover:text-[var(--ph-coral)]
+            "
+                    >
+                      <IoLogOutOutline className="text-[18px]" />
+                      Logout
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           ) : (
             <Link
               href="/logIn"
               onClick={handleLinkClick}
               className="
-                block rounded-full
-                bg-[#1E2B2B]
-                px-3.5 py-2
-                text-sm font-bold
-                text-[var(--ph-primary)]
-                transition-transform
-                hover:scale-[1.03]
-                dark:bg-[var(--ph-primary)]
-                dark:text-[#1E2B2B]
-              "
+      block rounded-full
+      bg-[#1E2B2B]
+      px-3.5 py-2
+      text-sm font-bold
+      text-[var(--ph-primary)]
+      transition-transform
+      hover:scale-[1.03]
+      dark:bg-[var(--ph-primary)]
+      dark:text-[#1E2B2B]
+    "
             >
               Login
             </Link>

@@ -1,36 +1,27 @@
-const { verifyToken } = require("../utils/jwt");
+const { verifyAccessToken } = require("../utils/jwt");
 
-const authMiddleware = (req, res, next) => {
-    try {
-        const authHeader = req.headers.authorization;
+const requireAuth = (req, res, next) => {
+  const authHeader = req.headers.authorization;
 
-        if (!authHeader) {
-            return res.status(401).json({
-                success: false,
-                message: "Authorization header is required",
-            });
-        }
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({
+      success: false,
+      message: "Authentication required",
+    });
+  }
 
-        const [type, token] = authHeader.split(" ");
+  const token = authHeader.split(" ")[1];
 
-        if (type !== "Bearer" || !token) {
-            return res.status(401).json({
-                success: false,
-                message: "Invalid authorization format",
-            });
-        }
-
-        const decoded = verifyToken(token);
-
-        req.user = decoded;
-
-        next();
-    } catch (error) {
-        return res.status(401).json({
-            success: false,
-            message: "Invalid or expired token",
-        });
-    }
+  try {
+    const decoded = verifyAccessToken(token);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid or expired access token",
+    });
+  }
 };
 
-module.exports = authMiddleware;
+module.exports = { requireAuth };

@@ -5,6 +5,7 @@ import QueryProvider from "@/provider/QueryProvider";
 import Footer from "@/components/Footer";
 import { CartProvider } from "@/provider/CartProvider";
 import CartDrawer from "@/components/cart/CartDrawer";
+import { AuthProvider } from "@/provider/AuthProvider";
 
 const fredoka = Fredoka({
   variable: "--font-fredoka",
@@ -32,12 +33,14 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col bg-[var(--ph-bg)] text-[var(--ph-text)] font-[var(--font-body)]">
         <QueryProvider>
-          <CartProvider>
-            <Navbar />
-            {children}
-            <Footer />
-             <CartDrawer />
-          </CartProvider>
+          <AuthProvider>
+            <CartProvider>
+              <Navbar />
+              {children}
+              <Footer />
+              <CartDrawer />
+            </CartProvider>
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>

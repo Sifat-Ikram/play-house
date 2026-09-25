@@ -8,7 +8,6 @@ import PlayHouseCTA from "@/components/pages/homePage/PlayHouseCTA";
 import ShopByInterest from "@/components/pages/homePage/ShopByInterest";
 import Testimonial from "@/components/pages/homePage/Testimonial";
 import FeaturedCollection from "@/components/pages/homePage/FeaturedCollection";
-import FloatingTrustBadges from "@/components/cards/FloatingTrustBadges";
 
 export default function Home() {
   return (
@@ -26,7 +25,6 @@ export default function Home() {
         <PlayHouseCTA />
         <Testimonial />
       </div>
-      <FloatingTrustBadges />
     </div>
   );
 }

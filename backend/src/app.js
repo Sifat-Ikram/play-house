@@ -12,6 +12,8 @@ const comboRoutes = require("./routes/combo.routes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const cartRoutes = require("./routes/cart.routes");
 const productListingRoutes = require("./routes/productListing.route");
+const orderRoutes = require("./routes/order.routes");
+const authRoutes = require("./routes/auth.routes");
 
 const notFoundMiddleware = require("./middleware/notFound.middleware");
 
@@ -56,6 +58,10 @@ app.use("/api/review", reviewRoutes);
 app.use("/api/product-listing", productListingRoutes);
 
 app.use("/api/cart", cartRoutes);
+
+app.use("/api/orders", orderRoutes);
+
+app.use("/api/auth", authRoutes);
 
 // 404
 app.use(notFoundMiddleware);
