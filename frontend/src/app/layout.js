@@ -3,6 +3,8 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import QueryProvider from "@/provider/QueryProvider";
 import Footer from "@/components/Footer";
+import { CartProvider } from "@/provider/CartProvider";
+import CartDrawer from "@/components/cart/CartDrawer";
 
 const fredoka = Fredoka({
   variable: "--font-fredoka",
@@ -18,7 +20,8 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 export const metadata = {
   title: "Play House | A Little World of Wonder",
-  description: "Discover toys made for little adventures — Play House brings joy to every little heart.",
+  description:
+    "Discover toys made for little adventures — Play House brings joy to every little heart.",
 };
 
 export default function RootLayout({ children }) {
@@ -29,9 +32,12 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col bg-[var(--ph-bg)] text-[var(--ph-text)] font-[var(--font-body)]">
         <QueryProvider>
-          <Navbar />
-          {children}
-          <Footer />
+          <CartProvider>
+            <Navbar />
+            {children}
+            <Footer />
+             <CartDrawer />
+          </CartProvider>
         </QueryProvider>
       </body>
     </html>

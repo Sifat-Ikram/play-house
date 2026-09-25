@@ -4,22 +4,6 @@ const createProduct = async (productData) => {
     return await productModel.createProduct(productData);
 };
 
-const fetchProductDetailsById = async (id) => {
-    if (!id) {
-        throw new Error("Product ID is required");
-    }
-
-    const product = await productModel.getProductDetailsById(id);
-
-    if (!product) {
-        const error = new Error("Product not found");
-        error.statusCode = 404;
-        throw error;
-    }
-
-    return product;
-};
-
 const getAllProducts = async () => {
     return await productModel.getProducts();
 };
@@ -66,7 +50,6 @@ const fetchProductByName = async (name) => {
 
 module.exports = {
     createProduct,
-    fetchProductDetailsById,
     getAllProducts,
     updateProduct,
     deleteProduct,

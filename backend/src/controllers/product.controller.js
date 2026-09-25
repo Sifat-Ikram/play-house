@@ -43,24 +43,6 @@ const getProducts = async (req, res) => {
     }
 };
 
-const getProductDetails = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const product = await productService.fetchProductDetailsById(id);
-
-        return res.status(200).json({
-            success: true,
-            data: product,
-        });
-    } catch (error) {
-        const statusCode = error.statusCode || 500;
-        return res.status(statusCode).json({
-            success: false,
-            message: error.message || "Internal server error",
-        });
-    }
-};
-
 const updateProduct = async (req, res) => {
     try {
         const updatedProduct = await productService.updateProduct(
@@ -146,7 +128,6 @@ const getProductByName = async (req, res) => {
 module.exports = {
     createProduct,
     getProducts,
-    getProductDetails,
     updateProduct,
     deleteProduct,
     getNewArrivalProducts,

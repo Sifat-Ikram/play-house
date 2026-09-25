@@ -46,65 +46,6 @@ const createProduct = async (data) => {
   return result.rows[0];
 };
 
-const getProductDetailsById = async (id) => {
-  const query = `
-    SELECT 
-      p.*,
-      b.brand_id,
-      b.brand_name,
-      b.brand_image,
-      c.category_id,
-      c.category_name,
-      c.category_image,
-      COALESCE(
-        json_agg(
-          json_build_object(
-            'id', inv.id,
-            'color_id', inv.color_id,
-            'color_name', col.color_name,
-            'color_hex', col.color_hex,
-            'sku', inv.sku,
-            'stock_quantity', inv.stock_quantity,
-            'buying_price', inv.buying_price,
-            'selling_price', inv.selling_price,
-            'min_wholesale_qty', inv.min_wholesale_qty,
-            'wholesale_price', inv.wholesale_price,
-            'mark_unavailable', inv.mark_unavailable,
-            'applicable_tax_percent', inv.applicable_tax_percent,
-            'is_featured', inv.is_featured,
-            'created_at', inv.created_at,
-            'updated_at', inv.updated_at,
-            'images', COALESCE(img.images, '[]'::json)
-          )
-          ORDER BY inv.created_at ASC
-        ) FILTER (WHERE inv.id IS NOT NULL), '[]'::json
-      ) AS inventory
-    FROM products p
-    LEFT JOIN brands b ON b.brand_id = p.brand_id
-    LEFT JOIN categories c ON c.category_id = p.category_id
-    LEFT JOIN inventory inv ON inv.product_id = p.id
-    LEFT JOIN colors col ON col.id = inv.color_id
-    LEFT JOIN LATERAL (
-      SELECT json_agg(
-        json_build_object(
-          'id', i.id,
-          'image_url', i.image_url,
-          'is_display_image', i.is_display_image,
-          'created_at', i.created_at,
-          'updated_at', i.updated_at
-        ) ORDER BY i.created_at ASC
-      ) AS images
-      FROM inventory_images i
-      WHERE i.inventory_id = inv.id
-    ) img ON true
-    WHERE p.id = $1
-    GROUP BY p.id, b.brand_id, b.brand_name, b.brand_image, c.category_id, c.category_name, c.category_image;
-  `;
-
-  const result = await pool.query(query, [id]);
-  return result.rows[0];
-};
-
 const getProducts = async () => {
   const query = `
     SELECT *
@@ -231,13 +172,19 @@ const getProductByName = async (name) => {
   const query = `
     SELECT 
       p.*,
+      b.brand_id,
       b.brand_name,
+      b.brand_image,
+      c.category_id,
       c.category_name,
+      c.category_image,
       COALESCE(
         json_agg(
           json_build_object(
             'id', inv.id,
             'color_id', inv.color_id,
+            'color_name', col.color_name,
+            'color_hex', col.hex_code,
             'sku', inv.sku,
             'stock_quantity', inv.stock_quantity,
             'buying_price', inv.buying_price,
@@ -251,12 +198,14 @@ const getProductByName = async (name) => {
             'updated_at', inv.updated_at,
             'images', COALESCE(img.images, '[]'::json)
           )
+          ORDER BY inv.created_at ASC
         ) FILTER (WHERE inv.id IS NOT NULL), '[]'::json
       ) AS inventory
     FROM products p
     LEFT JOIN brands b ON b.brand_id = p.brand_id
     LEFT JOIN categories c ON c.category_id = p.category_id
     LEFT JOIN inventory inv ON inv.product_id = p.id
+    LEFT JOIN colors col ON col.color_id = inv.color_id
     LEFT JOIN LATERAL (
       SELECT json_agg(
         json_build_object(
@@ -271,7 +220,7 @@ const getProductByName = async (name) => {
       WHERE i.inventory_id = inv.id
     ) img ON true
     WHERE LOWER(p.name) = LOWER($1)
-    GROUP BY p.id, b.brand_name, c.category_name;
+    GROUP BY p.id, b.brand_id, b.brand_name, b.brand_image, c.category_id, c.category_name, c.category_image;
   `;
 
   const result = await pool.query(query, [name]);
@@ -280,7 +229,6 @@ const getProductByName = async (name) => {
 
 module.exports = {
   createProduct,
-  getProductDetailsById,
   getProducts,
   updateProduct,
   deleteProduct,
