@@ -54,6 +54,12 @@ const updateUser = async (id, data) => {
   return result.rows[0];
 };
 
+const deleteUser = async (id) => {
+  const query = `DELETE FROM users WHERE id = $1 RETURNING id;`;
+  const result = await pool.query(query, [id]);
+  return result.rows[0];
+};
+
 const saveRefreshToken = async (userId, token, expiresAt) => {
   const query = `
     INSERT INTO refresh_tokens (user_id, token, expires_at)
@@ -81,6 +87,7 @@ module.exports = {
   getUserByEmail,
   getUserById,
   updateUser,
+  deleteUser,
   saveRefreshToken,
   findRefreshToken,
   deleteRefreshToken,

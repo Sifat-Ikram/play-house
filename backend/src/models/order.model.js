@@ -9,7 +9,12 @@ const getShippingCost = (deliveryOption) => {
   return SHIPPING_COST[deliveryOption] ?? SHIPPING_COST.OUTSIDE_DHAKA;
 };
 
-const getCartItemsWithStock = async (client, cartToken) => {
+const getCartItemsWithStock = async (client, { cartToken, userId }) => {
+  const whereClause = userId
+    ? `ci.user_id = $1`
+    : `ci.cart_token = $1 AND ci.user_id IS NULL`;
+  const param = userId || cartToken;
+
   const query = `
     SELECT
       ci.id AS cart_item_id,
@@ -22,10 +27,10 @@ const getCartItemsWithStock = async (client, cartToken) => {
     FROM cart_items ci
     JOIN inventory inv ON inv.id = ci.inventory_id
     JOIN products p ON p.id = inv.product_id
-    WHERE ci.cart_token = $1;
+    WHERE ${whereClause};
   `;
 
-  const result = await client.query(query, [cartToken]);
+  const result = await client.query(query, [param]);
   return result.rows;
 };
 
@@ -35,7 +40,10 @@ const createOrder = async (data) => {
   try {
     await client.query("BEGIN");
 
-    const cartItems = await getCartItemsWithStock(client, data.cart_token);
+    const cartItems = await getCartItemsWithStock(client, {
+      cartToken: data.cart_token,
+      userId: data.user_id,
+    });
 
     if (cartItems.length === 0) {
       const error = new Error("Your cart is empty");
@@ -111,10 +119,16 @@ const createOrder = async (data) => {
       );
     }
 
-    // Clear the cart
-    await client.query(`DELETE FROM cart_items WHERE cart_token = $1;`, [
-      data.cart_token,
-    ]);
+    if (data.user_id) {
+      await client.query(`DELETE FROM cart_items WHERE user_id = $1;`, [
+        data.user_id,
+      ]);
+    } else {
+      await client.query(
+        `DELETE FROM cart_items WHERE cart_token = $1 AND user_id IS NULL;`,
+        [data.cart_token],
+      );
+    }
 
     await client.query("COMMIT");
 

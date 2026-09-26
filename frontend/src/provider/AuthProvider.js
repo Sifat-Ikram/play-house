@@ -12,15 +12,33 @@ import {
   getAccessToken,
   getRefreshToken,
   getStoredUser,
-  setAccessToken,
   clearAuth,
 } from "@/lib/authStorage";
+import { getCartToken } from "@/lib/cartToken";
 
 const AuthContext = createContext(null);
 
 const baseUrl =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://play-house-backend.vercel.app/api";
+
+const mergeGuestCart = async (accessToken) => {
+  try {
+    const cartToken = getCartToken();
+    if (!cartToken) return;
+
+    await fetch(`${baseUrl}/cart/merge`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ cart_token: cartToken }),
+    });
+  } catch (error) {
+    console.error("Cart merge error:", error);
+  }
+};
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -46,6 +64,7 @@ export const AuthProvider = ({ children }) => {
 
     saveAuth(data.data);
     setUser(data.data.user);
+    await mergeGuestCart(data.data.accessToken);
     return data.data;
   }, []);
 
@@ -64,6 +83,7 @@ export const AuthProvider = ({ children }) => {
 
     saveAuth(data.data);
     setUser(data.data.user);
+    await mergeGuestCart(data.data.accessToken);
     return data.data;
   }, []);
 
@@ -84,7 +104,6 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   }, []);
 
-  // Refresh the access token using the refresh token
   const refreshAccessToken = useCallback(async () => {
     const refreshToken = getRefreshToken();
 
@@ -120,8 +139,6 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // Wrapper for authenticated API calls — auto-retries once with a fresh
-  // access token if the first attempt returns 401 (expired token).
   const authFetch = useCallback(
     async (url, options = {}) => {
       let token = getAccessToken();

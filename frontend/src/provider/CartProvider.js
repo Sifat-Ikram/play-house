@@ -8,6 +8,7 @@ import {
   useCallback,
 } from "react";
 import { getCartToken } from "@/lib/cartToken";
+import { useAuth } from "@/provider/AuthProvider";
 
 const CartContext = createContext(null);
 
@@ -16,19 +17,26 @@ const baseUrl =
   "https://play-house-backend.vercel.app/api";
 
 export const CartProvider = ({ children }) => {
+  const { user, authFetch } = useAuth();
+
   const [items, setItems] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchCart = useCallback(async () => {
-    const token = getCartToken();
-    if (!token) return;
-
     try {
       setIsLoading(true);
-      const res = await fetch(`${baseUrl}/cart/${token}`, {
-        cache: "no-store",
-      });
+
+      let res;
+      if (user) {
+        res = await authFetch(`${baseUrl}/cart`);
+      } else {
+        const token = getCartToken();
+        res = await fetch(`${baseUrl}/cart?cartToken=${token}`, {
+          cache: "no-store",
+        });
+      }
+
       if (res.ok) {
         const data = await res.json();
         setItems(data?.data || []);
@@ -38,7 +46,7 @@ export const CartProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [user, authFetch]);
 
   useEffect(() => {
     fetchCart();
@@ -47,17 +55,24 @@ export const CartProvider = ({ children }) => {
   const addToCart = useCallback(
     async (inventoryId, quantity = 1) => {
       const token = getCartToken();
+      const body = JSON.stringify({
+        cart_token: token,
+        inventory_id: inventoryId,
+        quantity,
+      });
 
       try {
-        const res = await fetch(`${baseUrl}/cart`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            cart_token: token,
-            inventory_id: inventoryId,
-            quantity,
-          }),
-        });
+        const res = user
+          ? await authFetch(`${baseUrl}/cart`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body,
+            })
+          : await fetch(`${baseUrl}/cart`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body,
+            });
 
         if (res.ok) {
           await fetchCart();
@@ -67,7 +82,7 @@ export const CartProvider = ({ children }) => {
         console.error("Error adding to cart:", error);
       }
     },
-    [fetchCart],
+    [user, authFetch, fetchCart],
   );
 
   const updateQuantity = useCallback(
@@ -80,35 +95,59 @@ export const CartProvider = ({ children }) => {
         ),
       );
 
+      const body = JSON.stringify({ quantity, cart_token: getCartToken() });
+
       try {
-        await fetch(`${baseUrl}/cart/${cartItemId}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ quantity }),
-        });
+        if (user) {
+          await authFetch(`${baseUrl}/cart/${cartItemId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body,
+          });
+        } else {
+          await fetch(`${baseUrl}/cart/${cartItemId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body,
+          });
+        }
       } catch (error) {
         console.error("Error updating quantity:", error);
         fetchCart();
       }
     },
-    [fetchCart],
+    [user, authFetch, fetchCart],
   );
 
   const removeItem = useCallback(
     async (cartItemId) => {
       setItems((prev) => prev.filter((item) => item.id !== cartItemId));
 
+      const body = JSON.stringify({ cart_token: getCartToken() });
+
       try {
-        await fetch(`${baseUrl}/cart/${cartItemId}`, { method: "DELETE" });
+        if (user) {
+          await authFetch(`${baseUrl}/cart/${cartItemId}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body,
+          });
+        } else {
+          await fetch(`${baseUrl}/cart/${cartItemId}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body,
+          });
+        }
       } catch (error) {
         console.error("Error removing item:", error);
         fetchCart();
       }
     },
-    [fetchCart],
+    [user, authFetch, fetchCart],
   );
 
-  const cartCount = items.length;
+  const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const cartTotal = items.reduce(
     (sum, item) => sum + Number(item.selling_price || 0) * item.quantity,
     0,

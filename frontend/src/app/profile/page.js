@@ -1,14 +1,14 @@
-import CheckoutContent from "@/components/pages/checkout/CheckoutContent";
+import ProfileContent from "@/components/pages/profile/ProfileContent";
 import { getProfileFromServer } from "@/lib/serverFetch";
 
 export const dynamic = "force-dynamic";
 
-export default async function CheckoutPage() {
+export default async function ProfilePage() {
   const profile = await getProfileFromServer();
 
   return (
     <main className="min-h-screen bg-[var(--ph-bg)]">
-      <CheckoutContent initialProfile={profile} />
+      <ProfileContent initialProfile={profile} />
     </main>
   );
 }
