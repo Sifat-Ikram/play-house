@@ -25,3 +25,25 @@ export const getProfileFromServer = async () => {
     return null;
   }
 };
+
+export const getOrdersFromServer = async () => {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("ph_access_token")?.value;
+
+  if (!accessToken) return null;
+
+  try {
+    const res = await fetch(`${baseUrl}/orders/mine`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      cache: "no-store",
+    });
+
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    return data.data || null;
+  } catch (error) {
+    console.error("Server orders fetch error:", error);
+    return null;
+  }
+};

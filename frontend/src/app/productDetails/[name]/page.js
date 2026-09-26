@@ -1,5 +1,53 @@
 import ProductDetailsContent from "@/components/pages/productDetails/ProductDetailsContent";
 
+export async function generateMetadata({ params }) {
+  const { name } = await params;
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_API_URL ||
+    "https://play-house-backend.vercel.app/api";
+
+  try {
+    const res = await fetch(
+      `${baseUrl}/products/name/${encodeURIComponent(name)}`,
+      {
+        cache: "no-store",
+      },
+    );
+
+    if (res.ok) {
+      const data = await res.json();
+      const product = data?.data;
+
+      if (product) {
+        const description =
+          product.summary ||
+          product.description?.slice(0, 155) ||
+          `Buy ${product.name} at Play House.`;
+
+        return {
+          title: `${product.name} | Play House`,
+          description,
+          openGraph: {
+            title: product.name,
+            description,
+            images: product.inventory?.[0]?.images?.[0]?.image_url
+              ? [product.inventory[0].images[0].image_url]
+              : [],
+          },
+        };
+      }
+    }
+  } catch (error) {
+    console.error("Metadata fetch error:", error);
+  }
+
+  return {
+    title: "Product | Play House",
+    description: "Discover toys made for little adventures at Play House.",
+  };
+}
+
 export const dynamic = "force-dynamic";
 
 export default async function ProductDetailsPage({ params }) {

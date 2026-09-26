@@ -16,5 +16,6 @@ router.delete("/:id", productController.deleteProduct);
 
 router.get("/name/:name", productController.getProductByName);
 
+router.get("/suggest", productController.getSearchSuggestions);
 
 module.exports = router;

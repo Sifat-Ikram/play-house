@@ -45,7 +45,12 @@ const fetchOrderById = async (id) => {
   return order;
 };
 
+const fetchOrdersByUserId = async (userId) => {
+  return await orderModel.getOrdersByUserId(userId);
+};
+
 module.exports = {
   placeOrder,
   fetchOrderById,
+  fetchOrdersByUserId,
 };

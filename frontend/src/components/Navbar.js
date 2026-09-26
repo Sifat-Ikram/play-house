@@ -113,6 +113,28 @@ const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [mobileDrill, setMobileDrill] = useState(null);
+  const [suggestions, setSuggestions] = useState([]);
+
+  useEffect(() => {
+    if (searchQuery.trim().length < 2) {
+      setSuggestions([]);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL || "https://play-house-backend.vercel.app/api"}/products/suggest?q=${encodeURIComponent(searchQuery)}`,
+        );
+        if (res.ok) {
+          const data = await res.json();
+          setSuggestions(data.data || []);
+        }
+      } catch (error) {
+        console.error("Suggestion fetch error:", error);
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   const isActive = (href) => pathname === href;
 
@@ -315,7 +337,7 @@ const Navbar = () => {
           animate="visible"
         >
           <Link
-            href={`/product/${combo?.combo.title}`}
+            href={`/product?combo=${encodeURIComponent(combo.title)}`}
             onClick={handleLinkClick}
             className="group flex h-full flex-col items-center gap-2 rounded-2xl p-3 text-center transition-all duration-200 hover:-translate-y-1 hover:bg-[var(--ph-primary-soft)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
           >
@@ -662,6 +684,32 @@ const Navbar = () => {
                     >
                       <IoSearchOutline className="text-lg" />
                     </button>
+
+                    {suggestions.length > 0 && (
+                      <ul
+                        className="absolute left-0 right-0 top-[calc(100%+8px)] z-50 overflow-hidden rounded-2xl border bg-[var(--ph-surface)] shadow-[0_18px_45px_rgba(15,23,42,0.14)]"
+                        style={{ borderColor: "var(--ph-border)" }}
+                      >
+                        {suggestions.map((s) => (
+                          <li key={s.id}>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                router.push(
+                                  `/product?search=${encodeURIComponent(s.name.toLowerCase())}`,
+                                );
+                                setSearchQuery("");
+                                setSuggestions([]);
+                                setIsSearchOpen(false);
+                              }}
+                              className="w-full text-left px-4 py-2.5 text-xs sm:text-sm font-medium text-[var(--ph-text)] transition-colors hover:bg-[var(--ph-primary-soft)]"
+                            >
+                              {s.name}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </motion.form>
               )}
@@ -847,6 +895,31 @@ const Navbar = () => {
                 >
                   <IoSearchOutline className="text-xl" />
                 </button>
+                {suggestions.length > 0 && (
+                  <ul
+                    className="absolute left-0 right-0 top-[calc(100%+8px)] z-50 overflow-hidden rounded-2xl border bg-[var(--ph-surface)] shadow-[0_18px_45px_rgba(15,23,42,0.14)]"
+                    style={{ borderColor: "var(--ph-border)" }}
+                  >
+                    {suggestions.map((s) => (
+                      <li key={s.id}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            router.push(
+                              `/product?search=${encodeURIComponent(s.name.toLowerCase())}`,
+                            );
+                            setSearchQuery("");
+                            setSuggestions([]);
+                            setIsSearchOpen(false);
+                          }}
+                          className="w-full text-left px-4 py-2.5 text-xs sm:text-sm font-medium text-[var(--ph-text)] transition-colors hover:bg-[var(--ph-primary-soft)]"
+                        >
+                          {s.name}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </form>
           </motion.div>

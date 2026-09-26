@@ -227,6 +227,18 @@ const getProductByName = async (name) => {
   return result.rows[0];
 };
 
+const getSearchSuggestions = async (query) => {
+  const searchQuery = `
+    SELECT DISTINCT p.name, p.id
+    FROM products p
+    WHERE p.name ILIKE $1
+    ORDER BY p.name ASC
+    LIMIT 6;
+  `;
+  const result = await pool.query(searchQuery, [`%${query}%`]);
+  return result.rows;
+};
+
 module.exports = {
   createProduct,
   getProducts,
@@ -235,4 +247,5 @@ module.exports = {
   getNewArrivalProducts,
   getFeaturedProducts,
   getProductByName,
+  getSearchSuggestions,
 };
