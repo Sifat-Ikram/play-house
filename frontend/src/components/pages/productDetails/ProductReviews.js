@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { FiStar, FiSend, FiLogIn } from "react-icons/fi";
 import { useAuth } from "@/provider/AuthProvider";
+import placeholder from "@/assets/placeholder.webp"
 
 const baseUrl =
   process.env.NEXT_PUBLIC_API_URL ||
@@ -46,7 +47,7 @@ const ReplyRow = ({ reply }) => (
   <div className="flex items-start gap-2.5">
     <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden shrink-0 border border-[var(--ph-border)]">
       <Image
-        src={reply.reply_image_url}
+        src={reply.reply_image_url || placeholder}
         alt={reply.replier_name}
         fill
         className="object-cover"
@@ -117,7 +118,7 @@ const ReviewCard = ({ review, onSubmitReply }) => {
       <div className="flex items-start gap-3">
         <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden shrink-0 border border-[var(--ph-border)]">
           <Image
-            src={review.user_image_url}
+            src={review.user_image_url || placeholder}
             alt={review.user_name}
             fill
             className="object-cover"
@@ -412,7 +413,7 @@ const ProductReviews = ({ productId, reviews: initialReviews = [] }) => {
   };
 
   return (
-    <div className="rounded-[24px] border border-[var(--ph-border)] bg-[var(--ph-surface)] p-4 sm:p-6 md:p-8">
+    <div className="bg-[var(--ph-surface)] p-4 sm:p-6 md:p-8">
       <h3
         className="text-lg sm:text-xl font-semibold text-[var(--ph-text)] mb-5"
         style={{ fontFamily: "var(--font-display)" }}

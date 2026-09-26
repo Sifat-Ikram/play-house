@@ -25,6 +25,7 @@ import useBrand from "@/hooks/useBrand";
 import useCombo from "@/hooks/useCombo";
 import { useCart } from "@/provider/CartProvider";
 import { useAuth } from "@/provider/AuthProvider";
+import useProductSuggestions from "@/hooks/useProductSuggestions";
 
 const PLACEHOLDER =
   "https://i.ibb.co.com/rKyYKgDT/multimedia-communication-image-placeholder-photography-landscape-image-comics-picture-photo-gallery.webp";
@@ -113,28 +114,9 @@ const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [mobileDrill, setMobileDrill] = useState(null);
-  const [suggestions, setSuggestions] = useState([]);
 
-  useEffect(() => {
-    if (searchQuery.trim().length < 2) {
-      setSuggestions([]);
-      return;
-    }
-    const timer = setTimeout(async () => {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL || "https://play-house-backend.vercel.app/api"}/products/suggest?q=${encodeURIComponent(searchQuery)}`,
-        );
-        if (res.ok) {
-          const data = await res.json();
-          setSuggestions(data.data || []);
-        }
-      } catch (error) {
-        console.error("Suggestion fetch error:", error);
-      }
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
+  const { suggestions, isLoading: suggestionsLoading } =
+    useProductSuggestions(searchQuery);
 
   const isActive = (href) => pathname === href;
 
@@ -145,17 +127,41 @@ const Navbar = () => {
     setIsAccountOpen(false);
   };
 
+  const handleSuggestionClick = (suggestion) => {
+    const query = suggestion?.name?.trim();
+
+    if (!query) return;
+
+    router.push(`/product?search=${encodeURIComponent(query.toLowerCase())}`);
+
+    setSearchQuery("");
+    setIsSearchOpen(false);
+  };
+
   const handleSearchSubmit = (e) => {
     e?.preventDefault();
+
     const query = searchQuery.trim();
+
     if (!query) return;
+
     router.push(`/product?search=${encodeURIComponent(query.toLowerCase())}`);
+
     setSearchQuery("");
     setIsSearchOpen(false);
   };
 
   const toggleSearch = () => {
-    setIsSearchOpen((prev) => !prev);
+    setIsSearchOpen((prev) => {
+      const next = !prev;
+
+      if (!next) {
+        setSearchQuery("");
+      }
+
+      return next;
+    });
+
     setOpenDropdown(null);
   };
 
@@ -182,6 +188,7 @@ const Navbar = () => {
         setIsSearchOpen(false);
         setSearchQuery("");
       }
+
       if (
         mobileMenuRef.current &&
         !mobileMenuRef.current.contains(event.target)
@@ -189,6 +196,7 @@ const Navbar = () => {
         setIsMobileMenuOpen(false);
         setMobileDrill(null);
       }
+
       if (
         accountMenuRef.current &&
         !accountMenuRef.current.contains(event.target)
@@ -234,22 +242,22 @@ const Navbar = () => {
 
   const desktopLinkClass = (href) =>
     `
-      group relative flex items-center gap-1.5
-      whitespace-nowrap
-      text-[13px] lg:text-sm xl:text-[15px]
-      font-bold
-      tracking-[-0.01em]
-      transition-colors duration-200
+      group relative flex items-center gap-1.5 
+      whitespace-nowrap 
+      text-[13px] lg:text-sm xl:text-[15px] 
+      font-bold 
+      tracking-[-0.01em] 
+      transition-colors duration-200 
       ${isActive(href) ? "text-[#1E2B2B]" : "text-[#1E2B2B]/80 hover:text-[#1E2B2B]"}
     `;
 
   const mobileLinkClass = (href) =>
     `
-      flex w-full items-center justify-between
-      rounded-2xl px-4 py-3
-      text-sm sm:text-base
-      font-semibold
-      transition-all duration-200
+      flex w-full items-center justify-between 
+      rounded-2xl px-4 py-3 
+      text-sm sm:text-base 
+      font-semibold 
+      transition-all duration-200 
       ${isActive(href) ? "bg-[var(--ph-primary-soft)] text-[var(--ph-text)]" : "text-[var(--ph-text-soft)] hover:bg-[var(--ph-primary-soft)]"}
     `;
 
@@ -281,6 +289,7 @@ const Navbar = () => {
                 className="h-12 w-12 rounded-full object-cover sm:h-14 sm:w-14"
               />
             </div>
+
             <span className="line-clamp-2 max-w-[90px] text-[11px] font-semibold leading-tight text-[var(--ph-text-soft)] sm:text-xs">
               {category.category_name}
             </span>
@@ -315,6 +324,7 @@ const Navbar = () => {
                 className="h-12 w-12 rounded-full object-cover sm:h-14 sm:w-14"
               />
             </div>
+
             <span className="line-clamp-2 max-w-[90px] text-[11px] font-semibold leading-tight text-[var(--ph-text-soft)] sm:text-xs">
               {brand.brand_name}
             </span>
@@ -350,6 +360,7 @@ const Navbar = () => {
                 className="h-14 w-16 object-cover sm:h-16 sm:w-[72px]"
               />
             </div>
+
             <span className="line-clamp-2 max-w-[95px] text-[11px] font-semibold leading-tight text-[var(--ph-text-soft)] sm:text-xs">
               {combo.title}
             </span>
@@ -376,6 +387,7 @@ const Navbar = () => {
               onMouseEnter={() => setOpenDropdown(null)}
               className="fixed inset-0 top-[64px] md:top-[72px] z-[60] bg-black/30 backdrop-blur-[2px]"
             />
+
             <motion.div
               variants={dropdownVariants}
               initial="hidden"
@@ -406,11 +418,14 @@ const Navbar = () => {
         className={`${desktopLinkClass("")} rounded-full px-2.5 py-2 transition-transform duration-200 hover:scale-[1.03] hover:bg-black/[0.06]`}
       >
         <span>{label}</span>
+
         <IoChevronDown
           className={`text-[14px] transition-transform duration-200 ${openDropdown === type ? "rotate-180" : ""}`}
         />
+
         <span className="pointer-events-none absolute left-1/2 -bottom-0.5 h-[2px] w-0 -translate-x-1/2 rounded-full bg-[#1E2B2B] transition-all duration-300 group-hover:w-3/5" />
       </button>
+
       <DesktopDropdown
         type={type}
         align={type === "combo" ? "right" : "left"}
@@ -487,6 +502,7 @@ const Navbar = () => {
                 Profile
               </Link>
             </li>
+
             <li>
               <Link
                 href="/orders"
@@ -497,6 +513,7 @@ const Navbar = () => {
                 My Orders
               </Link>
             </li>
+
             <li>
               <button
                 type="button"
@@ -544,12 +561,14 @@ const Navbar = () => {
         >
           <IoChevronBack className="text-xl" />
         </button>
+
         <div>
           <span className="text-sm font-extrabold text-[var(--ph-text)]">
             {DRILL_TITLES[mobileDrill]}
           </span>
         </div>
       </div>
+
       <ul className="grid max-h-[60vh] grid-cols-3 gap-2 overflow-y-auto p-3">
         {renderDropdownItems(mobileDrill)}
       </ul>
@@ -559,13 +578,13 @@ const Navbar = () => {
   return (
     <header
       className="
-        sticky top-0 z-50 w-full
-        border-b border-black/[0.06]
-        bg-[var(--ph-primary)]
-        shadow-[0_4px_24px_rgba(15,23,42,0.08)]
-        dark:border-white/[0.08]
-        dark:bg-[var(--ph-surface)]
-        dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)]
+        sticky top-0 z-50 w-full 
+        border-b border-black/[0.06] 
+        bg-[var(--ph-primary)] 
+        shadow-[0_4px_24px_rgba(15,23,42,0.08)] 
+        dark:border-white/[0.08] 
+        dark:bg-[var(--ph-surface)] 
+        dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)] 
       "
     >
       <div className="relative mx-auto flex min-h-[64px] w-full max-w-[1500px] items-center gap-2 px-3 sm:px-5 md:min-h-[72px] md:px-7 lg:px-10 xl:px-12">
@@ -677,6 +696,7 @@ const Navbar = () => {
                       placeholder="Search toys..."
                       className="w-full rounded-full border border-black/10 bg-[var(--ph-surface)] px-4 py-2.5 pr-10 text-sm font-semibold text-[var(--ph-text)] outline-none placeholder:text-[var(--ph-text-faint)] transition-all focus:border-[#1E2B2B]/20 focus:ring-4 focus:ring-white/40"
                     />
+
                     <button
                       type="submit"
                       aria-label="Submit search"
@@ -685,29 +705,30 @@ const Navbar = () => {
                       <IoSearchOutline className="text-lg" />
                     </button>
 
-                    {suggestions.length > 0 && (
+                    {(suggestionsLoading || suggestions.length > 0) && (
                       <ul
                         className="absolute left-0 right-0 top-[calc(100%+8px)] z-50 overflow-hidden rounded-2xl border bg-[var(--ph-surface)] shadow-[0_18px_45px_rgba(15,23,42,0.14)]"
                         style={{ borderColor: "var(--ph-border)" }}
                       >
-                        {suggestions.map((s) => (
-                          <li key={s.id}>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                router.push(
-                                  `/product?search=${encodeURIComponent(s.name.toLowerCase())}`,
-                                );
-                                setSearchQuery("");
-                                setSuggestions([]);
-                                setIsSearchOpen(false);
-                              }}
-                              className="w-full text-left px-4 py-2.5 text-xs sm:text-sm font-medium text-[var(--ph-text)] transition-colors hover:bg-[var(--ph-primary-soft)]"
-                            >
-                              {s.name}
-                            </button>
+                        {suggestionsLoading ? (
+                          <li className="px-4 py-3 text-xs font-medium text-[var(--ph-text-faint)]">
+                            Searching...
                           </li>
-                        ))}
+                        ) : (
+                          suggestions.map((suggestion) => (
+                            <li key={suggestion.id}>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  handleSuggestionClick(suggestion)
+                                }
+                                className="w-full px-4 py-2.5 text-left text-xs font-medium text-[var(--ph-text)] transition-colors hover:bg-[var(--ph-primary-soft)] sm:text-sm"
+                              >
+                                {suggestion.name}
+                              </button>
+                            </li>
+                          ))
+                        )}
                       </ul>
                     )}
                   </div>
@@ -739,23 +760,24 @@ const Navbar = () => {
             type="button"
             onClick={() => router.push("/ai-assistant")}
             className="
-              cursor-pointer flex items-center justify-center
-              h-9 w-9 sm:h-10 sm:w-10
-              lg:h-auto lg:w-auto
-              rounded-full
-              border border-transparent lg:border-[#1E2B2B]/10
-              bg-transparent lg:bg-[var(--ph-surface)]
-              lg:px-2.5 lg:py-2
-              text-[#1E2B2B]
-              lg:shadow-sm
-              transition-all duration-200
-              hover:bg-black/[0.08] lg:hover:bg-[var(--ph-surface)] lg:hover:border-[#1E2B2B]/20 lg:hover:shadow-md
-              dark:text-[var(--ph-text)] dark:hover:bg-white/[0.07]
-              dark:lg:bg-white/10 dark:lg:border-white/10
+              cursor-pointer flex items-center justify-center 
+              h-9 w-9 sm:h-10 sm:w-10 
+              lg:h-auto lg:w-auto 
+              rounded-full 
+              border border-transparent lg:border-[#1E2B2B]/10 
+              bg-transparent lg:bg-[var(--ph-surface)] 
+              lg:px-2.5 lg:py-2 
+              text-[#1E2B2B] 
+              lg:shadow-sm 
+              transition-all duration-200 
+              hover:bg-black/[0.08] lg:hover:bg-[var(--ph-surface)] lg:hover:border-[#1E2B2B]/20 lg:hover:shadow-md 
+              dark:text-[var(--ph-text)] dark:hover:bg-white/[0.07] 
+              dark:lg:bg-white/10 dark:lg:border-white/10 
             "
             aria-label="AI Assistant"
           >
             <IoSparklesOutline className="text-[18px] lg:text-[17px]" />
+
             <span className="hidden lg:inline lg:ml-1.5 text-xs font-bold">
               AI Assistant
             </span>
@@ -771,6 +793,7 @@ const Navbar = () => {
             aria-label="Open cart"
           >
             <IoCartOutline className="text-[21px]" />
+
             <AnimatePresence>
               {cartCount > 0 && (
                 <motion.span
@@ -888,6 +911,7 @@ const Navbar = () => {
                   placeholder="Search for toys, brands, gifts..."
                   className="w-full rounded-full border border-black/10 bg-[var(--ph-surface)] px-5 py-3 pr-12 text-sm font-semibold text-[var(--ph-text)] outline-none placeholder:text-[var(--ph-text-faint)] focus:border-[#1E2B2B]/20 focus:ring-4 focus:ring-white/40"
                 />
+
                 <button
                   type="submit"
                   aria-label="Submit search"
@@ -895,29 +919,29 @@ const Navbar = () => {
                 >
                   <IoSearchOutline className="text-xl" />
                 </button>
-                {suggestions.length > 0 && (
+
+                {(suggestionsLoading || suggestions.length > 0) && (
                   <ul
                     className="absolute left-0 right-0 top-[calc(100%+8px)] z-50 overflow-hidden rounded-2xl border bg-[var(--ph-surface)] shadow-[0_18px_45px_rgba(15,23,42,0.14)]"
                     style={{ borderColor: "var(--ph-border)" }}
                   >
-                    {suggestions.map((s) => (
-                      <li key={s.id}>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            router.push(
-                              `/product?search=${encodeURIComponent(s.name.toLowerCase())}`,
-                            );
-                            setSearchQuery("");
-                            setSuggestions([]);
-                            setIsSearchOpen(false);
-                          }}
-                          className="w-full text-left px-4 py-2.5 text-xs sm:text-sm font-medium text-[var(--ph-text)] transition-colors hover:bg-[var(--ph-primary-soft)]"
-                        >
-                          {s.name}
-                        </button>
+                    {suggestionsLoading ? (
+                      <li className="px-4 py-3 text-xs font-medium text-[var(--ph-text-faint)]">
+                        Searching...
                       </li>
-                    ))}
+                    ) : (
+                      suggestions.map((suggestion) => (
+                        <li key={suggestion.id}>
+                          <button
+                            type="button"
+                            onClick={() => handleSuggestionClick(suggestion)}
+                            className="w-full px-4 py-2.5 text-left text-xs font-medium text-[var(--ph-text)] transition-colors hover:bg-[var(--ph-primary-soft)] sm:text-sm"
+                          >
+                            {suggestion.name}
+                          </button>
+                        </li>
+                      ))
+                    )}
                   </ul>
                 )}
               </div>
