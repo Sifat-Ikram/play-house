@@ -86,7 +86,7 @@ const ProductDetailsContent = ({
 
       {/* Reviews */}
       <div className="mt-6 sm:mt-8">
-        <ProductReviews reviews={reviews} />
+        <ProductReviews productId={product.id} reviews={reviews} />
       </div>
 
       {/* Similar products */}
