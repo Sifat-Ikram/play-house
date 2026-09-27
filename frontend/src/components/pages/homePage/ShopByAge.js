@@ -7,154 +7,128 @@ import { Suspense } from "react";
 import SectionHeader from "@/components/cards/SectionHeader";
 
 const shopItems = [
-    {
-        _id: 1,
-        title: "Baby Stars",
-        age: "0-2 years",
-        color: "#FCE7C4", // warm gold-tint (primary family)
-        minAge: 0,
-        maxAge: 2,
-    },
-    {
-        _id: 2,
-        title: "Little Stars",
-        age: "3-5 years",
-        color: "#DCEFCB", // soft mint-tint (ph-mint family)
-        minAge: 3,
-        maxAge: 5,
-    },
-    {
-        _id: 3,
-        title: "Shining Stars",
-        age: "6-11 years",
-        color: "#CFE9E8", // soft teal-tint (ph-accent family)
-        minAge: 6,
-        maxAge: 11,
-    },
-    {
-        _id: 4,
-        title: "Super Stars",
-        age: "12 and above",
-        color: "#F1DCEA", // soft coral-plum tint (ph-coral family)
-        minAge: 12,
-        maxAge: Infinity,
-    },
+  {
+    _id: 1,
+    title: "Baby Stars",
+    age: "0-2 years",
+    bg: "#B9E6E3",
+    accent: "var(--ph-accent)",
+    emoji: "👶",
+    minAge: 0,
+    maxAge: 2,
+  },
+  {
+    _id: 2,
+    title: "Little Stars",
+    age: "3-5 years",
+    bg: "#FCD98C",
+    accent: "var(--ph-primary-dark)",
+    emoji: "🧸",
+    minAge: 3,
+    maxAge: 5,
+  },
+  {
+    _id: 3,
+    title: "Shining Stars",
+    age: "6-11 years",
+    bg: "#9FE8CE",
+    accent: "#1E9C79",
+    emoji: "⭐",
+    minAge: 6,
+    maxAge: 11,
+  },
+  {
+    _id: 4,
+    title: "Super Stars",
+    age: "12 and above",
+    bg: "#FFC2B3",
+    accent: "var(--ph-coral)",
+    emoji: "🚀",
+    minAge: 12,
+    maxAge: Infinity,
+  },
 ];
 
 const ShopByAgeContent = () => {
-    const searchParams = useSearchParams();
-    const minAgeParam = searchParams.get("minAge");
-    const maxAgeParam = searchParams.get("maxAge");
+  const searchParams = useSearchParams();
+  const minAgeParam = searchParams.get("minAge");
+  const maxAgeParam = searchParams.get("maxAge");
 
-    const minAge = minAgeParam ? Number(minAgeParam) : 0;
-    const maxAge = maxAgeParam ? Number(maxAgeParam) : Infinity;
+  const minAge = minAgeParam ? Number(minAgeParam) : 0;
+  const maxAge = maxAgeParam ? Number(maxAgeParam) : Infinity;
 
-    const filteredShopItems = shopItems.filter(
-        (item) => item.maxAge >= minAge && item.minAge <= maxAge
-    );
+  const filteredShopItems = shopItems.filter(
+    (item) => item.maxAge >= minAge && item.minAge <= maxAge,
+  );
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.12,
-            },
-        },
-    };
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                type: "spring",
-                stiffness: 260,
-                damping: 20,
-            },
-        },
-    };
-
-    return (
-        <div className="w-11/12 mx-auto py-8">
-            <SectionHeader
-                title="Shop By Age"
-            />
-
-            <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 lg:gap-5 mt-10"
-            >
-                {filteredShopItems.map((item, index) => (
-                    <motion.div
-                        key={item._id}
-                        variants={itemVariants}
-                        className="h-full"
-                        style={{ perspective: 800 }}
-                    >
-                        {/* Idle floating wrapper - stops on hover */}
-                        <motion.div
-                            animate={{
-                                y: [0, -8, 0],
-                            }}
-                            transition={{
-                                duration: 3,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                                delay: index * 0.3,
-                            }}
-                            whileHover={{
-                                y: -10,
-                                scale: 1.05,
-                                transition: {
-                                    type: "tween",
-                                    duration: 0.25,
-                                    ease: "easeOut",
-                                },
-                            }}
-                            whileTap={{ scale: 0.97 }}
-                            className="h-full"
-                        >
-                            <Link
-                                href={`/product?minAge=${item.minAge}&maxAge=${item.maxAge === Infinity ? "" : item.maxAge}`}
-                                title={`View details for ${item.title}`}
-                                aria-label={`View details for ${item.title}`}
-                                className="group relative overflow-hidden rounded-3xl border-solid border-4 border-[#1E2B2B]/80 hover:cursor-pointer p-4 lg:p-5 flex flex-col justify-center items-center text-center space-y-3 h-full shadow-sm hover:shadow-lg transition-shadow duration-300"
-                                style={{ backgroundColor: item.color }}
-                            >
-                                <h1
-                                    className="text-sm sm:text-lg lg:text-2xl font-medium text-[#1E2B2B]"
-                                    style={{ fontFamily: "var(--font-display)" }}
-                                >
-                                    {item.title}
-                                </h1>
-                                <p
-                                    className="text-sm sm:text-base md:text-lg lg:text-xl text-[#1E2B2B]/75"
-                                    style={{ fontFamily: "var(--font-body)" }}
-                                >
-                                    Age {item.age}
-                                </p>
-
-                                {/* Subtle shine sweep on hover */}
-                                <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-                            </Link>
-                        </motion.div>
-                    </motion.div>
-                ))}
-            </motion.div>
+  return (
+    <section className="px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-6 sm:mb-8">
+          <SectionHeader subtitle="For Every Little Age" title="Shop By Age" />
         </div>
-    );
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5">
+          {filteredShopItems.map((item, index) => (
+            <motion.div
+              key={item._id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.45, delay: index * 0.07 }}
+              whileHover={{ y: -7, rotate: index % 2 === 0 ? -0.5 : 0.5 }}
+              className="h-full"
+            >
+              <Link
+                href={`/product?minAge=${item.minAge}&maxAge=${item.maxAge === Infinity ? "" : item.maxAge}`}
+                title={`View details for ${item.title}`}
+                aria-label={`View details for ${item.title}`}
+                className="group relative overflow-hidden rounded-[24px] sm:rounded-[30px] p-4 sm:p-6 min-h-[150px] sm:min-h-[190px] flex flex-col justify-between border border-white/50 shadow-sm hover:shadow-xl transition-shadow duration-300 h-full"
+                style={{ backgroundColor: item.bg }}
+              >
+                <div
+                  className="absolute -right-8 -top-8 w-24 h-24 sm:w-32 sm:h-32 rounded-full opacity-40 transition-transform duration-500 group-hover:scale-125"
+                  style={{ backgroundColor: item.accent }}
+                />
+
+                <motion.div
+                  whileHover={{ rotate: 8, scale: 1.12 }}
+                  className="relative z-10 w-11 h-11 sm:w-14 sm:h-14 rounded-2xl bg-white flex items-center justify-center shadow-sm text-xl sm:text-2xl"
+                >
+                  {item.emoji}
+                </motion.div>
+
+                <div className="relative z-10">
+                  <h3
+                    className="font-extrabold text-sm sm:text-lg text-[#1E2B2B] leading-tight"
+                    style={{ fontFamily: "var(--font-display)" }}
+                  >
+                    {item.title}
+                  </h3>
+                  <p
+                    className="mt-1 text-[11px] sm:text-sm text-[#1E2B2B]/70"
+                    style={{ fontFamily: "var(--font-body)" }}
+                  >
+                    Age {item.age}
+                  </p>
+                </div>
+
+                <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 };
 
 const ShopByAge = () => {
-    return (
-        <Suspense fallback={<div className="text-center py-8">Loading...</div>}>
-            <ShopByAgeContent />
-        </Suspense>
-    );
+  return (
+    <Suspense fallback={<div className="text-center py-8">Loading...</div>}>
+      <ShopByAgeContent />
+    </Suspense>
+  );
 };
 
 export default ShopByAge;

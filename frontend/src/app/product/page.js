@@ -49,6 +49,7 @@ export default async function ProductPage({ searchParams }) {
   const category = params?.category;
   const interest = params?.interest;
   const occasion = params?.occasion;
+  const wholesale = params?.wholesale;
 
   const baseUrl =
     process.env.NEXT_PUBLIC_API_URL ||
@@ -68,6 +69,7 @@ export default async function ProductPage({ searchParams }) {
       queryParams.set("minAge", minAge);
       if (maxAge) queryParams.set("maxAge", maxAge);
     } else if (search) queryParams.set("search", search);
+    else if (wholesale) queryParams.set("wholesale", wholesale);
 
     const endpoint = `${baseUrl}/product-listing?${queryParams.toString()}`;
 
@@ -92,6 +94,7 @@ export default async function ProductPage({ searchParams }) {
         minAge={minAge}
         maxAge={maxAge}
         search={search}
+        wholesale={wholesale}
         products={products}
       />
     </main>

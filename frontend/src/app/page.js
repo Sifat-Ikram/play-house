@@ -15,12 +15,12 @@ export default function Home() {
       <Banner />
 
       <div className="bg-[linear-gradient(to_bottom,var(--ph-bg)_0%,var(--ph-accent-soft)_35%,var(--ph-primary-soft)_70%,var(--ph-primary-soft)_100%)]">
-        <ShopByAge />
         <CategorySection />
-        <ShopByInterest />
+        <ShopByAge />
         <NewArrival />
-        <ShopByOccasion />
+        <ShopByInterest />
         <FeaturedCollection />
+        <ShopByOccasion />
         <BrandSection />
         <PlayHouseCTA />
         <Testimonial />

@@ -1,12 +1,5 @@
 const { pool } = require("../config/db");
 
-/**
- * Builds the base SELECT + JOIN portion shared by every filter branch.
- * - INNER JOIN LATERAL for inventory: picks the first AVAILABLE inventory
- *   row (mark_unavailable = false) ordered by created_at. If a product has
- *   no available inventory at all, it is excluded automatically (INNER JOIN).
- * - LEFT JOIN LATERAL for the display image of that chosen inventory row.
- */
 const BASE_SELECT = `
   SELECT
     p.id                  AS product_id,
@@ -19,6 +12,8 @@ const BASE_SELECT = `
     p.maximum_age_range   AS maximum_age_range,
     inv.id                AS inventory_id,
     inv.selling_price,
+    inv.min_wholesale_qty,
+    inv.wholesale_price,
     img.image_url         AS display_image_url
   FROM products p
   LEFT JOIN brands b ON b.brand_id = p.brand_id
@@ -51,6 +46,7 @@ const getProductListing = async (filters) => {
     minAge,
     maxAge,
     search,
+    wholesale,
   } = filters;
 
   let whereClause = "";
@@ -109,6 +105,13 @@ const getProductListing = async (filters) => {
         OR c.category_name ILIKE $1
     `;
     values = [`%${search}%`];
+  } else if (wholesale === "true") {
+    whereClause = `
+      WHERE
+        inv.min_wholesale_qty IS NOT NULL
+        AND inv.wholesale_price IS NOT NULL
+    `;
+    values = [];
   }
 
   const query = `

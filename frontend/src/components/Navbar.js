@@ -22,7 +22,6 @@ import {
 import logo from "@/assets/image-removebg-preview_6.webp";
 import useCategory from "@/hooks/useCategory";
 import useBrand from "@/hooks/useBrand";
-import useCombo from "@/hooks/useCombo";
 import { useCart } from "@/provider/CartProvider";
 import { useAuth } from "@/provider/AuthProvider";
 import useProductSuggestions from "@/hooks/useProductSuggestions";
@@ -68,7 +67,6 @@ const itemVariants = {
 const DRILL_TITLES = {
   category: "Categories",
   brand: "Brands",
-  combo: "Combo Offers",
 };
 
 function LoadingSpinner() {
@@ -100,16 +98,9 @@ const Navbar = () => {
   const accountMenuRef = useRef(null);
 
   const { brands, isLoading: brandsLoading } = useBrand();
-  const { combos, isLoading: combosLoading } = useCombo();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { categories, isLoading: categoriesLoading } = useCategory();
   const [isAccountOpen, setIsAccountOpen] = useState(false);
-
-  const activeCombos = useMemo(
-    () => combos?.filter((combo) => combo.is_active) || [],
-    [combos],
-  );
-
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -333,42 +324,6 @@ const Navbar = () => {
       ));
     }
 
-    if (type === "combo") {
-      if (combosLoading) return <LoadingSpinner />;
-      if (!activeCombos.length)
-        return <EmptyState label="No combo offers found" />;
-
-      return activeCombos.map((combo, index) => (
-        <motion.li
-          key={combo.combo_id}
-          custom={index}
-          variants={itemVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <Link
-            href={`/product?combo=${encodeURIComponent(combo.title)}`}
-            onClick={handleLinkClick}
-            className="group flex h-full flex-col items-center gap-2 rounded-2xl p-3 text-center transition-all duration-200 hover:-translate-y-1 hover:bg-[var(--ph-primary-soft)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
-          >
-            <div className="relative overflow-hidden rounded-2xl bg-[var(--ph-primary-soft)] ring-1 ring-[var(--ph-border)] transition-all duration-300 group-hover:scale-105 group-hover:ring-[var(--ph-primary)]/50">
-              <Image
-                src={combo?.banner_image || PLACEHOLDER}
-                alt={combo.title}
-                width={76}
-                height={64}
-                className="h-14 w-16 object-cover sm:h-16 sm:w-[72px]"
-              />
-            </div>
-
-            <span className="line-clamp-2 max-w-[95px] text-[11px] font-semibold leading-tight text-[var(--ph-text-soft)] sm:text-xs">
-              {combo.title}
-            </span>
-          </Link>
-        </motion.li>
-      ));
-    }
-
     return null;
   };
 
@@ -445,7 +400,6 @@ const Navbar = () => {
         {[
           ["category", "Categories"],
           ["brand", "Brands"],
-          ["combo", "Combo Offers"],
         ].map(([type, label]) => (
           <li key={type}>
             <button
@@ -461,7 +415,7 @@ const Navbar = () => {
 
         <li>
           <Link
-            href="/wholeSale/36"
+            href="/product?wholesale=true"
             onClick={handleLinkClick}
             className={mobileLinkClass("/wholeSale/36")}
           >
@@ -645,11 +599,10 @@ const Navbar = () => {
           <ul className="flex items-center gap-1 lg:gap-2 xl:gap-3">
             {navDropdownButton("category", "Categories")}
             {navDropdownButton("brand", "Brands")}
-            {navDropdownButton("combo", "Combo Offers")}
 
             <li>
               <Link
-                href="/wholeSale/36"
+                href="/product?wholesale=true"
                 className={desktopLinkClass("/wholesale/36")}
               >
                 <span className="relative rounded-full px-2.5 py-2 transition-colors hover:bg-black/[0.06]">
