@@ -542,59 +542,62 @@ const Navbar = () => {
       "
     >
       <div className="relative mx-auto flex min-h-[64px] w-full max-w-[1500px] items-center gap-2 px-3 sm:px-5 md:min-h-[72px] md:px-7 lg:px-10 xl:px-12">
-        {/* Mobile menu */}
-        <div ref={mobileMenuRef} className="relative lg:hidden">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.92 }}
-            type="button"
-            onClick={toggleMobileMenu}
-            className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full text-[#1E2B2B] transition-colors hover:bg-black/[0.08] dark:text-[var(--ph-text)] dark:hover:bg-white/[0.07]"
-            aria-label="Toggle navigation menu"
-            aria-expanded={isMobileMenuOpen}
-          >
-            {isMobileMenuOpen ? (
-              <IoClose className="text-[22px]" />
-            ) : (
-              <IoMenu className="text-[22px]" />
-            )}
-          </motion.button>
+        {/* Left group: hamburger + logo below lg (flows together); at lg+ this wrapper is transparent (contents) so logo/menu return to original layout */}
+        <div className="flex items-center gap-2 sm:gap-2.5 lg:contents">
+          {/* Mobile menu */}
+          <div ref={mobileMenuRef} className="relative lg:hidden">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.92 }}
+              type="button"
+              onClick={toggleMobileMenu}
+              className="flex h-9 w-9 sm:h-10 sm:w-10 md:h-10 md:w-10 items-center justify-center rounded-full text-[#1E2B2B] transition-colors hover:bg-black/[0.08] dark:text-[var(--ph-text)] dark:hover:bg-white/[0.07]"
+              aria-label="Toggle navigation menu"
+              aria-expanded={isMobileMenuOpen}
+            >
+              {isMobileMenuOpen ? (
+                <IoClose className="text-[22px]" />
+              ) : (
+                <IoMenu className="text-[22px]" />
+              )}
+            </motion.button>
 
-          <AnimatePresence mode="wait">
-            {isMobileMenuOpen && (
-              <motion.div
-                key={mobileDrill || "main"}
-                variants={mobileVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                className="absolute left-0 top-[calc(100%+12px)] z-[80] w-[calc(100vw-40px)] max-w-[390px] overflow-hidden rounded-[26px] border border-[var(--ph-border)] bg-[var(--ph-surface)] shadow-[0_25px_70px_rgba(15,23,42,0.16)] dark:shadow-[0_25px_70px_rgba(0,0,0,0.5)] sm:w-[370px]"
-              >
-                <AnimatePresence mode="wait">
-                  {mobileDrill ? mobileDrillPanel : mobileMainList}
-                </AnimatePresence>
-              </motion.div>
-            )}
-          </AnimatePresence>
+            <AnimatePresence mode="wait">
+              {isMobileMenuOpen && (
+                <motion.div
+                  key={mobileDrill || "main"}
+                  variants={mobileVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="absolute left-0 top-[calc(100%+12px)] z-[80] w-[calc(100vw-40px)] max-w-[390px] overflow-hidden rounded-[26px] border border-[var(--ph-border)] bg-[var(--ph-surface)] shadow-[0_25px_70px_rgba(15,23,42,0.16)] dark:shadow-[0_25px_70px_rgba(0,0,0,0.5)] sm:w-[370px]"
+                >
+                  <AnimatePresence mode="wait">
+                    {mobileDrill ? mobileDrillPanel : mobileMainList}
+                  </AnimatePresence>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Logo — inline next to hamburger below lg, back to normal nav position at lg+ */}
+          <Link
+            href="/"
+            onClick={handleLinkClick}
+            className="group flex shrink-0 items-center rounded-xl transition-transform duration-200 hover:scale-[1.03]"
+          >
+            <Image
+              src={logo}
+              alt="Toy House Logo"
+              width={110}
+              height={80}
+              priority
+              className="h-[38px] w-auto object-contain sm:h-[44px] md:h-[52px] lg:h-[68px] xl:h-[72px]"
+            />
+          </Link>
         </div>
 
-        {/* Logo */}
-        <Link
-          href="/"
-          onClick={handleLinkClick}
-          className="group absolute left-1/2 top-1/2 flex shrink-0 items-center -translate-x-1/2 -translate-y-1/2 rounded-xl transition-transform duration-200 hover:scale-[1.03] lg:static lg:left-auto lg:top-auto lg:translate-x-0 lg:translate-y-0"
-        >
-          <Image
-            src={logo}
-            alt="Toy House Logo"
-            width={110}
-            height={80}
-            priority
-            className="h-[42px] w-auto object-contain sm:h-[48px] md:h-[60px] lg:h-[68px] xl:h-[72px]"
-          />
-        </Link>
-
-        {/* Desktop navigation */}
+        {/* Desktop navigation — unchanged, lg+ only */}
         <nav className="hidden flex-1 justify-center lg:flex">
           <ul className="flex items-center gap-1 lg:gap-2 xl:gap-3">
             {navDropdownButton("category", "Categories")}
@@ -623,13 +626,13 @@ const Navbar = () => {
           </ul>
         </nav>
 
-        {/* Right controls — compact, consistent icon buttons on all screens */}
+        {/* Right controls — compact, consistent icon buttons, responsive below lg */}
         <div
           ref={searchWrapRef}
-          className="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-1.5 md:gap-2 lg:gap-2.5"
+          className="ml-auto flex shrink-0 items-center gap-1 sm:gap-1.5 md:gap-2 lg:gap-2.5"
         >
-          {/* Desktop/tablet search input */}
-          <div className="hidden md:block">
+          {/* Inline expanding search input — lg and above only */}
+          <div className="hidden lg:block">
             <AnimatePresence initial={false}>
               {isSearchOpen && (
                 <motion.form
@@ -690,23 +693,23 @@ const Navbar = () => {
             </AnimatePresence>
           </div>
 
-          {/* Search icon */}
+          {/* Search icon — responsive size for all screens below lg, unchanged at lg+ */}
           <motion.button
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.92 }}
             type="button"
             onClick={toggleSearch}
-            className="cursor-pointer flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full text-[#1E2B2B] transition-colors hover:bg-black/[0.08] dark:text-[var(--ph-text)] dark:hover:bg-white/[0.07]"
+            className="cursor-pointer flex h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 items-center justify-center rounded-full text-[#1E2B2B] transition-colors hover:bg-black/[0.08] dark:text-[var(--ph-text)] dark:hover:bg-white/[0.07]"
             aria-label={isSearchOpen ? "Close search" : "Search"}
           >
             {isSearchOpen ? (
-              <IoClose className="text-[20px]" />
+              <IoClose className="text-[18px] sm:text-[20px]" />
             ) : (
-              <IoSearchOutline className="text-[20px]" />
+              <IoSearchOutline className="text-[18px] sm:text-[20px]" />
             )}
           </motion.button>
 
-          {/* AI Assistant — icon-only below lg, full pill from lg */}
+          {/* AI Assistant — icon-only below lg (responsive sizing), full pill from lg */}
           <motion.button
             whileHover={{ scale: 1.06 }}
             whileTap={{ scale: 0.94 }}
@@ -714,7 +717,7 @@ const Navbar = () => {
             onClick={() => router.push("/ai-assistant")}
             className="
               cursor-pointer flex items-center justify-center 
-              h-9 w-9 sm:h-10 sm:w-10 
+              h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 
               lg:h-auto lg:w-auto 
               rounded-full 
               border border-transparent lg:border-[#1E2B2B]/10 
@@ -729,23 +732,23 @@ const Navbar = () => {
             "
             aria-label="AI Assistant"
           >
-            <IoSparklesOutline className="text-[18px] lg:text-[17px]" />
+            <IoSparklesOutline className="text-[16px] sm:text-[18px] lg:text-[17px]" />
 
             <span className="hidden lg:inline lg:ml-1.5 text-xs font-bold">
               AI Assistant
             </span>
           </motion.button>
 
-          {/* Cart */}
+          {/* Cart — responsive sizing below lg, unchanged at lg+ */}
           <motion.button
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.92 }}
             type="button"
             onClick={openCart}
-            className="cursor-pointer relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full text-[#1E2B2B] transition-colors hover:bg-black/[0.08] dark:text-[var(--ph-text)] dark:hover:bg-white/[0.07]"
+            className="cursor-pointer relative flex h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 items-center justify-center rounded-full text-[#1E2B2B] transition-colors hover:bg-black/[0.08] dark:text-[var(--ph-text)] dark:hover:bg-white/[0.07]"
             aria-label="Open cart"
           >
-            <IoCartOutline className="text-[21px]" />
+            <IoCartOutline className="text-[19px] sm:text-[21px]" />
 
             <AnimatePresence>
               {cartCount > 0 && (
@@ -753,7 +756,7 @@ const Navbar = () => {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   exit={{ scale: 0 }}
-                  className="absolute right-0 top-0 flex h-[16px] min-w-[16px] items-center justify-center rounded-full bg-[var(--ph-coral)] px-1 text-[8px] font-extrabold text-white ring-2 ring-[var(--ph-primary)] dark:ring-[var(--ph-surface)]"
+                  className="absolute right-0 top-0 flex h-[15px] min-w-[15px] sm:h-[16px] sm:min-w-[16px] items-center justify-center rounded-full bg-[var(--ph-coral)] px-1 text-[7px] sm:text-[8px] font-extrabold text-white ring-2 ring-[var(--ph-primary)] dark:ring-[var(--ph-surface)]"
                 >
                   {cartCount > 99 ? "99+" : cartCount}
                 </motion.span>
@@ -761,7 +764,7 @@ const Navbar = () => {
             </AnimatePresence>
           </motion.button>
 
-          {/* Account / Login — visible on ALL screen sizes now */}
+          {/* Account / Login — responsive sizing on ALL screen sizes */}
           {user ? (
             <div ref={accountMenuRef} className="relative">
               <motion.button
@@ -769,7 +772,7 @@ const Navbar = () => {
                 whileTap={{ scale: 0.95 }}
                 type="button"
                 onClick={() => setIsAccountOpen((prev) => !prev)}
-                className="cursor-pointer flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center overflow-hidden rounded-full border-2 border-[#1E2B2B]/20 bg-[var(--ph-surface)] shadow-sm transition-all duration-200 hover:border-[#1E2B2B]/40 hover:shadow-md dark:border-white/15"
+                className="cursor-pointer flex h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 items-center justify-center overflow-hidden rounded-full border-2 border-[#1E2B2B]/20 bg-[var(--ph-surface)] shadow-sm transition-all duration-200 hover:border-[#1E2B2B]/40 hover:shadow-md dark:border-white/15"
                 aria-label="Account menu"
                 aria-expanded={isAccountOpen}
               >
@@ -782,7 +785,7 @@ const Navbar = () => {
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <IoPersonOutline className="text-[19px] text-[#1E2B2B] dark:text-[var(--ph-text)]" />
+                  <IoPersonOutline className="text-[17px] sm:text-[19px] text-[#1E2B2B] dark:text-[var(--ph-text)]" />
                 )}
               </motion.button>
 
@@ -832,7 +835,7 @@ const Navbar = () => {
             <Link
               href="/logIn"
               onClick={handleLinkClick}
-              className="block rounded-full bg-[#1E2B2B] px-2.5 sm:px-3.5 py-2 text-xs sm:text-sm font-bold text-[var(--ph-primary)] transition-transform hover:scale-[1.03] dark:bg-[var(--ph-primary)] dark:text-[#1E2B2B]"
+              className="block rounded-full bg-[#1E2B2B] px-2 py-1.5 sm:px-2.5 sm:py-2 md:px-3.5 text-[11px] sm:text-xs md:text-sm font-bold text-[var(--ph-primary)] transition-transform hover:scale-[1.03] dark:bg-[var(--ph-primary)] dark:text-[#1E2B2B]"
             >
               Login
             </Link>
@@ -840,7 +843,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile search */}
+      {/* Search dropdown (below header) — now shown for ALL screens below lg (mobile + tablet), hidden at lg+ where inline search is used instead */}
       <AnimatePresence>
         {isSearchOpen && (
           <motion.div
@@ -849,7 +852,7 @@ const Navbar = () => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.22 }}
-            className="overflow-hidden border-t border-black/[0.08] md:hidden"
+            className="overflow-hidden border-t border-black/[0.08] lg:hidden"
           >
             <form
               onSubmit={handleSearchSubmit}

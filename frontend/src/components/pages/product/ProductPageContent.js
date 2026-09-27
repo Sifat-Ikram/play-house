@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { FiX } from "react-icons/fi";
 import ProductPageHeader from "./ProductPageHeader";
 import FilterSidebar from "./FilterSidebar";
@@ -206,20 +206,23 @@ const ProductPageContent = ({
 
       <div className="w-11/12 max-w-[1900px] mx-auto py-6 sm:py-8">
         <div className="flex items-start gap-5 lg:gap-7">
-          {/* Desktop sidebar — push/reflow, default OPEN */}
-          <motion.div
-            initial={false}
-            animate={{
-              width: isDesktopSidebarOpen ? 280 : 0,
-              opacity: isDesktopSidebarOpen ? 1 : 0,
-            }}
-            transition={{ type: "spring", stiffness: 260, damping: 30 }}
-            className="hidden lg:block shrink-0 overflow-hidden"
-          >
-            <div className="w-[280px] rounded-3xl border border-[var(--ph-border)] bg-[var(--ph-surface)] shadow-sm sticky top-[90px] max-h-[calc(100vh-110px)]">
-              <FilterSidebar {...sidebarProps} />
-            </div>
-          </motion.div>
+          {/* Desktop sidebar — mount/unmount animated, default OPEN, truly sticky (no overflow-hidden ancestor) */}
+          <AnimatePresence initial={false}>
+            {isDesktopSidebarOpen && (
+              <motion.div
+                key="desktop-sidebar"
+                initial={{ opacity: 0, x: -16, width: 0 }}
+                animate={{ opacity: 1, x: 0, width: 280 }}
+                exit={{ opacity: 0, x: -16, width: 0 }}
+                transition={{ type: "spring", stiffness: 260, damping: 30 }}
+                className="hidden lg:block shrink-0"
+              >
+                <div className="w-[280px] rounded-3xl border border-[var(--ph-border)] bg-[var(--ph-surface)] shadow-sm sticky top-[90px] max-h-[calc(100vh-110px)] overflow-y-auto">
+                  <FilterSidebar {...sidebarProps} />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Grid + Chips + Pagination */}
           <div className="flex-1 min-w-0">
