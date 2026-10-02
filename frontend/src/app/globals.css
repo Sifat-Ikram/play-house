@@ -3,136 +3,156 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-    /* Primary — Warm Gold */
-    --ph-primary: #F5A623;
-    --ph-primary-dark: #D68C0F;
-    --ph-primary-soft: #FEF3E0;
+  /* Primary — Warm Gold */
+  --ph-primary: #f5a623;
+  --ph-primary-dark: #d68c0f;
+  --ph-primary-soft: #fef3e0;
 
-    /* Accent — Deep Teal (secondary brand color) */
-    --ph-accent: #0F5257;
-    --ph-accent-dark: #0B3D41;
-    --ph-accent-soft: #E3F0EF;
+  /* Accent — Deep Teal (secondary brand color) */
+  --ph-accent: #0f5257;
+  --ph-accent-dark: #0b3d41;
+  --ph-accent-soft: #e3f0ef;
 
-    /* Supporting accents */
-    --ph-coral: #FF6F5E;
-    --ph-mint: #2FBF9F;
+  /* Supporting accents */
+  --ph-coral: #ff6f5e;
+  --ph-mint: #2fbf9f;
 
-    /* Surfaces */
-    --ph-bg: #FFFDF8;
-    --ph-surface: #FFFFFF;
-    --ph-border: #EDE6D8;
+  /* Surfaces */
+  --ph-bg: #fffdf8;
+  --ph-surface: #ffffff;
+  --ph-border: #ede6d8;
 
-    /* Text — teal-tinted near-black */
-    --ph-text: #1E2B2B;
-    --ph-text-soft: #58686A;
-    --ph-text-faint: #94A0A0;
+  /* Text — teal-tinted near-black */
+  --ph-text: #1e2b2b;
+  --ph-text-soft: #58686a;
+  --ph-text-faint: #94a0a0;
 
-    --font-display: var(--font-fredoka);
-    --font-body: var(--font-jakarta);
+  --font-display: var(--font-fredoka);
+  --font-body: var(--font-jakarta);
 }
 
 .dark {
-    /* Primary — brighter gold for contrast on dark */
-    --ph-primary: #FFC157;
-    --ph-primary-dark: #F5A623;
-    --ph-primary-soft: #3A2C0F;
+  /* Primary — brighter gold for contrast on dark */
+  --ph-primary: #ffc157;
+  --ph-primary-dark: #f5a623;
+  --ph-primary-soft: #3a2c0f;
 
-    /* Accent — lighter teal for dark mode */
-    --ph-accent: #3FA9A0;
-    --ph-accent-dark: #2C8C84;
-    --ph-accent-soft: #12302E;
+  /* Accent — lighter teal for dark mode */
+  --ph-accent: #3fa9a0;
+  --ph-accent-dark: #2c8c84;
+  --ph-accent-soft: #12302e;
 
-    --ph-coral: #FF8B7D;
-    --ph-mint: #45D9B8;
+  --ph-coral: #ff8b7d;
+  --ph-mint: #45d9b8;
 
-    /* Surfaces — teal-tinted dark, not pure black */
-    --ph-bg: #101615;
-    --ph-surface: #182120;
-    --ph-border: #2A3534;
+  /* Surfaces — teal-tinted dark, not pure black */
+  --ph-bg: #101615;
+  --ph-surface: #182120;
+  --ph-border: #2a3534;
 
-    --ph-text: #F4F6F5;
-    --ph-text-soft: #9CACAA;
-    --ph-text-faint: #6B7A78;
+  --ph-text: #f4f6f5;
+  --ph-text-soft: #9cacaa;
+  --ph-text-faint: #6b7a78;
 }
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
-    margin: 0;
-    overflow-x: hidden;
-    background-color: var(--ph-bg);
-    color: var(--ph-text);
-    line-height: 1.55;
+  margin: 0;
+  overflow-x: hidden;
+  background-color: var(--ph-bg);
+  color: var(--ph-text);
+  line-height: 1.55;
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 button,
 a {
-    -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent;
 }
 
 ::selection {
-    background: var(--ph-primary);
-    color: #1E2B2B;
+  background: var(--ph-primary);
+  color: #1e2b2b;
 }
 
 /* Premium scrollbar */
 
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--ph-border);
-    border-radius: 999px;
+  background: var(--ph-border);
+  border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--ph-text-soft);
+  background: var(--ph-text-soft);
 }
 
 /* Navigation Button */
 .nav-btn {
-    @apply p-2 sm:p-2.5 rounded-full border border-[var(--ph-border)] bg-[var(--ph-surface)] text-[var(--ph-text)] shadow-sm transition-all duration-200 hover:bg-[var(--ph-accent)] hover:text-white hover:border-[var(--ph-accent)] hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center;
+  @apply p-2 sm:p-2.5 rounded-full border border-[var(--ph-border)] bg-[var(--ph-surface)] text-[var(--ph-text)] shadow-sm transition-all duration-200 hover:bg-[var(--ph-accent)] hover:text-white hover:border-[var(--ph-accent)] hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center;
 }
 
 /* Styles scoped strictly to the Banner container */
 .banner .eyebrow {
-    font-family: var(--font-body);
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-size: clamp(0.68rem, 0.62rem + 0.2vw, 0.78rem);
-    color: var(--ph-accent);
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: clamp(0.68rem, 0.62rem + 0.2vw, 0.78rem);
+  color: var(--ph-accent);
 }
 
 .banner .body-lg {
-    font-size: clamp(1rem, 0.94rem + 0.3vw, 1.15rem);
-    color: var(--ph-text-soft);
+  font-size: clamp(1rem, 0.94rem + 0.3vw, 1.15rem);
+  color: var(--ph-text-soft);
 }
 
 .banner .body-sm {
-    font-size: clamp(0.82rem, 0.8rem + 0.1vw, 0.9rem);
-    color: var(--ph-text-soft);
+  font-size: clamp(0.82rem, 0.8rem + 0.1vw, 0.9rem);
+  color: var(--ph-text-soft);
 }
 
 /* CTA Button scoped to Banner */
 .banner .ph-btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 cursor-pointer;
-    font-family: var(--font-body);
-    background-color: var(--ph-accent);
-    color: #FFFFFF;
-    padding: 0.75rem 1.6rem;
-    font-size: clamp(0.85rem, 0.8rem + 0.2vw, 0.95rem);
+  @apply inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 cursor-pointer;
+  font-family: var(--font-body);
+  background-color: var(--ph-accent);
+  color: #ffffff;
+  padding: 0.75rem 1.6rem;
+  font-size: clamp(0.85rem, 0.8rem + 0.2vw, 0.95rem);
 }
 
 .banner .ph-btn-primary:hover {
-    background-color: var(--ph-accent-dark);
-    box-shadow: 0 10px 24px -6px rgba(15, 82, 87, 0.45);
+  background-color: var(--ph-accent-dark);
+  box-shadow: 0 10px 24px -6px rgba(15, 82, 87, 0.45);
+}
+
+/* Site-wide uniform container */
+.ph-container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+  .ph-container {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ph-container {
+    padding-inline: 2rem;
+  }
 }

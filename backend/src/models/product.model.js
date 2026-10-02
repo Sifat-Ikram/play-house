@@ -96,20 +96,20 @@ const deleteProduct = async (id) => {
 
 const getNewArrivalProducts = async () => {
   const query = `
-    SELECT
-      p.*,
-      b.brand_name AS brand_name,
-      c.category_name AS category_name,
-      inv.id AS inventory_id,
+    SELECT 
+      p.id,
+      p.name,
+      p.summary,
+      p.interest,
+      b.brand_name,
+      c.category_name,
       inv.selling_price,
-      inv.stock_quantity,
-      inv.sku,
       img.image_url AS display_image_url
     FROM products p
     LEFT JOIN brands b ON b.brand_id = p.brand_id
     LEFT JOIN categories c ON c.category_id = p.category_id
     LEFT JOIN LATERAL (
-      SELECT id, selling_price, stock_quantity, sku
+      SELECT id, selling_price
       FROM inventory
       WHERE inventory.product_id = p.id
       ORDER BY created_at ASC
@@ -126,27 +126,26 @@ const getNewArrivalProducts = async () => {
     WHERE p.created_at >= NOW() - INTERVAL '4 months'
     ORDER BY p.created_at DESC;
   `;
+
   const result = await pool.query(query);
   return result.rows;
 };
 
 const getFeaturedProducts = async () => {
   const query = `
-    SELECT
-      p.*,
-      b.brand_name AS brand_name,
-      c.category_name AS category_name,
-      inv.id AS inventory_id,
+    SELECT 
+      p.id,
+      p.name,
+      b.brand_name,
+      c.category_name,
       inv.selling_price,
-      inv.stock_quantity,
-      inv.sku,
-      inv.is_featured,
-      img.image_url AS display_image_url
+      img.image_url AS display_image_url,
+      COALESCE(AVG(r.review_rating), 0) AS average_rating
     FROM products p
     LEFT JOIN brands b ON b.brand_id = p.brand_id
     LEFT JOIN categories c ON c.category_id = p.category_id
     INNER JOIN LATERAL (
-      SELECT id, selling_price, stock_quantity, sku, is_featured
+      SELECT id, selling_price
       FROM inventory
       WHERE inventory.product_id = p.id
         AND inventory.is_featured = true
@@ -162,8 +161,19 @@ const getFeaturedProducts = async () => {
       ORDER BY created_at ASC
       LIMIT 1
     ) img ON true
+    LEFT JOIN reviews r ON r.product_id = p.id
+    GROUP BY
+      p.id,
+      p.name,
+      p.summary,
+      p.interest,
+      b.brand_name,
+      c.category_name,
+      inv.selling_price,
+      img.image_url
     ORDER BY p.created_at DESC;
   `;
+
   const result = await pool.query(query);
   return result.rows;
 };

@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { CartProvider } from "@/provider/CartProvider";
 import CartDrawer from "@/components/cart/CartDrawer";
 import { AuthProvider } from "@/provider/AuthProvider";
+import CustomCursor from "@/components/ui/CustomCursor";
 
 const fredoka = Fredoka({
   variable: "--font-fredoka",
@@ -39,6 +40,7 @@ export default function RootLayout({ children }) {
               {children}
               <Footer />
               <CartDrawer />
+              <CustomCursor />
             </CartProvider>
           </AuthProvider>
         </QueryProvider>
