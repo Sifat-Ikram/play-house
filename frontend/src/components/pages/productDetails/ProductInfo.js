@@ -282,7 +282,7 @@ const ProductInfo = ({ product, selectedInventory, onSelectInventory }) => {
             type="button"
             disabled={!inStock}
             onClick={() => addToCart(inv.id, quantity)}
-            className="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold text-white shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 cursor-pointer min-w-[140px] inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold text-white shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
               backgroundColor: "var(--ph-accent)",
               fontFamily: "var(--font-body)",
@@ -297,7 +297,7 @@ const ProductInfo = ({ product, selectedInventory, onSelectInventory }) => {
             type="button"
             disabled={!inStock}
             onClick={handleBuyNow}
-            className="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold text-[#1E2B2B] shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 cursor-pointer min-w-[140px] inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold text-[#1E2B2B] shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
               backgroundColor: "var(--ph-primary)",
               fontFamily: "var(--font-body)",
