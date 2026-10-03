@@ -3,9 +3,9 @@
 import { motion } from "framer-motion";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
-const LOAD_STEP = 10;
+const LOAD_STEP = 20;
 const SWITCH_THRESHOLD = 40;
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 50;
 
 const ProductPagination = ({
     totalCount,

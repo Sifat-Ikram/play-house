@@ -425,7 +425,7 @@ const ProductPageHeader = ({
               aria-haspopup="listbox"
               aria-expanded={isSortOpen}
             >
-              <span className="hidden lg:inline text-[var(--ph-text-faint)] font-medium">
+              <span className="hidden lg:inline text-[var(--ph-text-faint)] font-medium mr-2">
                 Sort:
               </span>
               <span className="truncate">{currentSortLabel}</span>

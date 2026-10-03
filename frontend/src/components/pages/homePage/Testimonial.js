@@ -85,13 +85,13 @@ const Testimonial = () => {
           }}
         >
           {reviews.map((review, index) => (
-            <SwiperSlide key={review.review_id} className="py-2">
+            <SwiperSlide key={review.review_id} className="py-2 h-auto">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="h-full p-5 sm:p-6 rounded-3xl border shadow-md hover:shadow-xl transition-all duration-300 relative flex flex-col justify-between"
+                className="h-[240px] w-full p-5 sm:p-6 rounded-3xl border shadow-md hover:shadow-xl transition-all duration-300 relative flex flex-col justify-between"
                 style={{
                   backgroundColor: "var(--ph-surface)",
                   borderColor: "var(--ph-primary)",

@@ -48,9 +48,18 @@ const createProduct = async (data) => {
 
 const getProducts = async () => {
   const query = `
-    SELECT *
-    FROM products
-    ORDER BY created_at DESC;
+    SELECT
+      p.*,
+      inv.selling_price
+    FROM products p
+    LEFT JOIN LATERAL (
+      SELECT selling_price
+      FROM inventory
+      WHERE inventory.product_id = p.id
+      ORDER BY created_at ASC
+      LIMIT 1
+    ) inv ON true
+    ORDER BY p.created_at DESC;
   `;
 
   const result = await pool.query(query);

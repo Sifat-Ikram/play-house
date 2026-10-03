@@ -55,6 +55,7 @@ export const CartProvider = ({ children }) => {
   const addToCart = useCallback(
     async (inventoryId, quantity = 1) => {
       const token = getCartToken();
+
       const body = JSON.stringify({
         cart_token: token,
         inventory_id: inventoryId,
@@ -76,10 +77,14 @@ export const CartProvider = ({ children }) => {
 
         if (res.ok) {
           await fetchCart();
-          setIsOpen(true);
+          setIsOpen(false);
+          return true;
         }
+
+        return false;
       } catch (error) {
         console.error("Error adding to cart:", error);
+        return false;
       }
     },
     [user, authFetch, fetchCart],

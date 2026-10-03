@@ -48,13 +48,24 @@ const ProductPageContent = ({
   const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState(true);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
+  const PRICE_MIN = 0;
+  const PRICE_MAX = 100000;
+
   const [selectedFilters, setSelectedFilters] = useState({});
+  const [priceRange, setPriceRange] = useState({
+    min: PRICE_MIN,
+    max: PRICE_MAX,
+  });
   const [visibleCount, setVisibleCount] = useState(LOAD_STEP);
   const [paginationMode, setPaginationMode] = useState("loadMore");
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     setSelectedFilters({});
+    setPriceRange({
+      min: PRICE_MIN,
+      max: PRICE_MAX,
+    });
     setVisibleCount(LOAD_STEP);
     setPaginationMode("loadMore");
     setCurrentPage(1);
@@ -72,8 +83,19 @@ const ProductPageContent = ({
     setCurrentPage(1);
   };
 
+  const handlePriceChange = (range) => {
+    setPriceRange(range);
+    setVisibleCount(LOAD_STEP);
+    setPaginationMode("loadMore");
+    setCurrentPage(1);
+  };
+
   const handleClearAll = () => {
     setSelectedFilters({});
+    setPriceRange({
+      min: PRICE_MIN,
+      max: PRICE_MAX,
+    });
     setVisibleCount(LOAD_STEP);
     setPaginationMode("loadMore");
     setCurrentPage(1);
@@ -133,8 +155,14 @@ const ProductPageContent = ({
       });
     }
 
+    list = list.filter((p) => {
+      const price = Number(p.selling_price);
+
+      return price >= priceRange.min && price <= priceRange.max;
+    });
+
     return list;
-  }, [products, selectedFilters]);
+  }, [products, selectedFilters, priceRange]);
 
   // ---- Apply sorting ----
   const sortedProducts = useMemo(() => {
@@ -177,6 +205,8 @@ const ProductPageContent = ({
     selectedFilters,
     onFilterChange: handleFilterChange,
     onClearAll: handleClearAll,
+    priceRange,
+    onPriceChange: handlePriceChange,
   };
 
   return (
@@ -204,7 +234,7 @@ const ProductPageContent = ({
         {...sidebarProps}
       />
 
-      <div className="w-11/12 max-w-[1900px] mx-auto py-6 sm:py-8">
+      <div className="w-full mx-auto">
         <div className="flex items-start gap-5 lg:gap-7">
           {/* Desktop sidebar — mount/unmount animated, default OPEN, truly sticky (no overflow-hidden ancestor) */}
           <AnimatePresence initial={false}>
@@ -215,9 +245,9 @@ const ProductPageContent = ({
                 animate={{ opacity: 1, x: 0, width: 280 }}
                 exit={{ opacity: 0, x: -16, width: 0 }}
                 transition={{ type: "spring", stiffness: 260, damping: 30 }}
-                className="hidden lg:block shrink-0"
+                className="hidden lg:block shrink-0 self-stretch"
               >
-                <div className="w-[280px] rounded-3xl border border-[var(--ph-border)] bg-[var(--ph-surface)] shadow-sm sticky top-[90px] max-h-[calc(100vh-110px)] overflow-y-auto">
+                <div className="w-[280px] border-r border-[var(--ph-border)] bg-[var(--ph-surface)] shadow-sm sticky top-18 overflow-y-auto">
                   <FilterSidebar {...sidebarProps} />
                 </div>
               </motion.div>
@@ -225,43 +255,43 @@ const ProductPageContent = ({
           </AnimatePresence>
 
           {/* Grid + Chips + Pagination */}
-          <div className="flex-1 min-w-0">
-            {activeFilterCount > 0 && (
-              <div className="flex flex-wrap items-center gap-2 mb-4 sm:mb-5">
-                {Object.entries(selectedFilters).map(([groupKey, values]) =>
-                  (values || []).map((value) => (
-                    <span
-                      key={`${groupKey}-${value}`}
-                      className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold"
-                      style={{
-                        backgroundColor: "var(--ph-primary-soft)",
-                        color: "var(--ph-primary-dark)",
-                        fontFamily: "var(--font-body)",
-                      }}
+          <div className="flex-1 min-w-0 pt-5">
+            <div className="flex flex-wrap items-center gap-2 mb-4 sm:mb-5 min-h-[32px]">
+              {Object.entries(selectedFilters).map(([groupKey, values]) =>
+                (values || []).map((value) => (
+                  <span
+                    key={`${groupKey}-${value}`}
+                    className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold"
+                    style={{
+                      backgroundColor: "var(--ph-primary-soft)",
+                      color: "var(--ph-primary-dark)",
+                      fontFamily: "var(--font-body)",
+                    }}
+                  >
+                    {FILTER_GROUP_LABELS[groupKey] || groupKey}: {value}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveChip(groupKey, value)}
+                      aria-label={`Remove ${value} filter`}
+                      className="rounded-full hover:bg-black/10 p-0.5 cursor-pointer"
                     >
-                      {FILTER_GROUP_LABELS[groupKey] || groupKey}: {value}
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveChip(groupKey, value)}
-                        aria-label={`Remove ${value} filter`}
-                        className="rounded-full hover:bg-black/10 p-0.5"
-                      >
-                        <FiX className="text-xs" />
-                      </button>
-                    </span>
-                  )),
-                )}
+                      <FiX className="text-xs" />
+                    </button>
+                  </span>
+                )),
+              )}
 
+              {activeFilterCount > 0 && (
                 <button
                   type="button"
                   onClick={handleClearAll}
-                  className="text-xs font-semibold text-[var(--ph-coral)] hover:underline ml-1"
+                  className="text-xs font-semibold text-[var(--ph-coral)] hover:underline ml-1 cursor-pointer"
                   style={{ fontFamily: "var(--font-body)" }}
                 >
                   Clear All
                 </button>
-              </div>
-            )}
+              )}
+            </div>
 
             <ProductGrid products={visibleProducts} isWholesale={!!wholesale} />
 
