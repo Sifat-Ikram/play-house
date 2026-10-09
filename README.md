@@ -210,7 +210,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## 👤 Author
 
-**Your Name**  
+**Md. Sifat Ikram**  
 [GitHub](https://github.com/Sifat-Ikram) · [LinkedIn](https://www.linkedin.com/in/sifat-ikram-17011713a/) · sifatikram@gmail.com
 
 ---
