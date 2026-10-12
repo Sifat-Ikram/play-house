@@ -15,6 +15,7 @@ const productListingRoutes = require("./routes/productListing.route");
 const orderRoutes = require("./routes/order.routes");
 const authRoutes = require("./routes/auth.routes");
 const profileRoutes = require("./routes/profile.routes");
+const aiAssistantRoutes = require("./routes/aiAssistant.routes");
 
 const notFoundMiddleware = require("./middleware/notFound.middleware");
 
@@ -65,6 +66,8 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/auth", authRoutes);
 
 app.use("/api/profile", profileRoutes);
+
+app.use("/api/ai-assistant", aiAssistantRoutes);
 
 // 404
 app.use(notFoundMiddleware);
