@@ -1,85 +1,130 @@
 const { pool } = require("../config/db");
 
 const createInventoryImage = async (data) => {
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    let isDisplayImage = data.is_display_image ?? false;
+
+    // If this is the first image for this inventory,
+    // make it the display image automatically.
+    if (isDisplayImage) {
+      await client.query(
+        `UPDATE inventory_images
+         SET is_display_image = false,
+             updated_at = CURRENT_TIMESTAMP
+         WHERE inventory_id = $1`,
+        [data.inventory_id],
+      );
+    }
+
     const query = `
-    INSERT INTO inventory_images (
-      inventory_id,
-      image_url,
-      is_display_image
-    )
-    VALUES ($1, $2, $3)
-    RETURNING *;
-  `;
+      INSERT INTO inventory_images (
+        inventory_id,
+        image_url,
+        is_display_image
+      )
+      VALUES ($1, $2, $3)
+      RETURNING *;
+    `;
 
-    const values = [
-        data.inventory_id,
-        data.image_url,
-        data.is_display_image ?? false,
-    ];
+    const result = await client.query(query, [
+      data.inventory_id,
+      data.image_url,
+      isDisplayImage,
+    ]);
 
-    const result = await pool.query(query, values);
-
+    await client.query("COMMIT");
     return result.rows[0];
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
 };
 
 const getImagesByInventoryId = async (inventoryId) => {
-    const query = `
-    SELECT *
-    FROM inventory_images
-    WHERE inventory_id = $1
-    ORDER BY created_at ASC;
-  `;
+  const result = await pool.query(
+    `SELECT * FROM inventory_images
+     WHERE inventory_id = $1
+     ORDER BY created_at ASC`,
+    [inventoryId],
+  );
 
-    const result = await pool.query(query, [inventoryId]);
-
-    return result.rows;
+  return result.rows;
 };
 
 const getInventoryImageById = async (id) => {
-    const query = `
-    SELECT *
-    FROM inventory_images
-    WHERE id = $1;
-  `;
+  const result = await pool.query(
+    `SELECT * FROM inventory_images WHERE id = $1`,
+    [id],
+  );
 
-    const result = await pool.query(query, [id]);
-
-    return result.rows[0];
+  return result.rows[0];
 };
 
 const updateInventoryImage = async (id, data) => {
-    const query = `
-    UPDATE inventory_images
-    SET is_display_image = $1,
-        updated_at = CURRENT_TIMESTAMP
-    WHERE id = $2
-    RETURNING *;
-  `;
+  const client = await pool.connect();
 
-    const result = await pool.query(query, [
-        data.is_display_image,
-        id,
-    ]);
+  try {
+    await client.query("BEGIN");
 
+    const current = await client.query(
+      `SELECT inventory_id FROM inventory_images WHERE id = $1`,
+      [id],
+    );
+
+    if (!current.rows[0]) {
+      throw new Error("Inventory image not found");
+    }
+
+    if (data.is_display_image === true) {
+      await client.query(
+        `UPDATE inventory_images
+         SET is_display_image = false,
+             updated_at = CURRENT_TIMESTAMP
+         WHERE inventory_id = $1`,
+        [current.rows[0].inventory_id],
+      );
+    }
+
+    const result = await client.query(
+      `UPDATE inventory_images
+       SET is_display_image = $1,
+           updated_at = CURRENT_TIMESTAMP
+       WHERE id = $2
+       RETURNING *`,
+      [data.is_display_image, id],
+    );
+
+    await client.query("COMMIT");
     return result.rows[0];
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
 };
 
 const deleteInventoryImage = async (id) => {
-    const query = `
-    DELETE FROM inventory_images
-    WHERE id = $1
-    RETURNING *;
-  `;
+  const result = await pool.query(
+    `DELETE FROM inventory_images
+     WHERE id = $1
+     RETURNING *`,
+    [id],
+  );
 
-    const result = await pool.query(query, [id]);
-
-    return result.rows[0];
+  return result.rows[0];
 };
 
 module.exports = {
-    createInventoryImage,
-    getImagesByInventoryId,
-    getInventoryImageById,
-    updateInventoryImage,
-    deleteInventoryImage,
+  createInventoryImage,
+  getImagesByInventoryId,
+  getInventoryImageById,
+  updateInventoryImage,
+  deleteInventoryImage,
 };
