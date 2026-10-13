@@ -179,7 +179,7 @@ const Banner = () => {
                         className="mt-6 sm:mt-7"
                     >
                         <Link
-                            href="/products"
+                            href="/product"
                             className="text-xl
                 flex items-center justify-center rounded-full
                 bg-[#1E2B2B]
