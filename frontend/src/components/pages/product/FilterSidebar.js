@@ -90,49 +90,16 @@ const FilterSidebar = ({
   );
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col overflow-y-auto overscroll-contain">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-[var(--ph-border)] px-3.5 py-3 sm:px-4 sm:py-3.5 md:px-5 md:py-4">
         <div>
-          <p
-            className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.12em] sm:tracking-[0.14em]"
-            style={{
-              color: "var(--ph-accent)",
-              fontFamily: "var(--font-body)",
-            }}
-          >
-            Refine
-          </p>
           <h3
             className="text-base sm:text-lg font-semibold text-[var(--ph-text)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
             Filters
           </h3>
-        </div>
-
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          {activeCount > 0 && (
-            <button
-              type="button"
-              onClick={onClearAll}
-              className="text-[11px] sm:text-xs font-semibold text-[var(--ph-coral)] hover:underline"
-              style={{ fontFamily: "var(--font-body)" }}
-            >
-              Clear All
-            </button>
-          )}
-
-          {showCloseButton && (
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label="Close filters"
-              className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full text-[var(--ph-text-soft)] hover:bg-[var(--ph-primary-soft)]"
-            >
-              <FiX className="text-base sm:text-lg" />
-            </button>
-          )}
         </div>
       </div>
 

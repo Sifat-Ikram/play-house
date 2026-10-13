@@ -247,7 +247,7 @@ const ProductPageContent = ({
                 transition={{ type: "spring", stiffness: 260, damping: 30 }}
                 className="hidden lg:block shrink-0 self-stretch"
               >
-                <div className="w-[280px] border-r border-[var(--ph-border)] bg-[var(--ph-surface)] shadow-sm sticky top-18 overflow-y-auto">
+                <div className="w-[280px] h-full border-r border-[var(--ph-border)] bg-[var(--ph-surface)] shadow-sm sticky top-18">
                   <FilterSidebar {...sidebarProps} />
                 </div>
               </motion.div>
@@ -256,42 +256,44 @@ const ProductPageContent = ({
 
           {/* Grid + Chips + Pagination */}
           <div className="flex-1 min-w-0 pt-5">
-            <div className="flex flex-wrap items-center gap-2 mb-4 sm:mb-5 min-h-[32px]">
-              {Object.entries(selectedFilters).map(([groupKey, values]) =>
-                (values || []).map((value) => (
-                  <span
-                    key={`${groupKey}-${value}`}
-                    className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold"
-                    style={{
-                      backgroundColor: "var(--ph-primary-soft)",
-                      color: "var(--ph-primary-dark)",
-                      fontFamily: "var(--font-body)",
-                    }}
-                  >
-                    {FILTER_GROUP_LABELS[groupKey] || groupKey}: {value}
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveChip(groupKey, value)}
-                      aria-label={`Remove ${value} filter`}
-                      className="rounded-full hover:bg-black/10 p-0.5 cursor-pointer"
+            {activeFilterCount > 0 && (
+              <div className="flex flex-wrap items-center gap-2 mb-4 sm:mb-5 min-h-[32px]">
+                {Object.entries(selectedFilters).map(([groupKey, values]) =>
+                  (values || []).map((value) => (
+                    <span
+                      key={`${groupKey}-${value}`}
+                      className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold"
+                      style={{
+                        backgroundColor: "var(--ph-primary-soft)",
+                        color: "var(--ph-primary-dark)",
+                        fontFamily: "var(--font-body)",
+                      }}
                     >
-                      <FiX className="text-xs" />
-                    </button>
-                  </span>
-                )),
-              )}
+                      {FILTER_GROUP_LABELS[groupKey] || groupKey}: {value}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveChip(groupKey, value)}
+                        aria-label={`Remove ${value} filter`}
+                        className="rounded-full hover:bg-black/10 p-0.5 cursor-pointer"
+                      >
+                        <FiX className="text-xs" />
+                      </button>
+                    </span>
+                  )),
+                )}
 
-              {activeFilterCount > 0 && (
-                <button
-                  type="button"
-                  onClick={handleClearAll}
-                  className="text-xs font-semibold text-[var(--ph-coral)] hover:underline ml-1 cursor-pointer"
-                  style={{ fontFamily: "var(--font-body)" }}
-                >
-                  Clear All
-                </button>
-              )}
-            </div>
+                {activeFilterCount > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleClearAll}
+                    className="text-xs font-semibold text-[var(--ph-coral)] hover:underline ml-1 cursor-pointer"
+                    style={{ fontFamily: "var(--font-body)" }}
+                  >
+                    Clear All
+                  </button>
+                )}
+              </div>
+            )}
 
             <ProductGrid products={visibleProducts} isWholesale={!!wholesale} />
 
