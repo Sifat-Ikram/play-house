@@ -2,7 +2,6 @@
 
 const SPEC_FIELDS = [
   { key: "number_of_pieces", label: "Number of Pieces" },
-  { key: "interest", label: "Interest" },
   { key: "occasion", label: "Occasion" },
   { key: "warranty_info", label: "Warranty" },
   { key: "in_the_box", label: "In the Box" },

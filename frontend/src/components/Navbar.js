@@ -751,7 +751,7 @@ const Navbar = () => {
             <IoCartOutline className="text-[19px] sm:text-[21px]" />
 
             <AnimatePresence>
-              {cartCount > 0 && (
+              {cartCount && (
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}

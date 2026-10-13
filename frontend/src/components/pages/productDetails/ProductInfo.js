@@ -16,9 +16,13 @@ import { useCart } from "@/provider/CartProvider";
 
 const ProductInfo = ({ product, selectedInventory, onSelectInventory }) => {
   const router = useRouter();
-  const { addToCart } = useCart();
+  const { addToCart, openCart } = useCart();
   const [quantity, setQuantity] = useState(1);
-  const [isDeliveryOpen, setIsDeliveryOpen] = useState(true);
+  const [openAccordion, setOpenAccordion] = useState("age");
+
+  const toggleAccordion = (name) => {
+    setOpenAccordion((prev) => (prev === name ? null : name));
+  };
 
   const inventoryList = product?.inventory || [];
   const inv = selectedInventory || inventoryList[0] || {};
@@ -81,18 +85,6 @@ const ProductInfo = ({ product, selectedInventory, onSelectInventory }) => {
             </span>
           </>
         )}
-
-        {(product?.minimum_age_range !== undefined ||
-          product?.maximum_age_range !== undefined) && (
-          <>
-            <span className="text-[var(--ph-text-faint)]">|</span>
-            <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] text-[var(--ph-text)]">
-              <FiUserCheck className="text-[11px]" />
-              {product.minimum_age_range ?? 0} -{" "}
-              {product.maximum_age_range ?? "3+"} Years
-            </span>
-          </>
-        )}
       </div>
       {/* Category */}
       {product?.category_name && (
@@ -144,15 +136,6 @@ const ProductInfo = ({ product, selectedInventory, onSelectInventory }) => {
           </div>
         </div>
       )}
-      {/* Summary */}
-      {product?.summary && (
-        <p
-          className="mt-3 text-xs sm:text-sm text-[var(--ph-text-soft)] leading-relaxed"
-          style={{ fontFamily: "var(--font-body)" }}
-        >
-          {product.summary}
-        </p>
-      )}
       {/* Materials & Key Highlights */}
       {product?.materials?.length > 0 && (
         <div className="mt-3 flex flex-wrap items-center gap-1.5">
@@ -195,17 +178,6 @@ const ProductInfo = ({ product, selectedInventory, onSelectInventory }) => {
           </span>
         )}
       </div>
-      {/* In the Box Info */}
-      {(product?.in_the_box || product?.number_of_pieces) && (
-        <div className="mt-4 flex items-center gap-2 text-xs text-[var(--ph-text-soft)] bg-[var(--ph-surface-subtle)] p-2.5 rounded-lg border border-[var(--ph-border)]">
-          <FiBox className="text-sm shrink-0" />
-          <span>
-            <strong className="text-[var(--ph-text)]">In the Box:&nbsp;</strong>
-            {product.in_the_box || "Standard packaging"}
-            {product.number_of_pieces && ` (${product.number_of_pieces} Pc)`}
-          </span>
-        </div>
-      )}
       {/* Quantity & Purchase Buttons */}
       <div className="mt-5">
         <div
@@ -231,45 +203,94 @@ const ProductInfo = ({ product, selectedInventory, onSelectInventory }) => {
           </button>
         </div>
 
-        {/* Delivery & Returns Accordion */}
-        <div
-          className="mt-4 border rounded-xl overflow-hidden"
-          style={{ borderColor: "var(--ph-border)" }}
-        >
-          <button
-            type="button"
-            onClick={() => setIsDeliveryOpen((prev) => !prev)}
-            className="w-full flex items-center justify-between px-4 py-3 bg-[var(--ph-surface)]"
-          >
-            <span
-              className="text-xs sm:text-sm font-bold text-[var(--ph-text)]"
-              style={{ fontFamily: "var(--font-body)" }}
-            >
-              Delivery & Returns
-            </span>
-            <FiChevronDown
-              className={`text-sm text-[var(--ph-text-faint)] transition-transform duration-200 ${
-                isDeliveryOpen ? "rotate-180" : ""
-              }`}
-            />
-          </button>
-
-          {isDeliveryOpen && (
+        {/* Product Information Accordions */}
+        <div className="mt-4 space-y-2">
+          {/* Age Range */}
+          {(product?.minimum_age_range != null ||
+            product?.maximum_age_range != null) && (
             <div
-              className="px-4 pb-4 text-xs sm:text-sm text-[var(--ph-text-soft)] leading-relaxed space-y-2 border-t border-[var(--ph-border)] pt-3"
-              style={{ fontFamily: "var(--font-body)" }}
+              className="border rounded-xl overflow-hidden"
+              style={{ borderColor: "var(--ph-border)" }}
             >
-              <p>
-                📦 Estimated delivery:{" "}
-                <span className="font-semibold text-[var(--ph-text)]">
-                  2–4 business days
-                </span>{" "}
-                across Bangladesh.
-              </p>
-              {product?.return_and_refund_policy && (
-                <p>🔄 {product.return_and_refund_policy}</p>
+              <button
+                type="button"
+                onClick={() => toggleAccordion("age")}
+                className="w-full flex items-center justify-between px-4 py-3 bg-[var(--ph-surface)]"
+              >
+                <span className="text-xs sm:text-sm font-bold text-[var(--ph-text)]">
+                  Age Range
+                </span>
+                <FiChevronDown
+                  className={`text-sm text-[var(--ph-text-faint)] transition-transform duration-200 ${
+                    openAccordion === "age" ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {openAccordion === "age" && (
+                <div className="px-4 py-3 text-xs sm:text-sm text-[var(--ph-text-soft)] border-t border-[var(--ph-border)]">
+                  {product.minimum_age_range ?? 0}
+                  {" - "}
+                  {product.maximum_age_range ?? "3+"} Years
+                </div>
               )}
-              <p>💳 Cash on delivery and online payment both accepted.</p>
+            </div>
+          )}
+          {/* Interest */}
+          {product?.interest && (
+            <div
+              className="border rounded-xl overflow-hidden"
+              style={{ borderColor: "var(--ph-border)" }}
+            >
+              <button
+                type="button"
+                onClick={() => toggleAccordion("interest")}
+                className="w-full flex items-center justify-between px-4 py-3 bg-[var(--ph-surface)]"
+              >
+                <span className="text-xs sm:text-sm font-bold text-[var(--ph-text)]">
+                  Interest
+                </span>
+                <FiChevronDown
+                  className={`text-sm text-[var(--ph-text-faint)] transition-transform duration-200 ${
+                    openAccordion === "interest" ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {openAccordion === "interest" && (
+                <div className="px-4 py-3 text-xs sm:text-sm text-[var(--ph-text-soft)]">
+                  {product.interest}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Occasion */}
+          {product?.occasion && (
+            <div
+              className="border rounded-xl overflow-hidden"
+              style={{ borderColor: "var(--ph-border)" }}
+            >
+              <button
+                type="button"
+                onClick={() => toggleAccordion("occasion")}
+                className="w-full flex items-center justify-between px-4 py-3 bg-[var(--ph-surface)]"
+              >
+                <span className="text-xs sm:text-sm font-bold text-[var(--ph-text)]">
+                  Occasion
+                </span>
+                <FiChevronDown
+                  className={`text-sm text-[var(--ph-text-faint)] transition-transform duration-200 ${
+                    openAccordion === "occasion" ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {openAccordion === "occasion" && (
+                <div className="px-4 py-3 text-xs sm:text-sm text-[var(--ph-text-soft)] border-t border-[var(--ph-border)]">
+                  {product.occasion}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -281,7 +302,13 @@ const ProductInfo = ({ product, selectedInventory, onSelectInventory }) => {
             whileTap={{ scale: 0.98 }}
             type="button"
             disabled={!inStock}
-            onClick={() => addToCart(inv.id, quantity)}
+            onClick={async () => {
+              const success = await addToCart(inv.id, quantity);
+
+              if (success) {
+                openCart();
+              }
+            }}
             className="flex-1 cursor-pointer min-w-[140px] inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold text-white shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
               backgroundColor: "var(--ph-accent)",
