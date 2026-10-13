@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import logo from "@/assets/image-removebg-preview_6.webp";
+import logo from "@/assets/playhouse.webp";
 import {
     AiOutlineFacebook,
     AiOutlineInstagram,
@@ -50,7 +50,7 @@ const Footer = () => {
 
                     {/* Logo and Description */}
                     <div className="flex flex-col items-center gap-4 text-center sm:items-start sm:text-left">
-                        <Link href="/" className="inline-block rounded-xl bg-[var(--ph-bg)] p-2.5 transition-transform duration-200 hover:scale-[1.03]">
+                        <Link href="/" className="inline-block transition-transform duration-200 hover:scale-[1.03]">
                             <Image
                                 src={logo}
                                 alt="Play House Logo"

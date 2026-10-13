@@ -19,7 +19,7 @@ import {
   IoLogOutOutline,
 } from "react-icons/io5";
 
-import logo from "@/assets/image-removebg-preview_6.webp";
+import logo from "@/assets/navbarLogo.webp";
 import useCategory from "@/hooks/useCategory";
 import useBrand from "@/hooks/useBrand";
 import { useCart } from "@/provider/CartProvider";
