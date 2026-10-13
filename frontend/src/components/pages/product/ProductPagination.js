@@ -22,7 +22,7 @@ const ProductPagination = ({
         if (visibleCount >= totalCount) return null;
 
         return (
-            <div className="flex justify-center mt-6 sm:mt-8 md:mt-10">
+            <div className="flex justify-center mt-6 sm:mt-8 md:mt-10 mb-3">
                 <motion.button
                     whileHover={{ scale: 1.04 }}
                     whileTap={{ scale: 0.96 }}
@@ -31,7 +31,7 @@ const ProductPagination = ({
                     className="rounded-full px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-[#1E2B2B] shadow-md hover:shadow-lg transition-shadow"
                     style={{ backgroundColor: "var(--ph-primary)", fontFamily: "var(--font-body)" }}
                 >
-                    Load More Toys 🧸
+                    Load More
                 </motion.button>
             </div>
         );
@@ -39,7 +39,7 @@ const ProductPagination = ({
 
     // numbered pagination
     return (
-        <div className="flex items-center justify-center gap-1.5 sm:gap-2 mt-6 sm:mt-8 md:mt-10">
+        <div className="flex items-center justify-center gap-1.5 sm:gap-2 mt-6 sm:mt-8 md:mt-10 mb-3">
             <button
                 type="button"
                 onClick={() => onPageChange(Math.max(1, currentPage - 1))}
