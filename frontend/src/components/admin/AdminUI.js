@@ -1,12 +1,20 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { createPortal } from "react-dom";
 import {
   FiX,
   FiChevronDown,
   FiSearch,
   FiUploadCloud,
   FiStar,
+  FiCheck,
 } from "react-icons/fi";
 import useAdminApi from "./useAdminApi";
 
@@ -107,38 +115,106 @@ export const Modal = ({ open, onClose, title, children, wide = false }) => {
   );
 };
 
-/** options: [{ value, label, swatch? }] */
-export function SearchableSelect({
+/**
+ * Floating panel: trigger-এর নিচে জায়গা কম থাকলে উপরে খোলে।
+ * Portal + position:fixed, তাই কোনো overflow/modal এর ভেতরে কাটা পড়ে না।
+ */
+function FloatingPanel({
+  anchorRef,
+  open,
+  onClose,
+  maxHeight = 280,
+  children,
+}) {
+  const panelRef = useRef(null);
+  const [pos, setPos] = useState(null);
+
+  const compute = useCallback(() => {
+    const el = anchorRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const gap = 6;
+    const below = window.innerHeight - r.bottom - gap;
+    const above = r.top - gap;
+    const openUp = below < Math.min(maxHeight, 220) && above > below;
+    const available = Math.max(
+      140,
+      Math.min(maxHeight, (openUp ? above : below) - 8),
+    );
+
+    setPos({
+      left: r.left,
+      width: r.width,
+      maxHeight: available,
+      ...(openUp
+        ? { bottom: window.innerHeight - r.top + gap }
+        : { top: r.bottom + gap }),
+    });
+  }, [anchorRef, maxHeight]);
+
+  useLayoutEffect(() => {
+    if (!open) return;
+    compute();
+    window.addEventListener("resize", compute);
+    window.addEventListener("scroll", compute, true);
+    return () => {
+      window.removeEventListener("resize", compute);
+      window.removeEventListener("scroll", compute, true);
+    };
+  }, [open, compute]);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e) => {
+      if (panelRef.current?.contains(e.target)) return;
+      if (anchorRef.current?.contains(e.target)) return;
+      onClose();
+    };
+    const esc = (e) => e.key === "Escape" && onClose();
+    document.addEventListener("mousedown", handler);
+    document.addEventListener("keydown", esc);
+    return () => {
+      document.removeEventListener("mousedown", handler);
+      document.removeEventListener("keydown", esc);
+    };
+  }, [open, onClose, anchorRef]);
+
+  if (!open || !pos || typeof document === "undefined") return null;
+
+  return createPortal(
+    <div
+      ref={panelRef}
+      className="fixed z-[200] flex flex-col overflow-hidden rounded-xl border bg-[var(--ph-surface)] shadow-xl"
+      style={{ ...pos, borderColor: "var(--ph-border)" }}
+    >
+      {children}
+    </div>,
+    document.body,
+  );
+}
+
+/** সাধারণ dropdown (search ছাড়া)। options: [{ value, label, swatch? }] */
+export function Dropdown({
   options,
   value,
   onChange,
   placeholder = "Select...",
-  searchPlaceholder = "Search...",
 }) {
   const [open, setOpen] = useState(false);
-  const [q, setQ] = useState("");
   const ref = useRef(null);
-
-  useEffect(() => {
-    const handler = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
+  const close = useCallback(() => setOpen(false), []);
 
   const selected = options.find((o) => String(o.value) === String(value));
-  const filtered = options.filter((o) =>
-    o.label.toLowerCase().includes(q.toLowerCase()),
-  );
 
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref}>
       <button
         type="button"
         onClick={() => setOpen((p) => !p)}
         className={`${inputClass} flex items-center justify-between gap-2 text-left`}
         style={inputStyle}
+        aria-haspopup="listbox"
+        aria-expanded={open}
       >
         <span className="flex min-w-0 items-center gap-2 truncate">
           {selected?.swatch && (
@@ -156,59 +232,148 @@ export function SearchableSelect({
             <span className="text-[var(--ph-text-faint)]">{placeholder}</span>
           )}
         </span>
-        <FiChevronDown className="shrink-0 text-[var(--ph-text-faint)]" />
+        <FiChevronDown
+          className={`shrink-0 text-[var(--ph-text-faint)] transition-transform ${open ? "rotate-180" : ""}`}
+        />
       </button>
 
-      {open && (
-        <div
-          className="absolute z-30 mt-1.5 w-full rounded-xl border bg-[var(--ph-surface)] shadow-xl"
-          style={{ borderColor: "var(--ph-border)" }}
-        >
-          <div className="relative p-2">
-            <FiSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-[var(--ph-text-faint)]" />
-            <input
-              autoFocus
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              placeholder={searchPlaceholder}
-              className={`${inputClass} pl-9`}
-              style={inputStyle}
-            />
-          </div>
-          <ul className="max-h-52 overflow-y-auto pb-1">
-            {filtered.length === 0 && (
-              <li className="px-4 py-3 text-xs text-[var(--ph-text-faint)]">
-                No results
-              </li>
-            )}
-            {filtered.map((o) => (
-              <li key={o.value}>
+      <FloatingPanel anchorRef={ref} open={open} onClose={close}>
+        <ul className="overflow-y-auto py-1" role="listbox">
+          {options.map((o) => {
+            const active = String(o.value) === String(value);
+            return (
+              <li key={String(o.value)}>
                 <button
                   type="button"
                   onClick={() => {
                     onChange(o.value);
-                    setOpen(false);
-                    setQ("");
+                    close();
                   }}
-                  className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-[var(--ph-text)] hover:bg-[var(--ph-primary-soft)]"
-                  style={{ fontFamily: "var(--font-body)" }}
+                  className="flex w-full items-center justify-between gap-2 px-4 py-2 text-left text-sm text-[var(--ph-text)] hover:bg-[var(--ph-primary-soft)]"
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontWeight: active ? 700 : 500,
+                  }}
                 >
-                  {o.swatch && (
-                    <span
-                      className="h-4 w-4 shrink-0 rounded-full border"
-                      style={{
-                        backgroundColor: o.swatch,
-                        borderColor: "var(--ph-border)",
-                      }}
-                    />
-                  )}
-                  {o.label}
+                  <span className="flex items-center gap-2">
+                    {o.swatch && (
+                      <span
+                        className="h-4 w-4 shrink-0 rounded-full border"
+                        style={{
+                          backgroundColor: o.swatch,
+                          borderColor: "var(--ph-border)",
+                        }}
+                      />
+                    )}
+                    {o.label}
+                  </span>
+                  {active && <FiCheck style={{ color: "var(--ph-accent)" }} />}
                 </button>
               </li>
-            ))}
-          </ul>
+            );
+          })}
+        </ul>
+      </FloatingPanel>
+    </div>
+  );
+}
+
+/** Search সহ dropdown। options: [{ value, label, swatch? }] */
+export function SearchableSelect({
+  options,
+  value,
+  onChange,
+  placeholder = "Select...",
+  searchPlaceholder = "Search...",
+}) {
+  const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  const ref = useRef(null);
+  const close = useCallback(() => {
+    setOpen(false);
+    setQ("");
+  }, []);
+
+  const selected = options.find((o) => String(o.value) === String(value));
+  const filtered = options.filter((o) =>
+    o.label.toLowerCase().includes(q.toLowerCase()),
+  );
+
+  return (
+    <div ref={ref}>
+      <button
+        type="button"
+        onClick={() => setOpen((p) => !p)}
+        className={`${inputClass} flex items-center justify-between gap-2 text-left`}
+        style={inputStyle}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+      >
+        <span className="flex min-w-0 items-center gap-2 truncate">
+          {selected?.swatch && (
+            <span
+              className="h-4 w-4 shrink-0 rounded-full border"
+              style={{
+                backgroundColor: selected.swatch,
+                borderColor: "var(--ph-border)",
+              }}
+            />
+          )}
+          {selected ? (
+            selected.label
+          ) : (
+            <span className="text-[var(--ph-text-faint)]">{placeholder}</span>
+          )}
+        </span>
+        <FiChevronDown
+          className={`shrink-0 text-[var(--ph-text-faint)] transition-transform ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      <FloatingPanel anchorRef={ref} open={open} onClose={close}>
+        <div className="relative shrink-0 p-2">
+          <FiSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-[var(--ph-text-faint)]" />
+          <input
+            autoFocus
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder={searchPlaceholder}
+            className={`${inputClass} pl-9`}
+            style={inputStyle}
+          />
         </div>
-      )}
+        <ul className="overflow-y-auto pb-1" role="listbox">
+          {filtered.length === 0 && (
+            <li className="px-4 py-3 text-xs text-[var(--ph-text-faint)]">
+              No results
+            </li>
+          )}
+          {filtered.map((o) => (
+            <li key={String(o.value)}>
+              <button
+                type="button"
+                onClick={() => {
+                  onChange(o.value);
+                  close();
+                }}
+                className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-[var(--ph-text)] hover:bg-[var(--ph-primary-soft)]"
+                style={{ fontFamily: "var(--font-body)" }}
+              >
+                {o.swatch && (
+                  <span
+                    className="h-4 w-4 shrink-0 rounded-full border"
+                    style={{
+                      backgroundColor: o.swatch,
+                      borderColor: "var(--ph-border)",
+                    }}
+                  />
+                )}
+                {o.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </FloatingPanel>
     </div>
   );
 }

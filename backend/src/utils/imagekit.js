@@ -5,9 +5,9 @@ let client = null;
 const getImageKit = () => {
   if (!client) {
     client = new ImageKit({
-      publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
-      privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
-      urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
+      publicKey: process.env.CLOUDINARY_CLOUD_NAME,
+      privateKey: process.env.CLOUDINARY_API_KEY,
+      urlEndpoint: process.env.CLOUDINARY_API_SECRET,
     });
   }
   return client;

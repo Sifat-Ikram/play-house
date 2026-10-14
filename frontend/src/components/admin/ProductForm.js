@@ -8,6 +8,7 @@ import {
   Card,
   SearchableSelect,
   MultiSearchSelect,
+  Dropdown,
   inputClass,
   inputStyle,
 } from "./AdminUI";
@@ -171,34 +172,30 @@ export default function ProductForm({ initial, onSubmit, submitLabel }) {
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label="Occasion">
-                <select
+                <Dropdown
+                  options={[
+                    { value: "", label: "None" },
+                    ...[
+                      ...new Set([...OCCASIONS, form.occasion].filter(Boolean)),
+                    ].map((o) => ({ value: o, label: o })),
+                  ]}
                   value={form.occasion}
-                  onChange={set("occasion")}
-                  className={inputClass}
-                  style={inputStyle}
-                >
-                  <option value="">None</option>
-                  {[
-                    ...new Set([...OCCASIONS, form.occasion].filter(Boolean)),
-                  ].map((o) => (
-                    <option key={o}>{o}</option>
-                  ))}
-                </select>
+                  onChange={(v) => setForm((f) => ({ ...f, occasion: v }))}
+                  placeholder="None"
+                />
               </Field>
               <Field label="Interest">
-                <select
+                <Dropdown
+                  options={[
+                    { value: "", label: "None" },
+                    ...[
+                      ...new Set([...INTERESTS, form.interest].filter(Boolean)),
+                    ].map((o) => ({ value: o, label: o })),
+                  ]}
                   value={form.interest}
-                  onChange={set("interest")}
-                  className={inputClass}
-                  style={inputStyle}
-                >
-                  <option value="">None</option>
-                  {[
-                    ...new Set([...INTERESTS, form.interest].filter(Boolean)),
-                  ].map((o) => (
-                    <option key={o}>{o}</option>
-                  ))}
-                </select>
+                  onChange={(v) => setForm((f) => ({ ...f, interest: v }))}
+                  placeholder="None"
+                />
               </Field>
             </div>
 

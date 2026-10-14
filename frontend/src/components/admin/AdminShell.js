@@ -39,8 +39,8 @@ const NAV = [
   { href: "/admin/categories", label: "Add Category", icon: FiLayers },
   { href: "/admin/colors", label: "Add Colour", icon: FiDroplet },
   { href: "/admin/materials", label: "Add Material", icon: FiBox },
-  { label: "Orders", icon: FiShoppingBag, soon: true },
-  { label: "Carts", icon: FiShoppingCart, soon: true },
+  { href: "/admin/orders", label: "Orders", icon: FiShoppingBag },
+  { href: "/admin/carts", label: "Carts", icon: FiShoppingCart },
 ];
 
 const AdminShell = ({ children }) => {

@@ -4,8 +4,8 @@ const router = express.Router();
 const adminController = require("../controllers/admin.controller");
 const { uploadImage } = require("../controllers/upload.controller");
 const { requireAdmin } = require("../middleware/admin.middleware");
+const adminOrderController = require("../controllers/adminOrder.controller");
 
-// Vercel-এর body limit ~4.5MB, তাই 4MB cap
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 4 * 1024 * 1024 },
@@ -28,6 +28,14 @@ router.patch("/products/:id/featured", adminController.setFeatured);
 router.post("/inventory", adminController.createInventory);
 router.put("/inventory/:id", adminController.updateInventory);
 router.delete("/inventory/:id", adminController.deleteInventory);
+
+router.get("/orders", adminOrderController.listOrders);
+router.get("/orders/:id", adminOrderController.getOrder);
+router.patch("/orders/:id/status", adminOrderController.updateStatus);
+
+router.get("/carts", adminOrderController.listCarts);
+router.put("/carts/:id", adminOrderController.updateCartItem);
+router.delete("/carts/:id", adminOrderController.deleteCartItem);
 
 router.post("/upload", upload.single("file"), uploadImage);
 
