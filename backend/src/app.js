@@ -16,6 +16,8 @@ const orderRoutes = require("./routes/order.routes");
 const authRoutes = require("./routes/auth.routes");
 const profileRoutes = require("./routes/profile.routes");
 const aiAssistantRoutes = require("./routes/aiAssistant.routes");
+const adminRoutes = require("./routes/admin.routes");
+const materialRoutes = require("./routes/material.routes");
 
 const notFoundMiddleware = require("./middleware/notFound.middleware");
 
@@ -68,6 +70,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 
 app.use("/api/ai-assistant", aiAssistantRoutes);
+
+app.use("/api/admin", adminRoutes);
+
+app.use("/api/materials", materialRoutes);
 
 // 404
 app.use(notFoundMiddleware);

@@ -1,0 +1,46 @@
+"use client";
+
+import { useCallback } from "react";
+import { useAuth } from "@/provider/AuthProvider";
+
+const baseUrl =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://play-house-backend.vercel.app/api";
+
+// বিভিন্ন endpoint-এর response shape থেকে array বের করে
+export const unwrapList = (json) =>
+  Array.isArray(json)
+    ? json
+    : (json?.data ??
+      json?.brands ??
+      json?.categories ??
+      json?.colors ??
+      json?.materials ??
+      []);
+
+export default function useAdminApi() {
+  const { authFetch } = useAuth();
+
+  return useCallback(
+    async (path, { method = "GET", body } = {}) => {
+      const isForm =
+        typeof FormData !== "undefined" && body instanceof FormData;
+
+      const res = await authFetch(`${baseUrl}${path}`, {
+        method,
+        headers:
+          body && !isForm ? { "Content-Type": "application/json" } : undefined,
+        body: body ? (isForm ? body : JSON.stringify(body)) : undefined,
+      });
+
+      const json = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error(json.message || `Request failed (${res.status})`);
+      }
+
+      return json;
+    },
+    [authFetch],
+  );
+}

@@ -19,11 +19,12 @@ const buildAuthResponse = async (user) => {
   return {
     accessToken,
     refreshToken,
-    expiresIn: 15 * 60, // seconds
+    expiresIn: 15 * 60,
     user: {
       id: user.id,
       name: user.name,
       email: user.email,
+      role: user.role || "user",
     },
   };
 };
