@@ -60,6 +60,10 @@
 ### Admin Dashboard
 - Manage products, inventory, categories, brands, colors, orders and reviews
 
+  ### Admin Dashboard
+- Admin Email: sifatikram@gmail.com
+- Admin Password: sifat123
+
 ### UI / UX
 - Fully responsive (mobile, tablet, desktop)
 - Custom design system — gold + deep teal palette, Fredoka + Plus Jakarta Sans fonts
