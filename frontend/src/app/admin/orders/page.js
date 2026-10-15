@@ -1,12 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
-import { FiSearch, FiChevronRight, FiUser, FiUserX } from "react-icons/fi";
+import { Fragment, useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { FiSearch, FiUser, FiUserX, FiChevronDown } from "react-icons/fi";
 import useAdminApi from "@/components/admin/useAdminApi";
 import {
   PageHeader,
   Card,
+  Dropdown,
   inputClass,
   inputStyle,
 } from "@/components/admin/AdminUI";
@@ -15,9 +16,20 @@ import {
   STATUS_STYLE,
   statusLabel,
 } from "@/components/admin/orderStatus";
+import {
+  confirmStatusChange,
+  toastSuccess,
+  toastError,
+} from "@/components/admin/confirmStatus";
+
+const STATUS_OPTIONS = STATUS_TABS.filter((t) => t.key !== "all").map((t) => ({
+  value: t.key,
+  label: t.label,
+}));
 
 export default function AdminOrdersPage() {
   const api = useAdminApi();
+  const router = useRouter();
 
   const [tab, setTab] = useState("all");
   const [search, setSearch] = useState("");
@@ -60,6 +72,25 @@ export default function AdminOrdersPage() {
       } catch (e) {
         setError(e.message);
       }
+    }
+  };
+
+  const handleStatusChange = async (order, newStatus) => {
+    if (newStatus === order.status) return;
+
+    // Cancel চাপলে কিছুই বদলাবে না (dropdown-এর মান state থেকেই আসে, তাই আগেরটাই থাকে)
+    const ok = await confirmStatusChange(order.id, order.status, newStatus);
+    if (!ok) return;
+
+    try {
+      await api(`/admin/orders/${order.id}/status`, {
+        method: "PATCH",
+        body: { status: newStatus },
+      });
+      toastSuccess(`Order #${order.id} is now ${statusLabel(newStatus)}`);
+      await load(); // tab count ও filter ঠিক রাখতে আবার আনা হচ্ছে
+    } catch (e) {
+      toastError(e.message);
     }
   };
 
@@ -114,7 +145,7 @@ export default function AdminOrdersPage() {
 
       <Card className="overflow-x-auto !p-0">
         <table
-          className="w-full min-w-[760px] text-left text-sm"
+          className="w-full min-w-[980px] text-left text-sm"
           style={{ fontFamily: "var(--font-body)" }}
         >
           <thead>
@@ -128,7 +159,7 @@ export default function AdminOrdersPage() {
               <th className="px-4 py-3">Total</th>
               <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3">Date</th>
-              <th className="w-10 px-2 py-3" />
+              <th className="px-4 py-3">Change Status</th>
             </tr>
           </thead>
           <tbody>
@@ -160,15 +191,17 @@ export default function AdminOrdersPage() {
               const d = details[o.id];
 
               return (
-                <FragmentRow key={o.id}>
+                <Fragment key={o.id}>
+                  {/* Row click → detail page */}
                   <tr
-                    onClick={() => toggleExpand(o.id)}
+                    onClick={() => router.push(`/admin/orders/${o.id}`)}
                     className="cursor-pointer border-b transition-colors hover:bg-[var(--ph-primary-soft)]"
                     style={{ borderColor: "var(--ph-border)" }}
                   >
                     <td className="px-4 py-3 font-bold text-[var(--ph-text)]">
                       #{o.id}
                     </td>
+
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <span
@@ -187,12 +220,28 @@ export default function AdminOrdersPage() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-[var(--ph-text-soft)]">
-                      {o.item_count}
+
+                    <td className="px-4 py-3">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleExpand(o.id);
+                        }}
+                        className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-[var(--ph-text-soft)] hover:bg-white"
+                        aria-label="Show items"
+                      >
+                        {o.item_count}
+                        <FiChevronDown
+                          className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
+                        />
+                      </button>
                     </td>
+
                     <td className="px-4 py-3 font-semibold text-[var(--ph-text)]">
                       BDT {Number(o.total).toLocaleString()}
                     </td>
+
                     <td className="px-4 py-3">
                       <span
                         className="rounded-full px-2.5 py-1 text-[11px] font-bold"
@@ -201,18 +250,23 @@ export default function AdminOrdersPage() {
                         {statusLabel(o.status)}
                       </span>
                     </td>
+
                     <td className="px-4 py-3 text-[var(--ph-text-soft)]">
                       {new Date(o.created_at).toLocaleDateString("en-GB")}
                     </td>
-                    <td className="px-2 py-3">
-                      <Link
-                        href={`/admin/orders/${o.id}`}
-                        onClick={(e) => e.stopPropagation()}
-                        aria-label="Open order"
-                        className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white"
-                      >
-                        <FiChevronRight />
-                      </Link>
+
+                    {/* Inline status dropdown: click এ detail পেজে যাবে না */}
+                    <td
+                      className="px-4 py-3"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="w-44">
+                        <Dropdown
+                          options={STATUS_OPTIONS}
+                          value={o.status}
+                          onChange={(v) => handleStatusChange(o, v)}
+                        />
+                      </div>
                     </td>
                   </tr>
 
@@ -274,7 +328,7 @@ export default function AdminOrdersPage() {
                       </td>
                     </tr>
                   )}
-                </FragmentRow>
+                </Fragment>
               );
             })}
           </tbody>
@@ -282,9 +336,4 @@ export default function AdminOrdersPage() {
       </Card>
     </div>
   );
-}
-
-
-function FragmentRow({ children }) {
-  return <>{children}</>;
 }

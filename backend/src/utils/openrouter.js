@@ -1,7 +1,7 @@
 const callOpenRouter = async (messages, options = {}) => {
   const body = {
     model:
-      process.env.OPENROUTER_MODEL || "meta-llama/llama-3.1-8b-instruct:free",
+      process.env.OPENROUTER_MODEL || "liquid/lfm-2.5-2.6b:free",
     messages,
     temperature: options.temperature ?? 0.4,
     max_tokens: options.maxTokens ?? 400,

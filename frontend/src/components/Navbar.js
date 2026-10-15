@@ -641,7 +641,7 @@ const Navbar = () => {
                   animate={{ width: "clamp(160px, 16vw, 260px)", opacity: 1 }}
                   exit={{ width: 0, opacity: 0 }}
                   transition={{ duration: 0.25, ease: "easeOut" }}
-                  className="overflow-hidden"
+                  className="overflow-visible"
                 >
                   <div className="relative">
                     <input
@@ -852,7 +852,7 @@ const Navbar = () => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.22 }}
-            className="overflow-hidden border-t border-black/[0.08] lg:hidden"
+            className="overflow-visible border-t border-black/8 lg:hidden"
           >
             <form
               onSubmit={handleSearchSubmit}
