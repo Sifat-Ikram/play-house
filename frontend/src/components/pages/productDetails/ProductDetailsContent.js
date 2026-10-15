@@ -20,7 +20,7 @@ const ProductDetailsContent = ({
 
   if (!product) {
     return (
-      <div className="w-11/12 max-w-[1400px] mx-auto py-20 text-center">
+      <div className="w-11/12 mx-auto py-20 text-center">
         <p
           className="text-lg font-semibold text-[var(--ph-text)]"
           style={{ fontFamily: "var(--font-display)" }}
@@ -32,7 +32,7 @@ const ProductDetailsContent = ({
   }
 
   return (
-    <div className="w-11/12 max-w-[1400px] mx-auto py-5 sm:py-7 md:py-10">
+    <div className="w-11/12 mx-auto py-5 sm:py-7 md:py-10">
       {/* Breadcrumb */}
       <nav
         aria-label="Breadcrumb"

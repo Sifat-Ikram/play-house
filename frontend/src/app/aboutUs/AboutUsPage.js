@@ -100,7 +100,7 @@ const AboutUsPage = () => {
           🧸
         </motion.div>
 
-        <div className="relative z-10 w-11/12 max-w-[1400px] mx-auto py-14 sm:py-20 lg:py-28">
+        <div className="relative z-10 w-11/12 mx-auto py-14 sm:py-20 lg:py-28">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -126,7 +126,7 @@ const AboutUsPage = () => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-[#1E2B2B] leading-tight max-w-2xl"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-[#1E2B2B] leading-tight"
             style={{ fontFamily: "var(--font-display)" }}
           >
             Bringing joy to every little heart, one toy at a time
@@ -136,7 +136,7 @@ const AboutUsPage = () => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-4 text-sm sm:text-base md:text-lg text-[#1E2B2B]/70 max-w-xl"
+            className="mt-4 text-sm sm:text-base md:text-lg text-[#1E2B2B]/70"
             style={{ fontFamily: "var(--font-body)" }}
           >
             We are a little world of wonder — built for curious minds, playful
@@ -165,7 +165,7 @@ const AboutUsPage = () => {
       </section>
 
       {/* ---------------- Our Story ---------------- */}
-      <section className="w-11/12 max-w-[1200px] mx-auto py-14 sm:py-20">
+      <section className="w-11/12 mx-auto py-14 sm:py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
           <motion.div
             variants={fadeUp}
@@ -266,7 +266,7 @@ const AboutUsPage = () => {
         style={{ backgroundColor: "var(--ph-accent-dark)" }}
         className="py-12 sm:py-16"
       >
-        <div className="w-11/12 max-w-[1200px] mx-auto grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8">
+        <div className="w-11/12 mx-auto grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8">
           {STATS.map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -298,7 +298,7 @@ const AboutUsPage = () => {
       </section>
 
       {/* ---------------- Values ---------------- */}
-      <section className="w-11/12 max-w-[1200px] mx-auto py-14 sm:py-20">
+      <section className="w-11/12 mx-auto py-14 sm:py-20">
         <motion.div
           variants={fadeUp}
           initial="hidden"
@@ -368,7 +368,7 @@ const AboutUsPage = () => {
 
       {/* ---------------- CTA ---------------- */}
       <section className="px-4 sm:px-6 lg:px-8 pb-14 sm:pb-20">
-        <div className="max-w-7xl mx-auto">
+        <div className="w-full">
           <motion.div
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -395,7 +395,7 @@ const AboutUsPage = () => {
             </motion.div>
 
             <div className="relative z-10 w-full px-6 py-10 sm:px-10 lg:px-14">
-              <div className="max-w-lg">
+              <div className="">
                 <h2
                   className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#1E2B2B] leading-tight"
                   style={{ fontFamily: "var(--font-display)" }}

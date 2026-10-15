@@ -541,7 +541,7 @@ const Navbar = () => {
         dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)] 
       "
     >
-      <div className="relative mx-auto flex min-h-[64px] w-full max-w-[1500px] items-center gap-2 px-3 sm:px-5 md:min-h-[72px] md:px-7 lg:px-10 xl:px-12">
+      <div className="relative mx-auto flex min-h-[64px] w-full items-center gap-2 px-3 sm:px-5 md:min-h-[72px] md:px-7 lg:px-10 xl:px-12">
         {/* Left group: hamburger + logo below lg (flows together); at lg+ this wrapper is transparent (contents) so logo/menu return to original layout */}
         <div className="flex items-center gap-2 sm:gap-2.5 lg:contents">
           {/* Mobile menu */}
@@ -570,7 +570,7 @@ const Navbar = () => {
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  className="absolute left-0 top-[calc(100%+12px)] z-[80] w-[calc(100vw-40px)] max-w-[390px] overflow-hidden rounded-[26px] border border-[var(--ph-border)] bg-[var(--ph-surface)] shadow-[0_25px_70px_rgba(15,23,42,0.16)] dark:shadow-[0_25px_70px_rgba(0,0,0,0.5)] sm:w-[370px]"
+                  className="absolute left-0 top-[calc(100%+12px)] z-[80] w-[calc(100vw-40px)] overflow-hidden rounded-[26px] border border-[var(--ph-border)] bg-[var(--ph-surface)] shadow-[0_25px_70px_rgba(15,23,42,0.16)] dark:shadow-[0_25px_70px_rgba(0,0,0,0.5)] sm:w-[370px]"
                 >
                   <AnimatePresence mode="wait">
                     {mobileDrill ? mobileDrillPanel : mobileMainList}

@@ -7,7 +7,6 @@ const callOpenRouter = async (messages, options = {}) => {
     max_tokens: options.maxTokens ?? 400,
   };
 
-  // Extraction call-এ JSON mode (সব free model সাপোর্ট করে না; error দিলে এই ব্লক মুছে দিন)
   if (options.json) {
     body.response_format = { type: "json_object" };
   }
