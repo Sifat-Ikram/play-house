@@ -23,6 +23,7 @@ import {
   getDeliveryOption,
   getEstimatedShippingCost,
 } from "@/lib/bdCities";
+import Swal from "sweetalert2";
 
 const baseUrl =
   process.env.NEXT_PUBLIC_API_URL ||
@@ -111,7 +112,14 @@ const CheckoutContent = ({ initialProfile }) => {
       }
 
       await refreshCart();
-      router.push(`/orderSuccess/${data.data.id}`);
+      await Swal.fire({
+        icon: "success",
+        title: "Order Placed Successfully!",
+        text: "Thank you for shopping with Play House.",
+        color: "#1E2B2B",
+      }).then(() => {
+        router.push("/");
+      });
     } catch (err) {
       setError(err.message || "Something went wrong. Please try again.");
     } finally {

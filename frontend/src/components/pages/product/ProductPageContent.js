@@ -235,7 +235,7 @@ const ProductPageContent = ({
       />
 
       <div className="w-full mx-auto">
-        <div className="flex items-start gap-5 lg:gap-7">
+        <div className="lg:w-11/12 mx-auto flex items-start gap-5 lg:gap-7">
           {/* Desktop sidebar — mount/unmount animated, default OPEN, truly sticky (no overflow-hidden ancestor) */}
           <AnimatePresence initial={false}>
             {isDesktopSidebarOpen && (
@@ -247,7 +247,7 @@ const ProductPageContent = ({
                 transition={{ type: "spring", stiffness: 260, damping: 30 }}
                 className="hidden lg:block shrink-0 self-stretch"
               >
-                <div className="w-[280px] h-full border-r border-[var(--ph-border)] bg-[var(--ph-surface)] shadow-sm sticky top-18">
+                <div className="w-[280px] sticky top-18 h-[calc(100vh-4.5rem)] shrink-0 border-r border-[var(--ph-border)] bg-[var(--ph-surface)] shadow-sm">
                   <FilterSidebar {...sidebarProps} />
                 </div>
               </motion.div>
@@ -255,7 +255,7 @@ const ProductPageContent = ({
           </AnimatePresence>
 
           {/* Grid + Chips + Pagination */}
-          <div className="flex-1 min-w-0 pt-5">
+          <div className="flex-1 min-w-0 pt-5 max-lg:w-11/12 mx-auto">
             {activeFilterCount > 0 && (
               <div className="flex flex-wrap items-center gap-2 mb-4 sm:mb-5 min-h-[32px]">
                 {Object.entries(selectedFilters).map(([groupKey, values]) =>

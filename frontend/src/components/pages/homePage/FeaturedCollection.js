@@ -21,8 +21,6 @@ const FeaturedCollection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slidesPerView, setSlidesPerView] = useState(2);
 
-  console.log(featuredProducts[0]);
-
   return (
     <section className="w-full py-6 sm:py-8 md:py-10">
       <div className="w-5/6 lg:w-11/12 mx-auto">

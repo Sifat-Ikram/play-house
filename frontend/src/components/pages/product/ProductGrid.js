@@ -38,7 +38,7 @@ const ProductGrid = ({ products = [], isWholesale = false }) => {
   }
 
   return (
-    <div className="grid grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-2 sm:gap-3 md:gap-4 lg:gap-6 xl:gap-5">
+    <div className="max-lg:w-11/12 mx-auto grid grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-2 sm:gap-3 md:gap-4 lg:gap-6 xl:gap-5">
       {products.map((product) => (
         <Link
           key={product.inventory_id}

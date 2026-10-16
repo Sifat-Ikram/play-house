@@ -61,15 +61,15 @@ export default async function ProductPage({ searchParams }) {
     const queryParams = new URLSearchParams();
 
     if (brand) queryParams.set("brand", brand);
-    else if (category) queryParams.set("category", category);
-    else if (combo) queryParams.set("combo", combo);
-    else if (interest) queryParams.set("interest", interest);
-    else if (occasion) queryParams.set("occasion", occasion);
-    else if (minAge !== undefined) {
+    if (category) queryParams.set("category", category);
+    if (interest) queryParams.set("interest", interest);
+    if (occasion) queryParams.set("occasion", occasion);
+    if (minAge !== undefined && minAge !== "")
       queryParams.set("minAge", minAge);
-      if (maxAge) queryParams.set("maxAge", maxAge);
-    } else if (search) queryParams.set("search", search);
-    else if (wholesale) queryParams.set("wholesale", wholesale);
+    if (maxAge !== undefined && maxAge !== "")
+      queryParams.set("maxAge", maxAge);
+    if (search) queryParams.set("search", search);
+    if (wholesale) queryParams.set("wholesale", wholesale);
 
     const endpoint = `${baseUrl}/product-listing?${queryParams.toString()}`;
 
@@ -78,9 +78,12 @@ export default async function ProductPage({ searchParams }) {
     if (res.ok) {
       const data = await res.json();
       products = data?.data || [];
+    } else {
+      products = [];
     }
   } catch (error) {
     console.error("Error fetching products:", error);
+    products = [];
   }
 
   return (

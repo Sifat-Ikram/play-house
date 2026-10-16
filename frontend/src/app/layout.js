@@ -8,6 +8,7 @@ import CartDrawer from "@/components/cart/CartDrawer";
 import { AuthProvider } from "@/provider/AuthProvider";
 import CustomCursor from "@/components/ui/CustomCursor";
 import ChromeGate from "@/components/ui/ChromeGate";
+import WelcomeModal from "@/components/ui/WelcomeModal";
 
 const fredoka = Fredoka({
   variable: "--font-fredoka",
@@ -37,6 +38,9 @@ export default function RootLayout({ children }) {
         <QueryProvider>
           <AuthProvider>
             <CartProvider>
+              <ChromeGate>
+                <WelcomeModal />
+              </ChromeGate>
               <ChromeGate>
                 <Navbar />
               </ChromeGate>

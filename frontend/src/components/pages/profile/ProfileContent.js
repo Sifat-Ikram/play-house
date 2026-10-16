@@ -28,11 +28,6 @@ const ProfileContent = ({ initialProfile }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  console.log(profile);
-  
-
-  // Fallback: if server render couldn't fetch (token expired/missing),
-  // retry client-side once the AuthProvider has a valid access token.
   useEffect(() => {
     if (!initialProfile && !authLoading && isLoggedIn) {
       (async () => {
