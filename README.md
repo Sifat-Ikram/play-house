@@ -28,13 +28,41 @@ Log in with the demo admin account below. **Admins are redirected straight to th
 
 ## 📸 Screenshots
 
-| Home | Product Listing | Product Details |
-|------|-----------------|------------------|
-| <img src="./frontend/src/assets/readme/home.png" width="300" alt="Home" /> | <img src="./frontend/src/assets/readme/productListing.png" width="300" alt="Product Listing" /> | <img src="./frontend/src/assets/readme/details.png" width="300" alt="Product Details" /> |
+<p align="center">
+  <img src="./frontend/src/assets/readme/home.png" alt="Home" width="100%" />
+</p>
+<p align="center"><b>🏠 Home</b></p>
 
-| Cart & Checkout | AI Assistant | Admin Panel |
-|-----------------|--------------|-------------|
-| <img src="./frontend/src/assets/readme/checkout.png" width="300" alt="Cart & Checkout" /> | <img src="./frontend/src/assets/readme/ai.png" width="300" alt="AI Assistant" /> | <img src="./frontend/src/assets/readme/admin.png" width="300" alt="Admin Panel" /> |
+<br/>
+
+<table align="center">
+  <tr>
+    <td align="center" width="50%">
+      <img src="./frontend/src/assets/readme/listing.png" alt="Product Listing" width="100%" /><br/>
+      <b>🛍️ Product Listing</b>
+    </td>
+    <td align="center" width="50%">
+      <img src="./frontend/src/assets/readme/details.png" alt="Product Details" width="100%" /><br/>
+      <b>🧸 Product Details</b>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <img src="./frontend/src/assets/readme/checkout.png" alt="Cart & Checkout" width="100%" /><br/>
+      <b>🛒 Cart & Checkout</b>
+    </td>
+    <td align="center" width="50%">
+      <img src="./frontend/src/assets/readme/ai.png" alt="AI Assistant" width="100%" /><br/>
+      <b>🤖 AI Assistant</b>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2">
+      <img src="./frontend/src/assets/readme/admin.png" alt="Admin Panel" width="100%" /><br/>
+      <b>🛠️ Admin Panel</b>
+    </td>
+  </tr>
+</table>
 
 ---
 
@@ -82,7 +110,7 @@ Role-protected panel (`/admin`) with a sidebar layout. Admin access is verified 
 
 - **Dashboard** — live stats: products, users, brands, categories, featured items, low stock, orders and revenue
 - **Products** — searchable list with image, brand, category, price, total stock and a **Featured toggle**; enabling Featured opens a stock-check modal and only allows in-stock products to appear in the homepage Featured Collection
-- **Product details & editing** — edit product info (including materials) and manage every **inventory variant**: colour, SKU, stock, buying/selling price, wholesale price and min quantity, tax, availability, and multiple images with a cover image
+- **Product details & editing** — edit product info (including materials) and manage every **inventory variant**: colour, SKU, stock, buying/selling price, wholesale price and min quantity, availability, and multiple images with a cover image
 - **Add Product flow** — two-column form with searchable brand/category pickers, then add one or more inventories with images
 - **Brands, Categories, Colours, Materials** — add, edit, delete with image upload; colours support both a colour picker and manual hex input; inventory and product forms pick from these saved lists
 - **Orders** — status tabs (**All, Pending, Confirmed, Shipped, Delivered, Cancelled, Return Requested, Returned, Refunded**) with live counts, search, expandable item preview, and **inline status change directly in the table** guarded by a SweetAlert2 confirmation
