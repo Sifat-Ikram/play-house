@@ -26,46 +26,6 @@ Log in with the demo admin account below. **Admins are redirected straight to th
 
 ---
 
-## 📸 Screenshots
-
-<p align="center">
-  <img src="./frontend/src/assets/readme/home.png" alt="Home" width="100%" />
-</p>
-<p align="center"><b>🏠 Home</b></p>
-
-<br/>
-
-<table align="center">
-  <tr>
-    <td align="center" width="50%">
-      <img src="./frontend/src/assets/readme/listing.png" alt="Product Listing" width="100%" /><br/>
-      <b>🛍️ Product Listing</b>
-    </td>
-    <td align="center" width="50%">
-      <img src="./frontend/src/assets/readme/details.png" alt="Product Details" width="100%" /><br/>
-      <b>🧸 Product Details</b>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="50%">
-      <img src="./frontend/src/assets/readme/checkout.png" alt="Cart & Checkout" width="100%" /><br/>
-      <b>🛒 Cart & Checkout</b>
-    </td>
-    <td align="center" width="50%">
-      <img src="./frontend/src/assets/readme/ai.png" alt="AI Assistant" width="100%" /><br/>
-      <b>🤖 AI Assistant</b>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" colspan="2">
-      <img src="./frontend/src/assets/readme/admin.png" alt="Admin Panel" width="100%" /><br/>
-      <b>🛠️ Admin Panel</b>
-    </td>
-  </tr>
-</table>
-
----
-
 ## ✨ Features
 
 ### Customer Storefront
@@ -110,7 +70,7 @@ Role-protected panel (`/admin`) with a sidebar layout. Admin access is verified 
 
 - **Dashboard** — live stats: products, users, brands, categories, featured items, low stock, orders and revenue
 - **Products** — searchable list with image, brand, category, price, total stock and a **Featured toggle**; enabling Featured opens a stock-check modal and only allows in-stock products to appear in the homepage Featured Collection
-- **Product details & editing** — edit product info (including materials) and manage every **inventory variant**: colour, SKU, stock, buying/selling price, wholesale price and min quantity, availability, and multiple images with a cover image
+- **Product details & editing** — edit product info (including materials) and manage every **inventory variant**: colour, SKU, stock, buying/selling price, wholesale price and min quantity, tax, availability, and multiple images with a cover image
 - **Add Product flow** — two-column form with searchable brand/category pickers, then add one or more inventories with images
 - **Brands, Categories, Colours, Materials** — add, edit, delete with image upload; colours support both a colour picker and manual hex input; inventory and product forms pick from these saved lists
 - **Orders** — status tabs (**All, Pending, Confirmed, Shipped, Delivered, Cancelled, Return Requested, Returned, Refunded**) with live counts, search, expandable item preview, and **inline status change directly in the table** guarded by a SweetAlert2 confirmation
@@ -201,23 +161,6 @@ cd backend
 npm install
 ```
 
-Create `backend/.env`:
-
-```env
-PORT=5000
-DATABASE_URL=your_neon_postgres_connection_string
-
-JWT_ACCESS_SECRET=your_long_random_access_secret
-JWT_REFRESH_SECRET=your_long_random_refresh_secret
-
-OPENROUTER_API_KEY=your_openrouter_key
-OPENROUTER_MODEL=meta-llama/llama-3.1-8b-instruct:free
-
-IMAGEKIT_PUBLIC_KEY=your_public_key
-IMAGEKIT_PRIVATE_KEY=your_private_key
-IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/your_id
-```
-
 Run the SQL migrations for `users` (with the `role` column), `refresh_tokens`, `materials`, `cart_items`, `orders` and `order_items`, then make yourself an admin:
 
 ```sql
@@ -233,12 +176,6 @@ npm run dev
 ```bash
 cd frontend
 npm install
-```
-
-Create `frontend/.env.local`:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
 ```
 
 ```bash
@@ -297,6 +234,46 @@ Open [http://localhost:3000](http://localhost:3000). To open the admin panel, lo
 
 **Md. Sifat Ikram**  
 [GitHub](https://github.com/Sifat-Ikram) · [LinkedIn](https://www.linkedin.com/in/sifat-ikram-17011713a/) · sifatikram@gmail.com
+
+---
+
+## 📸 Screenshots
+
+<p align="center">
+  <img src="./frontend/src/assets/readme/home.png" alt="Home" width="100%" />
+</p>
+<p align="center"><b>🏠 Home</b></p>
+
+<br/>
+
+<table align="center">
+  <tr>
+    <td align="center" width="50%">
+      <img src="./frontend/src/assets/readme/productListing.png" alt="Product Listing" width="100%" /><br/>
+      <b>🛍️ Product Listing</b>
+    </td>
+    <td align="center" width="50%">
+      <img src="./frontend/src/assets/readme/listing.png" alt="Product Details" width="100%" /><br/>
+      <b>🧸 Product Details</b>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <img src="./frontend/src/assets/readme/checkout.png" alt="Cart & Checkout" width="100%" /><br/>
+      <b>🛒 Cart & Checkout</b>
+    </td>
+    <td align="center" width="50%">
+      <img src="./frontend/src/assets/readme/ai.png" alt="AI Assistant" width="100%" /><br/>
+      <b>🤖 AI Assistant</b>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2">
+      <img src="./frontend/src/assets/readme/admin.png" alt="Admin Panel" width="100%" /><br/>
+      <b>🛠️ Admin Panel</b>
+    </td>
+  </tr>
+</table>
 
 ---
 
