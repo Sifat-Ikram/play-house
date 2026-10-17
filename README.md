@@ -30,7 +30,7 @@ Log in with the demo admin account below. **Admins are redirected straight to th
 
 | Home | Product Listing | Product Details |
 |------|-----------------|------------------|
-| ![Home](./screenshots/home.png) | ![Listing](./screenshots/listing.png) | ![Details](./screenshots/details.png) |
+| ![Home](https://i.ibb.co.com/pjDkyRsR/17-10-2026-18-07-07.png) | ![Listing](./screenshots/listing.png) | ![Details](./screenshots/details.png) |
 
 | Cart & Checkout | AI Assistant | Admin Panel |
 |-----------------|--------------|-------------|
