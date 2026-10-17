@@ -30,11 +30,11 @@ Log in with the demo admin account below. **Admins are redirected straight to th
 
 | Home | Product Listing | Product Details |
 |------|-----------------|------------------|
-| ![Home](https://i.ibb.co.com/pjDkyRsR/17-10-2026-18-07-07.png) | ![Listing](./screenshots/listing.png) | ![Details](./screenshots/details.png) |
+| <img src="./frontend/src/assets/readme/home.png" width="300" alt="Home" /> | <img src="./frontend/src/assets/readme/productListing.png" width="300" alt="Product Listing" /> | <img src="./frontend/src/assets/readme/details.png" width="300" alt="Product Details" /> |
 
 | Cart & Checkout | AI Assistant | Admin Panel |
 |-----------------|--------------|-------------|
-| ![Checkout](./screenshots/checkout.png) | ![AI](./screenshots/ai.png) | ![Admin](./screenshots/admin.png) |
+| <img src="./frontend/src/assets/readme/checkout.png" width="300" alt="Cart & Checkout" /> | <img src="./frontend/src/assets/readme/ai.png" width="300" alt="AI Assistant" /> | <img src="./frontend/src/assets/readme/admin.png" width="300" alt="Admin Panel" /> |
 
 ---
 
