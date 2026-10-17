@@ -82,7 +82,7 @@ Role-protected panel (`/admin`) with a sidebar layout. Admin access is verified 
 
 - **Dashboard** — live stats: products, users, brands, categories, featured items, low stock, orders and revenue
 - **Products** — searchable list with image, brand, category, price, total stock and a **Featured toggle**; enabling Featured opens a stock-check modal and only allows in-stock products to appear in the homepage Featured Collection
-- **Product details & editing** — edit product info (including materials) and manage every **inventory variant**: colour, SKU, stock, buying/selling price, wholesale price and min quantity, tax, availability, and multiple images with a cover image
+- **Product details & editing** — edit product info (including materials) and manage every **inventory variant**: colour, SKU, stock, buying/selling price, wholesale price and min quantity, availability, and multiple images with a cover image
 - **Add Product flow** — two-column form with searchable brand/category pickers, then add one or more inventories with images
 - **Brands, Categories, Colours, Materials** — add, edit, delete with image upload; colours support both a colour picker and manual hex input; inventory and product forms pick from these saved lists
 - **Orders** — status tabs (**All, Pending, Confirmed, Shipped, Delivered, Cancelled, Return Requested, Returned, Refunded**) with live counts, search, expandable item preview, and **inline status change directly in the table** guarded by a SweetAlert2 confirmation
