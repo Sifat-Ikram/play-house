@@ -161,23 +161,6 @@ cd backend
 npm install
 ```
 
-Create `backend/.env`:
-
-```env
-PORT=5000
-DATABASE_URL=your_neon_postgres_connection_string
-
-JWT_ACCESS_SECRET=your_long_random_access_secret
-JWT_REFRESH_SECRET=your_long_random_refresh_secret
-
-OPENROUTER_API_KEY=your_openrouter_key
-OPENROUTER_MODEL=meta-llama/llama-3.1-8b-instruct:free
-
-IMAGEKIT_PUBLIC_KEY=your_public_key
-IMAGEKIT_PRIVATE_KEY=your_private_key
-IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/your_id
-```
-
 Run the SQL migrations for `users` (with the `role` column), `refresh_tokens`, `materials`, `cart_items`, `orders` and `order_items`, then make yourself an admin:
 
 ```sql
@@ -193,12 +176,6 @@ npm run dev
 ```bash
 cd frontend
 npm install
-```
-
-Create `frontend/.env.local`:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
 ```
 
 ```bash
@@ -272,11 +249,11 @@ Open [http://localhost:3000](http://localhost:3000). To open the admin panel, lo
 <table align="center">
   <tr>
     <td align="center" width="50%">
-      <img src="./frontend/src/assets/readme/listing.png" alt="Product Listing" width="100%" /><br/>
+      <img src="./frontend/src/assets/readme/productListing.png" alt="Product Listing" width="100%" /><br/>
       <b>🛍️ Product Listing</b>
     </td>
     <td align="center" width="50%">
-      <img src="./frontend/src/assets/readme/details.png" alt="Product Details" width="100%" /><br/>
+      <img src="./frontend/src/assets/readme/listing.png" alt="Product Details" width="100%" /><br/>
       <b>🧸 Product Details</b>
     </td>
   </tr>
