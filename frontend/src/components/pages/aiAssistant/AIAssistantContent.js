@@ -88,7 +88,7 @@ const MessageBubble = ({ message }) => {
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className={`flex max-w-[85%] gap-2.5 sm:max-w-[75%] ${isUser ? "flex-row-reverse" : "flex-row"}`}
+        className={`flex gap-2.5 ${isUser ? "max-w-[85%] flex-row-reverse sm:max-w-[75%]" : "w-full"}`}
       >
         {!isUser && (
           <div
@@ -104,24 +104,20 @@ const MessageBubble = ({ message }) => {
 
         <div className="flex min-w-0 flex-col gap-2.5">
           <div
-            className="px-4 py-2.5 text-sm leading-relaxed"
+            className={`text-sm leading-relaxed ${isUser ? "px-4 py-2.5" : "py-1.5"}`}
             style={{
-              backgroundColor: isUser
-                ? "var(--ph-accent)"
-                : "var(--ph-surface)",
+              backgroundColor: isUser ? "var(--ph-accent)" : "transparent",
               color: isUser ? "#FFFFFF" : "var(--ph-text)",
-              border: isUser ? "none" : "1px solid var(--ph-border)",
+              border: "none",
               fontFamily: "var(--font-body)",
-              borderRadius: isUser
-                ? "20px 20px 4px 20px"
-                : "20px 20px 20px 4px",
+              borderRadius: isUser ? "20px 20px 4px 20px" : "0",
             }}
           >
             {message.content}
           </div>
 
           {message.products?.length > 0 && (
-            <div className="flex gap-2.5 overflow-x-auto pb-1">
+            <div className="flex flex-wrap gap-2.5">
               {message.products.map((p) => (
                 <ProductMiniCard
                   key={p.inventory_id ?? p.product_id}
@@ -201,7 +197,6 @@ const AIAssistantContent = ({ initialProducts = [] }) => {
   };
 
   console.log(messages);
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();

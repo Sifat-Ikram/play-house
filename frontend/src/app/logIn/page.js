@@ -29,8 +29,8 @@ const LoginPage = () => {
     setIsSubmitting(true);
 
     try {
-      await login({ email, password });
-      router.push("/");
+      const result = await login({ email, password });
+      router.push(result?.user?.role === "admin" ? "/admin" : "/");
     } catch (err) {
       setError(err.message || "Something went wrong. Please try again.");
     } finally {

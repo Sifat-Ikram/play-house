@@ -1,7 +1,7 @@
 const callOpenRouter = async (messages, options = {}) => {
   const body = {
     model:
-      process.env.OPENROUTER_MODEL || "liquid/lfm-2.5-2.6b:free",
+      process.env.OPENROUTER_MODEL || "meta-llama/llama-3.1-8b-instruct:free",
     messages,
     temperature: options.temperature ?? 0.4,
     max_tokens: options.maxTokens ?? 400,
@@ -11,22 +11,37 @@ const callOpenRouter = async (messages, options = {}) => {
     body.response_format = { type: "json_object" };
   }
 
-  const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
+  const controller = new AbortController();
+  const timer = setTimeout(
+    () => controller.abort(),
+    options.timeoutMs ?? 12000,
+  );
 
-  if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(`OpenRouter error (${res.status}): ${errorText}`);
+  try {
+    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`OpenRouter error (${res.status}): ${errorText}`);
+    }
+
+    const data = await res.json();
+    return data?.choices?.[0]?.message?.content || "";
+  } catch (error) {
+    if (error.name === "AbortError")
+      throw new Error("OpenRouter request timed out");
+    throw error;
+  } finally {
+    clearTimeout(timer);
   }
-
-  const data = await res.json();
-  return data?.choices?.[0]?.message?.content || "";
 };
 
 module.exports = { callOpenRouter };
