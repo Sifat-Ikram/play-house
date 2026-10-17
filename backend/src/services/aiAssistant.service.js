@@ -33,23 +33,39 @@ no explanation. Use this exact shape:
   "occasion": null,
   "minAge": null,
   "maxAge": null,
+  "maxPrice": null,
   "search": null,
   "reply_hint": ""
 }
 
 Rules:
-- Only fill ONE of: brand, category, interest, occasion, (minAge/maxAge), search — pick the single
-  most relevant filter based on what the user asked. Leave the rest null.
+- Fill every filter that clearly applies (e.g. age AND interest together), but only when
+  the user actually mentioned it. Leave the rest null.
 - "brand" must exactly match one of: ${brands.length ? brands.join(", ") : "none available"}
 - "category" must exactly match one of: ${categories.join(", ")}
 - "interest" must exactly match one of: ${KNOWN_INTERESTS.join(", ")}
 - "occasion" must exactly match one of: ${KNOWN_OCCASIONS.join(", ")}
-- If the user mentions an age (e.g. "5 year old", "toddler"), set minAge/maxAge as a reasonable range.
-- If nothing structured matches but the user named a toy type (e.g. "remote control car"), put keywords in "search".
-- "reply_hint" is a short note to yourself (not shown to user) about what the user wants.
-- If the user is just chatting / greeting with no product intent, leave all filter fields null and set reply_hint to "general_chat".
+- minAge and maxAge must be NUMBERS in years (e.g. "5 year old" -> minAge 4, maxAge 6; "toddler" -> 1 and 3).
+- "maxPrice" is a NUMBER in BDT if the user mentions a budget (e.g. "under BDT 2000" -> 2000).
+- Put 1-3 short keywords in "search" if the user named a toy type or theme (e.g. "remote control car").
+- "reply_hint" is a short note to yourself about what the user wants.
+- If the user is just chatting / greeting with no product intent, leave all filters null and set reply_hint to "general_chat".
 - Respond with ONLY the JSON object, nothing else.
 `;
+
+const toNum = (v) =>
+  v === null || v === undefined || v === "" || isNaN(Number(v))
+    ? null
+    : Number(v);
+
+const pick = (value, list) =>
+  list.find(
+    (x) =>
+      x.toLowerCase() ===
+      String(value || "")
+        .trim()
+        .toLowerCase(),
+  ) || null;
 
 const extractFilters = async (userMessage, history, categories, brands) => {
   const messages = [
@@ -60,17 +76,63 @@ const extractFilters = async (userMessage, history, categories, brands) => {
 
   const raw = await callOpenRouter(messages, {
     temperature: 0.1,
-    maxTokens: 250,
-    json: true,
+    maxTokens: 400,
+    // json: true, // jodi model error/empty dey, eta off rakho
   });
 
+  console.log("RAW EXTRACTION:", raw);
+
+  let parsed = {};
   try {
-    const jsonMatch = raw.match(/\{[\s\S]*\}/);
-    return jsonMatch ? JSON.parse(jsonMatch[0]) : {};
+    const jsonMatch = String(raw || "").match(/\{[\s\S]*\}/);
+    parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : {};
   } catch (error) {
     console.error("Failed to parse extraction JSON:", raw);
-    return {};
   }
+
+  return {
+    brand: pick(parsed.brand, brands),
+    category: pick(parsed.category, categories),
+    interest: pick(parsed.interest, KNOWN_INTERESTS),
+    occasion: pick(parsed.occasion, KNOWN_OCCASIONS),
+    minAge: toNum(parsed.minAge),
+    maxAge: toNum(parsed.maxAge),
+    maxPrice: toNum(parsed.maxPrice),
+    search: parsed.search ? String(parsed.search).trim() : null,
+    reply_hint: parsed.reply_hint || "",
+  };
+};
+
+const normalizeList = (result) =>
+  Array.isArray(result) ? result : result?.data || result?.products || [];
+
+const fetchProducts = async (filters) => {
+  const base = {
+    brand: filters.brand || undefined,
+    category: filters.category || undefined,
+    interest: filters.interest || undefined,
+    occasion: filters.occasion || undefined,
+    minAge: filters.minAge ?? undefined,
+    maxAge: filters.maxAge ?? undefined,
+    search: filters.search || undefined,
+  };
+
+  // full -> search chara -> age chara -> shudhu search -> shudhu interest/category
+  const attempts = [
+    base,
+    { ...base, search: undefined },
+    { ...base, minAge: undefined, maxAge: undefined },
+    { search: base.search },
+    { interest: base.interest, category: base.category },
+  ].filter((a) => Object.values(a).some((v) => v !== undefined));
+
+  for (const params of attempts) {
+    const list = normalizeList(
+      await productListingService.getProductListing(params),
+    );
+    if (list.length > 0) return list;
+  }
+  return [];
 };
 
 const buildReplyPrompt = (userMessage, products, replyHint) => `
@@ -111,34 +173,33 @@ const chat = async (userMessage, history = []) => {
     brandNames,
   );
 
-  let products = [];
-
   const hasFilter =
     filters.brand ||
     filters.category ||
     filters.interest ||
     filters.occasion ||
-    filters.minAge ||
+    filters.minAge !== null ||
+    filters.maxAge !== null ||
     filters.search;
+
+  let products = [];
 
   if (hasFilter) {
     try {
-      products = await productListingService.getProductListing({
-        brand: filters.brand || undefined,
-        category: filters.category || undefined,
-        interest: filters.interest || undefined,
-        occasion: filters.occasion || undefined,
-        minAge: filters.minAge ?? undefined,
-        maxAge: filters.maxAge ?? undefined,
-        search: filters.search || undefined,
-      });
+      products = await fetchProducts(filters);
     } catch (error) {
       console.error("Product lookup failed:", error);
-      products = [];
     }
   }
 
-  // product_id দিয়ে duplicate বাদ, chat UI-র জন্য সর্বোচ্চ ৫টা
+  if (filters.maxPrice) {
+    products = products.filter(
+      (p) => Number(p.selling_price) <= filters.maxPrice,
+    );
+  }
+
+  console.log("FILTERS:", filters, "PRODUCTS:", products.length);
+
   const uniqueProducts = Array.from(
     new Map(products.map((p) => [p.product_id, p])).values(),
   ).slice(0, 5);
@@ -158,7 +219,7 @@ const chat = async (userMessage, history = []) => {
   );
 
   return {
-    reply: replyText.trim(),
+    reply: String(replyText || "").trim(),
     products: uniqueProducts,
   };
 };

@@ -6,10 +6,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { FiSend } from "react-icons/fi";
 import { HiOutlineSparkles } from "react-icons/hi2";
-
-const baseUrl =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "https://play-house-backend.vercel.app/api";
+import { sendChat } from "@/app/ai-assistant/actions";
 
 const STARTER_PROMPTS = [
   "A gift for a 5-year-old who loves cars",
@@ -126,7 +123,10 @@ const MessageBubble = ({ message }) => {
           {message.products?.length > 0 && (
             <div className="flex gap-2.5 overflow-x-auto pb-1">
               {message.products.map((p) => (
-                <ProductMiniCard key={p.inventory_id} product={p} />
+                <ProductMiniCard
+                  key={p.inventory_id ?? p.product_id}
+                  product={p}
+                />
               ))}
             </div>
           )}
@@ -136,8 +136,10 @@ const MessageBubble = ({ message }) => {
   );
 };
 
-const AIAssistantContent = () => {
-  const [messages, setMessages] = useState([WELCOME_MESSAGE]);
+const AIAssistantContent = ({ initialProducts = [] }) => {
+  const [messages, setMessages] = useState([
+    { ...WELCOME_MESSAGE, products: initialProducts },
+  ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef(null);
@@ -155,9 +157,9 @@ const AIAssistantContent = () => {
     const trimmed = text.trim();
     if (!trimmed || isLoading) return;
 
-    // Welcome message history-তে পাঠানো হচ্ছে না (শুধু আসল কথোপকথন)
     const history = messages
       .slice(1)
+      .filter((m) => !m.isError)
       .map((m) => ({ role: m.role, content: m.content }));
 
     setMessages((prev) => [...prev, { role: "user", content: trimmed }]);
@@ -165,48 +167,41 @@ const AIAssistantContent = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch(`${baseUrl}/ai-assistant/chat`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: trimmed, history }),
-      });
+      const result = await sendChat(trimmed, history);
 
-      const data = await res.json();
-
-      if (res.ok) {
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "assistant",
-            content: data.data.reply,
-            products: data.data.products,
-          },
-        ]);
-      } else {
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "assistant",
-            content:
-              data.message || "Sorry, something went wrong. Please try again.",
-            products: [],
-          },
-        ]);
-      }
+      setMessages((prev) => [
+        ...prev,
+        result?.ok
+          ? {
+              role: "assistant",
+              content: result.reply,
+              products: result.products,
+            }
+          : {
+              role: "assistant",
+              content: result?.message || "Sorry, something went wrong.",
+              products: [],
+              isError: true,
+            },
+      ]);
     } catch (error) {
+      console.error("sendChat failed:", error);
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content:
-            "Hmm, I couldn't connect right now. Please try again in a moment.",
+          content: "Hmm, I couldn't connect right now. Please try again.",
           products: [],
+          isError: true,
         },
       ]);
     } finally {
       setIsLoading(false);
     }
   };
+
+  console.log(messages);
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
