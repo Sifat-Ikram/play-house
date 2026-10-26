@@ -172,7 +172,6 @@ export default function AdminOrderDetailPage() {
             {order.return_request.note ? `: ${order.return_request.note}` : ""}
           </p>
           <p className="mt-1 text-[11px] text-[var(--ph-text-faint)]">
-            অনুমোদন করতে status "Returned" করুন, বাতিল করতে "Delivered"-এ ফেরান।
           </p>
         </Card>
       )}

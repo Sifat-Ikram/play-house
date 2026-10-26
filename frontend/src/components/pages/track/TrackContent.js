@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { FiSearch, FiPackage } from "react-icons/fi";
 import { useAuth } from "@/provider/AuthProvider";
 import { getGuestOrders } from "@/lib/guestOrders";
-import TrackResult from "@/components/orders/TrackResult";
+import TrackResult from "../orders/TrackResult";
 
 const baseUrl =
   process.env.NEXT_PUBLIC_API_URL ||
