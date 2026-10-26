@@ -19,8 +19,8 @@ Log in with the demo account below. Staff roles are redirected straight to the *
 
 | | |
 |---|---|
-| **Email** | `sifatikram@gmail.com` |
-| **Password** | `sifat123` |
+| **Email** | `sifatikram96@gmail.com` |
+| **Password** | `sifatikram123456` |
 | **Role** | `viewer`: explore every admin page, but all changes are disabled |
 
 > The demo account is read-only by design, so you can freely explore orders, carts, products and analytics without affecting the data.
