@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const reviewController = require("../controllers/reviewController");
 const { requireAuth } = require("../middleware/auth.middleware");
+const { rateLimit } = require("../middleware/rateLimit.middleware");
 
 // Review routes bound to product_id
 router.get("/products/:productId/reviews", reviewController.getProductReviews);
