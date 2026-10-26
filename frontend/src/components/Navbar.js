@@ -469,6 +469,16 @@ const Navbar = () => {
             </li>
 
             <li>
+              <Link
+                href="/track"
+                onClick={handleLinkClick}
+                className={mobileLinkClass("/track")}
+              >
+                Track Order
+              </Link>
+            </li>
+
+            <li>
               <button
                 type="button"
                 onClick={() => {

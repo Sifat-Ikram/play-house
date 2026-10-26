@@ -8,6 +8,7 @@ router.get("/products/:productId/reviews", reviewController.getProductReviews);
 router.post(
   "/products/:productId/reviews",
   requireAuth,
+  rateLimit({ name: "review", max: 10, windowMinutes: 60 }),
   reviewController.createReview,
 );
 router.put(

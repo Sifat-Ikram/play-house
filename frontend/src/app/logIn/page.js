@@ -30,7 +30,11 @@ const LoginPage = () => {
 
     try {
       const result = await login({ email, password });
-      router.push(result?.user?.role === "admin" ? "/admin" : "/");
+      router.push(
+        ["admin", "staff", "viewer"].includes(result?.user?.role)
+          ? "/admin"
+          : "/",
+      );
     } catch (err) {
       setError(err.message || "Something went wrong. Please try again.");
     } finally {
@@ -138,6 +142,16 @@ const LoginPage = () => {
                 {error}
               </p>
             )}
+
+            <div className="w-full flex items-center justify-end">
+              <Link
+                href="/forgot-password"
+                className="text-xs font-semibold hover:underline"
+                style={{ color: "var(--ph-accent)" }}
+              >
+                Forgot password?
+              </Link>
+            </div>
 
             <motion.button
               whileHover={{ scale: 1.02 }}

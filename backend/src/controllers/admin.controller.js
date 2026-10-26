@@ -8,12 +8,10 @@ const respond =
       return res.status(successStatus).json({ success: true, data });
     } catch (error) {
       if (error.code === "23505") {
-        return res
-          .status(409)
-          .json({
-            success: false,
-            message: "Duplicate value (e.g. SKU already exists)",
-          });
+        return res.status(409).json({
+          success: false,
+          message: "Duplicate value (e.g. SKU already exists)",
+        });
       }
       if (error.code === "23503") {
         return res.status(409).json({
@@ -45,5 +43,8 @@ module.exports = {
   ),
   deleteInventory: respond((req) =>
     adminService.deleteInventory(req.params.id),
+  ),
+  updateUserRole: respond((req) =>
+    adminService.updateUserRole(req.params.id, req.body.role, req.user.id),
   ),
 };

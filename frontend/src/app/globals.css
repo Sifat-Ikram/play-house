@@ -156,3 +156,23 @@ a {
     padding-inline: 2rem;
   }
 }
+
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  #invoice-print,
+  #invoice-print * {
+    visibility: visible !important;
+  }
+  #invoice-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none !important;
+  }
+  [data-no-print] {
+    display: none !important;
+  }
+}

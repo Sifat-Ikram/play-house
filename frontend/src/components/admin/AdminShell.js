@@ -19,6 +19,7 @@ import {
   FiX,
 } from "react-icons/fi";
 import { useAuth } from "@/provider/AuthProvider";
+import { ADMIN_ROLES } from "./roles";
 
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: FiGrid, exact: true },
@@ -28,7 +29,7 @@ const NAV = [
     icon: FiPackage,
     exclude: "/admin/products/new",
   },
-  { href: "/admin/users", label: "Users", icon: FiUsers },
+  { href: "/admin/users", label: "Users", icon: FiUsers, adminOnly: true },
   {
     href: "/admin/products/new",
     label: "Add Product",
@@ -65,7 +66,7 @@ const AdminShell = ({ children }) => {
     );
   }
 
-  if (!user || user.role !== "admin") {
+  if (!user || !ADMIN_ROLES.includes(user.role)) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center px-4 text-center">
         <p className="text-5xl">🔒</p>
@@ -93,6 +94,10 @@ const AdminShell = ({ children }) => {
       </div>
     );
   }
+
+  const visibleNav = NAV.filter(
+    (item) => !item.adminOnly || user.role === "admin",
+  );
 
   const handleLogout = async () => {
     await logout();
@@ -188,8 +193,12 @@ const AdminShell = ({ children }) => {
         </nav>
 
         <div className="border-t border-white/10 p-3">
-          <p className="truncate px-3 pb-2 text-xs text-white/60">
-            {user.email}
+          <p className="truncate px-3 text-xs text-white/60">{user.email}</p>
+          <p
+            className="px-3 pb-2 text-[10px] font-bold uppercase tracking-wide"
+            style={{ color: "var(--ph-primary)" }}
+          >
+            {user.role}
           </p>
           <button
             type="button"
@@ -220,6 +229,18 @@ const AdminShell = ({ children }) => {
             Admin Panel
           </span>
         </header>
+
+        {user.role === "viewer" && (
+          <div className="mx-auto w-full max-w-6xl px-4 pt-4 sm:px-6">
+            <div
+              className="rounded-xl px-4 py-2.5 text-xs font-semibold"
+              style={{ backgroundColor: "#FFF3D6", color: "#B97A0A" }}
+            >
+              You are in view-only mode. You can explore everything, but changes
+              are disabled.
+            </div>
+          </div>
+        )}
 
         <main className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
           {children}

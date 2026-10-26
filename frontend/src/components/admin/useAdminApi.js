@@ -7,7 +7,6 @@ const baseUrl =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://play-house-backend.vercel.app/api";
 
-// বিভিন্ন endpoint-এর response shape থেকে array বের করে
 export const unwrapList = (json) =>
   Array.isArray(json)
     ? json
@@ -19,10 +18,16 @@ export const unwrapList = (json) =>
       []);
 
 export default function useAdminApi() {
-  const { authFetch } = useAuth();
+  const { authFetch, user } = useAuth();
+  const role = user?.role;
 
   return useCallback(
     async (path, { method = "GET", body } = {}) => {
+      // Viewer শুধু দেখতে পারবে (backend-ও আলাদাভাবে আটকায়)
+      if (role === "viewer" && method !== "GET") {
+        throw new Error("View-only account: changes are disabled");
+      }
+
       const isForm =
         typeof FormData !== "undefined" && body instanceof FormData;
 
@@ -41,6 +46,6 @@ export default function useAdminApi() {
 
       return json;
     },
-    [authFetch],
+    [authFetch, role],
   );
 }

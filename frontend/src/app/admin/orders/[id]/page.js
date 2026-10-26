@@ -156,6 +156,27 @@ export default function AdminOrderDetailPage() {
         )}
       </Card>
 
+      {order.return_request && (
+        <Card className="mb-5">
+          <h2
+            className="mb-2 text-base font-semibold text-[var(--ph-text)]"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Return request ({order.return_request.status})
+          </h2>
+          <p
+            className="text-sm text-[var(--ph-text-soft)]"
+            style={{ fontFamily: "var(--font-body)" }}
+          >
+            <b>{order.return_request.reason}</b>
+            {order.return_request.note ? `: ${order.return_request.note}` : ""}
+          </p>
+          <p className="mt-1 text-[11px] text-[var(--ph-text-faint)]">
+            অনুমোদন করতে status "Returned" করুন, বাতিল করতে "Delivered"-এ ফেরান।
+          </p>
+        </Card>
+      )}
+
       {/* Items */}
       <Card className="mb-5">
         <h2

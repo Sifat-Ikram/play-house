@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { FiChevronLeft, FiMapPin, FiPhone, FiTruck } from "react-icons/fi";
+import MyOrderTracking from "./MyOrderTracking";
 
 const OrderDetailContent = ({ order }) => {
   if (!order) {
@@ -173,6 +174,7 @@ const OrderDetailContent = ({ order }) => {
           </div>
         </div>
       </div>
+      <MyOrderTracking orderId={order.id} />
     </div>
   );
 };

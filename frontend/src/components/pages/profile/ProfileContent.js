@@ -11,6 +11,7 @@ import {
   FiTrash2,
 } from "react-icons/fi";
 import { useAuth } from "@/provider/AuthProvider";
+import AddressManager from "./AddressManager";
 
 const baseUrl =
   process.env.NEXT_PUBLIC_API_URL ||
@@ -254,6 +255,8 @@ const ProfileContent = ({ initialProfile }) => {
           <FiSave /> {isSaving ? "Saving..." : "Save Changes"}
         </motion.button>
       </form>
+
+      <AddressManager />
 
       {/* Danger zone */}
       <div

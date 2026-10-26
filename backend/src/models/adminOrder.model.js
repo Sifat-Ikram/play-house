@@ -11,7 +11,6 @@ const STATUSES = [
   "refunded",
 ];
 
-
 const RELEASED = ["cancelled", "returned", "refunded"];
 
 // ---------- Orders ----------
@@ -85,7 +84,12 @@ const getOrderDetail = async (id) => {
     [id],
   );
 
-  return { ...order, items: items.rows };
+  const ret = await pool.query(
+    `SELECT reason, note, status, created_at FROM return_requests WHERE order_id = $1;`,
+    [id],
+  );
+
+  return { ...order, items: items.rows, return_request: ret.rows[0] || null };
 };
 
 const updateOrderStatus = async (id, newStatus) => {
@@ -114,7 +118,6 @@ const updateOrderStatus = async (id, newStatus) => {
       );
 
       if (willRelease) {
-        // cancel/return/refund -> stock ফেরত
         for (const it of items.rows) {
           await client.query(
             `UPDATE inventory SET stock_quantity = stock_quantity + $1 WHERE id = $2;`,
@@ -122,7 +125,6 @@ const updateOrderStatus = async (id, newStatus) => {
           );
         }
       } else {
-        // আবার সক্রিয় -> stock আবার কমবে, তবে আগে পর্যাপ্ত আছে কিনা দেখা
         for (const it of items.rows) {
           const r = await client.query(
             `UPDATE inventory SET stock_quantity = stock_quantity - $1
@@ -138,6 +140,18 @@ const updateOrderStatus = async (id, newStatus) => {
           }
         }
       }
+    }
+
+    if (newStatus === "returned" || newStatus === "refunded") {
+      await client.query(
+        `UPDATE return_requests SET status = 'approved' WHERE order_id = $1;`,
+        [id],
+      );
+    } else if (newStatus === "delivered") {
+      await client.query(
+        `UPDATE return_requests SET status = 'rejected' WHERE order_id = $1;`,
+        [id],
+      );
     }
 
     const updated = await client.query(

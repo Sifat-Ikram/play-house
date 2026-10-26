@@ -45,8 +45,30 @@ const CheckoutContent = ({ initialProfile }) => {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Fallback client-side fetch if server-side cookie read failed
-  // (e.g. token expired between page loads) but user is actually logged in.
+  const [savedAddresses, setSavedAddresses] = useState([]);
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
+
+  const applyAddress = (a) => {
+    setSelectedAddressId(a.id);
+    setName(a.name);
+    setPhone(a.phone);
+    setCity(a.city);
+    setAddress(a.address);
+  };
+
+  useEffect(() => {
+    if (authLoading || !isLoggedIn) return;
+    authFetch(`${baseUrl}/addresses`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => {
+        const list = json?.data || [];
+        setSavedAddresses(list);
+        const def = list.find((a) => a.is_default) || list[0];
+        if (def) applyAddress(def);
+      })
+      .catch(() => {});
+  }, [authLoading, isLoggedIn, authFetch]);
+
   useEffect(() => {
     if (!initialProfile && !authLoading && isLoggedIn) {
       (async () => {
@@ -110,6 +132,8 @@ const CheckoutContent = ({ initialProfile }) => {
       if (!res.ok) {
         throw new Error(data.message || "Failed to place order");
       }
+
+      if (!user) saveGuestOrder({ id: data.data.id, phone });
 
       await refreshCart();
       await Swal.fire({
@@ -307,6 +331,34 @@ const CheckoutContent = ({ initialProfile }) => {
                 >
                   Delivery Information
                 </h2>
+
+                {savedAddresses.length > 0 && (
+                  <div className="mb-4 flex flex-wrap gap-2">
+                    {savedAddresses.map((a) => (
+                      <button
+                        key={a.id}
+                        type="button"
+                        onClick={() => applyAddress(a)}
+                        className="rounded-full border px-3.5 py-1.5 text-xs font-bold transition-colors"
+                        style={{
+                          borderColor:
+                            selectedAddressId === a.id
+                              ? "var(--ph-primary)"
+                              : "var(--ph-border)",
+                          backgroundColor:
+                            selectedAddressId === a.id
+                              ? "var(--ph-primary-soft)"
+                              : "transparent",
+                          color: "var(--ph-text)",
+                          fontFamily: "var(--font-body)",
+                        }}
+                      >
+                        {a.label}
+                        {a.is_default ? " ★" : ""}
+                      </button>
+                    ))}
+                  </div>
+                )}
 
                 <div className="space-y-4">
                   <div className="relative">

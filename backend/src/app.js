@@ -18,6 +18,8 @@ const profileRoutes = require("./routes/profile.routes");
 const aiAssistantRoutes = require("./routes/aiAssistant.routes");
 const adminRoutes = require("./routes/admin.routes");
 const materialRoutes = require("./routes/material.routes");
+const passwordResetRoutes = require("./routes/passwordReset.routes");
+const addressRoutes = require("./routes/address.routes");
 
 const notFoundMiddleware = require("./middleware/notFound.middleware");
 
@@ -25,13 +27,17 @@ const errorMiddleware = require("./middleware/error.middleware");
 
 const app = express();
 
+const helmet = require("helmet");
+
 app.use(
   cors({
     origin: "*",
   }),
 );
 
-app.use(express.json());
+app.set("trust proxy", 1);
+app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
+app.use(express.json({ limit: "100kb" }));
 app.use(express.urlencoded({ extended: true }));
 
 // Health check
@@ -74,6 +80,10 @@ app.use("/api/ai-assistant", aiAssistantRoutes);
 app.use("/api/admin", adminRoutes);
 
 app.use("/api/materials", materialRoutes);
+
+app.use("/api/auth", passwordResetRoutes);
+
+app.use("/api/addresses", addressRoutes);
 
 // 404
 app.use(notFoundMiddleware);

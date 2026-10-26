@@ -63,6 +63,14 @@ const deleteInventory = async (id) => {
   return deleted;
 };
 
+const updateUserRole = async (id, role, actorId) => {
+  if (Number(id) === Number(actorId))
+    throw bad("You cannot change your own role");
+  const user = await adminModel.updateUserRole(id, role);
+  if (!user) throw bad("User not found", 404);
+  return user;
+};
+
 module.exports = {
   getStats,
   listUsers,
@@ -72,4 +80,5 @@ module.exports = {
   createInventory,
   updateInventory,
   deleteInventory,
+  updateUserRole,
 };
