@@ -13,6 +13,7 @@ import {
   FiTag,
 } from "react-icons/fi";
 import { useCart } from "@/provider/CartProvider";
+import NotifyMe from "./NotifyMe";
 
 const ProductInfo = ({ product, selectedInventory, onSelectInventory }) => {
   const router = useRouter();
@@ -333,6 +334,7 @@ const ProductInfo = ({ product, selectedInventory, onSelectInventory }) => {
             <FiZap /> Buy Now
           </motion.button>
         </div>
+        {!inStock && <NotifyMe inventoryId={inv.id} />}
       </div>
     </div>
   );

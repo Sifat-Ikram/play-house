@@ -11,6 +11,7 @@ const {
 } = require("../middleware/admin.middleware");
 const { validate } = require("../middleware/validate.middleware");
 const { roleSchema } = require("../utils/validators");
+const analyticsController = require("../controllers/adminAnalytics.controller");
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -75,6 +76,10 @@ router.delete(
   allow("carts:write"),
   adminOrderController.deleteCartItem,
 );
+
+router.get("/analytics", analyticsController.analytics);
+router.get("/low-stock", analyticsController.lowStock);
+router.get("/export/:type", analyticsController.exportCsv);
 
 router.post(
   "/upload",

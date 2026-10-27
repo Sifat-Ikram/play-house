@@ -47,3 +47,18 @@ export const getOrdersFromServer = async () => {
     return null;
   }
 };
+
+export const getOrderFromServer = async (id) => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("ph_access_token")?.value;
+  try {
+    const res = await fetch(`${baseUrl}/orders/${id}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    return (await res.json()).data || null;
+  } catch {
+    return null;
+  }
+};

@@ -14,6 +14,7 @@ import {
 } from "react-icons/fi";
 import useAdminApi from "@/components/admin/useAdminApi";
 import { PageHeader, Card } from "@/components/admin/AdminUI";
+import AnalyticsPanel from "@/components/admin/AnalyticsPanel";
 
 const CARDS = [
   { key: "products", label: "Products", icon: FiPackage, bg: "#FCD98C" },
@@ -120,6 +121,7 @@ export default function AdminDashboardPage() {
           ))}
         </div>
       </Card>
+      <AnalyticsPanel />
     </div>
   );
 }

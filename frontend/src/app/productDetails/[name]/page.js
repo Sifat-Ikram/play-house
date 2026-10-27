@@ -124,6 +124,32 @@ export default async function ProductDetailsPage({ params }) {
 
   return (
     <main className="min-h-screen bg-[var(--ph-bg)]">
+      {product && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Product",
+              name: product.name,
+              description:
+                product.summary || `Buy ${product.name} at Play House.`,
+              image: product.inventory?.[0]?.images?.[0]?.image_url,
+              brand: { "@type": "Brand", name: product.brand_name },
+              offers: {
+                "@type": "Offer",
+                priceCurrency: "BDT",
+                price: product.inventory?.[0]?.selling_price,
+                availability: product.inventory?.some(
+                  (i) => Number(i.stock_quantity) > 0,
+                )
+                  ? "https://schema.org/InStock"
+                  : "https://schema.org/OutOfStock",
+              },
+            }).replace(/</g, "\\u003c"),
+          }}
+        />
+      )}
       <ProductDetailsContent
         product={product}
         reviews={reviews}

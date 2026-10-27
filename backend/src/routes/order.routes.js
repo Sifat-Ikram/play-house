@@ -6,6 +6,7 @@ const { requireAuth } = require("../middleware/auth.middleware");
 const { rateLimit } = require("../middleware/rateLimit.middleware");
 const { validate } = require("../middleware/validate.middleware");
 const { trackSchema, returnSchema } = require("../utils/validators");
+const { optionalAuth } = require("../middleware/optionalAuth.middleware");
 
 router.post("/", orderController.placeOrder);
 router.get("/mine", requireAuth, orderController.getMyOrders);
@@ -24,6 +25,11 @@ router.post(
   tracking.requestReturn,
 );
 
-router.get("/:id", orderController.getOrderById);
+router.get(
+  "/:id",
+  optionalAuth,
+  tracking.guardOrderAccess,
+  orderController.getOrderById,
+);
 
 module.exports = router;

@@ -20,6 +20,8 @@ const adminRoutes = require("./routes/admin.routes");
 const materialRoutes = require("./routes/material.routes");
 const passwordResetRoutes = require("./routes/passwordReset.routes");
 const addressRoutes = require("./routes/address.routes");
+const stockAlertRoutes = require("./routes/stockAlert.routes");
+const contactRoutes = require("./routes/contact.routes");
 
 const notFoundMiddleware = require("./middleware/notFound.middleware");
 
@@ -60,6 +62,20 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+const { cachePublic } = require("./middleware/cache.middleware");
+
+app.use("/api/brands", cachePublic(120));
+app.use("/api/categories", cachePublic(120));
+app.use("/api/colors", cachePublic(120));
+app.get(
+  [
+    "/api/products/featured",
+    "/api/products/new-arrivals",
+    "/api/review/top-rated",
+  ],
+  cachePublic(60),
+);
+
 // Routes
 app.use("/api/products", productRoutes);
 
@@ -96,6 +112,10 @@ app.use("/api/materials", materialRoutes);
 app.use("/api/auth", passwordResetRoutes);
 
 app.use("/api/addresses", addressRoutes);
+
+app.use("/api/stock-alerts", stockAlertRoutes);
+
+app.use("/api/contact", contactRoutes);
 
 // 404
 app.use(notFoundMiddleware);

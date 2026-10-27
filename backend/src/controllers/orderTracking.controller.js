@@ -1,4 +1,5 @@
 const model = require("../models/orderTracking.model");
+const { pool } = require("../config/db");
 
 const fail = (res, error) =>
   res
@@ -52,4 +53,21 @@ const requestReturn = async (req, res) => {
   }
 };
 
-module.exports = { trackGuest, trackMine, requestReturn };
+const guardOrderAccess = async (req, res, next) => {
+  try {
+    const r = await pool.query(`SELECT user_id FROM orders WHERE id = $1;`, [
+      req.params.id,
+    ]);
+    const o = r.rows[0];
+    if (o && o.user_id && o.user_id !== req.user?.id) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found" });
+    }
+    next();
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports = { trackGuest, trackMine, requestReturn, guardOrderAccess };

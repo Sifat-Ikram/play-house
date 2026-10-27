@@ -1,4 +1,5 @@
 const adminModel = require("../models/admin.model");
+const { notifyBackInStock } = require("./stockNotify.service");
 
 const bad = (message, statusCode = 400) => {
   const error = new Error(message);
@@ -52,8 +53,17 @@ const createInventory = async (data) => {
 
 const updateInventory = async (id, data) => {
   validateInventory(data, false);
+  const before = await adminModel.getInventoryStock(id);
   const updated = await adminModel.updateInventory(id, data);
   if (!updated) throw bad("Inventory not found", 404);
+
+  if (before !== null && before <= 0 && Number(updated.stock_quantity) > 0) {
+    try {
+      await notifyBackInStock(id);
+    } catch (e) {
+      console.error("Back-in-stock notify failed:", e.message);
+    }
+  }
   return updated;
 };
 

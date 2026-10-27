@@ -23,9 +23,16 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata = {
+  metadataBase: new URL("https://play-house-phi.vercel.app"),
   title: "Play House | A Little World of Wonder",
   description:
-    "Discover toys made for little adventures — Play House brings joy to every little heart.",
+    "Discover toys made for little adventures. Play House brings joy to every little heart.",
+  openGraph: {
+    title: "Play House | A Little World of Wonder",
+    description: "Discover toys made for little adventures.",
+    siteName: "Play House",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }) {

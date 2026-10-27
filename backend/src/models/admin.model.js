@@ -250,6 +250,14 @@ const updateUserRole = async (id, role) => {
   return result.rows[0];
 };
 
+const getInventoryStock = async (id) => {
+  const r = await pool.query(
+    `SELECT stock_quantity FROM inventory WHERE id = $1;`,
+    [id],
+  );
+  return r.rows[0] ? Number(r.rows[0].stock_quantity) : null;
+};
+
 module.exports = {
   getStats,
   listUsers,
@@ -260,4 +268,5 @@ module.exports = {
   updateInventory,
   deleteInventory,
   updateUserRole,
+  getInventoryStock,
 };
