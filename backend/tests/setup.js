@@ -1,0 +1,10 @@
+process.env.NODE_ENV = "test";
+
+// Required by src/config/env.js
+process.env.DATABASE_URL = "postgresql://test:test@localhost:5432/test_db";
+
+process.env.JWT_SECRET = "test-jwt-secret";
+
+// JWT authentication
+process.env.JWT_ACCESS_SECRET = "test";
+process.env.JWT_REFRESH_SECRET = "test";

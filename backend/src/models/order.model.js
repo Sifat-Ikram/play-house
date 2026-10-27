@@ -27,7 +27,8 @@ const getCartItemsWithStock = async (client, { cartToken, userId }) => {
     FROM cart_items ci
     JOIN inventory inv ON inv.id = ci.inventory_id
     JOIN products p ON p.id = inv.product_id
-    WHERE ${whereClause};
+    WHERE ${whereClause}
+    FOR UPDATE OF inv;
   `;
 
   const result = await client.query(query, [param]);
@@ -75,7 +76,13 @@ const createOrder = async (data) => {
       0,
     );
 
-    const shippingCost = getShippingCost(data.delivery_option);
+    const deliveryOption =
+      String(data.city || "")
+        .trim()
+        .toLowerCase() === "dhaka"
+        ? "INSIDE_DHAKA"
+        : "OUTSIDE_DHAKA";
+    const shippingCost = getShippingCost(deliveryOption);
     const total = subtotal + shippingCost;
 
     const orderResult = await client.query(
@@ -94,7 +101,7 @@ const createOrder = async (data) => {
         data.phone,
         data.shipping_address,
         data.city,
-        data.delivery_option,
+        deliveryOption,
         data.payment_method ?? "cod",
         subtotal,
         shippingCost,
@@ -112,11 +119,16 @@ const createOrder = async (data) => {
         [order.id, item.inventory_id, item.quantity, item.selling_price],
       );
 
-      // Deduct stock
-      await client.query(
-        `UPDATE inventory SET stock_quantity = stock_quantity - $1 WHERE id = $2;`,
+      const upd = await client.query(
+        `UPDATE inventory SET stock_quantity = stock_quantity - $1
+         WHERE id = $2 AND stock_quantity >= $1 RETURNING id;`,
         [item.quantity, item.inventory_id],
       );
+      if (upd.rowCount === 0) {
+        const error = new Error(`Insufficient stock for ${item.product_name}`);
+        error.statusCode = 400;
+        throw error;
+      }
     }
 
     if (data.user_id) {

@@ -206,12 +206,12 @@ const regexFallback = (message) => {
     .slice(0, 4);
 
   if (
-    /^(hi|hello|hey|hola|good (morning|evening|afternoon))\b/.test(
+    /^(hi|hello|hey|hola|good (morning|evening|afternoon))[\s!.?]*$/.test(
       text.trim(),
-    ) &&
-    !out.keywords.length
+    )
   ) {
     out.reply_hint = "general_chat";
+    out.keywords = [];
   }
 
   return out;
@@ -537,4 +537,7 @@ const chat = async (userMessage, history = []) => {
   return { reply: finalReply, products };
 };
 
-module.exports = { chat };
+module.exports = {
+  chat,
+  __test: { sanitizeFilters, regexFallback, findProducts },
+};
