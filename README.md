@@ -82,6 +82,7 @@ Role-protected panel (`/admin`). Permissions are verified **server-side from the
 | **viewer** | Read-only access to every admin page |
 
 - **Dashboard**: live stats for products, users, brands, categories, featured items, low stock, orders and revenue
+- **Analytics & Inventory Reporting**: dashboard analytics charts, low-stock monitoring and CSV export for data analysis
 - **Products**: searchable list with image, brand, category, price, stock and a **Featured toggle** with a stock-check modal
 - **Product details & editing**: product info (including materials) and every **inventory variant**: colour, SKU, stock, buying/selling price, wholesale price, tax, availability and multiple images with a cover image
 - **Add Product flow**: two-column form with searchable brand/category pickers, then add inventories with images
@@ -100,11 +101,19 @@ Role-protected panel (`/admin`). Permissions are verified **server-side from the
 - **Zod request validation** on sensitive endpoints
 - Passwords hashed with bcrypt; reset tokens stored as SHA-256 hashes
 - Order tracking answers identically for "wrong ID" and "wrong phone" to avoid order enumeration
+- **Automated backend tests** using Jest for AI product filtering, order logic, request validation, rate limiting and role-based permissions (25 tests passing)
 
 ### UI / UX
 - Fully responsive (mobile, tablet, desktop)
 - Custom design system: gold + deep teal palette, Fredoka + Plus Jakarta Sans fonts
 - Skeleton loading states, custom 404 page, dynamic SEO metadata
+
+---
+
+### 📄 Pages & SEO
+
+- **Informational pages**: FAQ, Privacy Policy, Terms & Conditions, Shipping & Returns, and Contact
+- **Search engine optimization**: sitemap, robots.txt and structured data for improved discoverability
 
 ---
 
@@ -273,18 +282,6 @@ Open [http://localhost:3000](http://localhost:3000). Log in with an admin, staff
 - Cart ownership checks prevent modifying other users' carts
 - Order placement and status changes wrapped in DB transactions with rollback
 - Upload endpoint restricted to image files with a size limit
-
----
-
-## 🗺 Roadmap
-- Payment gateway integration (card / mobile banking)
-- Photo reviews with verified-purchase badge and admin moderation
-- Back-in-stock notifications
-- Admin analytics charts, low-stock alerts and CSV export
-- Combo bundles with bundle-discount pricing
-- Wishlist
-- Automated tests for auth, order placement and AI filtering
-- Static pages (FAQ, Privacy, Terms, Shipping & Returns), sitemap and structured data
 
 ---
 
